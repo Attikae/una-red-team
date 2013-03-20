@@ -16,7 +16,7 @@
 		</div>
 		
 		<div id="login_div">
-			<form method="POST" action="http://red.dev.local/home/login" id="login_form">
+			<form method="POST" action="{{ URL::to('home/login') }}" id="login_form">
 				username: <input type="text"><br>
 				password: <input type="password"><br>
 				
