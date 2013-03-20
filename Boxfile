@@ -15,5 +15,3 @@ web1:
   php_extensions:
     - pdo_mysql
     - mcrypt
-    - eaccelerator
-    - memcached
