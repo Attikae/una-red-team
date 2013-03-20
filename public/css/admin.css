@@ -1,0 +1,166 @@
+
+body 
+{
+	background-color: #4f2e7f;
+}
+
+#logo_div
+{
+	margin: 10px auto;
+	width:  256.5px;
+	height: 150px;
+}
+#logo_img
+{
+	width: 256.5px;
+	height: 150px;
+}
+
+#main_div
+{
+	position:relative;
+	margin: 20px auto;
+	right:50px;
+	width: 800px;
+	height: 500px;
+}
+
+#content_div
+{
+	
+	position:relative;
+	left:100px;
+	width:700px;
+	height: 500px;
+	border:1px solid #EEB311;
+}
+/*******************************/
+#menu_div
+{
+	width:100px;
+	height:500px;
+	float:left;
+}
+
+.menu-btn
+{
+    height:40px;
+}
+
+.menu-text
+{
+	font-size:18px;
+	margin-top:9px;
+}
+/*******************************/
+#schedules_div
+{
+	position:absolute;
+	width:inherit;
+	height:inherit;
+	visibility:hidden;
+	overflow-y:scroll;
+}
+
+#add_btn
+{
+	font-size:18px;
+	width:150px;
+	margin:auto;
+	margin-top:25px;
+}
+
+.add_window
+{
+	position:absolute;
+	left:0px;
+	top:0px;
+	margin-left: 150px;
+	margin-top: 25px;
+	background-color:#4F2E7F;
+	width:400px;
+	height:200px;
+	box-shadow:0px 0px 50px 25px black;
+	
+
+}
+
+.add_select
+{
+	position:relative;
+	width:125px;
+	font-size:24px;
+	left:75px;
+	top:50px;
+	
+}
+#add_submit
+{
+	position:relative;
+	font-size:24px;
+	width:100px;
+	left:150px;
+	top:70px;
+}
+
+#add_cancel
+{
+	position:relative;
+	font-size:24px;
+	width:100px;
+	top:75px;
+	left:150px;
+}
+
+#semester_list
+{
+	width:200px;
+	position:relative;
+	margin:auto;
+	margin-top:20px;
+	list-style-type:none;
+}
+
+.semester-btn
+{
+	width:inherit;
+	height:50px;
+}
+
+.semester-text
+{
+	font-size:24px;
+	margin-top:12px;
+}
+
+.sched-versions
+{
+	position:relative;
+	width:200px;
+	height:auto;
+	border:1px dashed #EEB311;
+	text-align:center;
+	padding-bottom:20px;
+	padding-top:20px;
+}
+
+.versions
+{
+	position:relative;
+	font-family:sans-serif;
+	font-size:18px;
+	color:white;
+}
+
+.versions:hover
+{
+	color:#EEB311;
+	cursor:pointer;
+}
+/*******************************/
+#faculty_div
+{
+	border:1px solid green;
+	position:absolute;
+	visibility:hidden;
+}
