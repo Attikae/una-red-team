@@ -1,5 +1,13 @@
 Testing out git on windows! - Atticus
+<<<<<<< HEAD
 Blah conflict bitch part 2 blah
+=======
+
+conflict phillip
+
+Blah conflict bitch blah
+
+>>>>>>> 815df5d019700cc668f84db26a7b32c55a03d198
 2332632623
 Blah bl
 Blah do do do do do do
