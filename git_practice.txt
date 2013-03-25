@@ -1,5 +1,5 @@
 Testing out git on windows! - Atticus
-Blah --- blah
+conflict phillip
 2332632623
 Blah bl
 
