@@ -3,9 +3,8 @@
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
   <title>UNA CLASS SCHEDULER</title>
-  <meta name="viewport" content="width=device-width">
 
   {{ HTML::script("js/jquery.js") }}
   {{ HTML::style("css/login.css") }}
@@ -14,10 +13,12 @@
 
 <body>
   <div id="logo_div">
-    <?php echo HTML::image( "img/LOGOBIG.jpg",
-                            "UNA",
-                            array("id" => "logo_img") );
-    ?>
+    <a href="index">
+      <?php echo HTML::image( "img/LOGOBIG.jpg",
+                              "UNA",
+                              array("id" => "logo_img") );
+      ?>
+    </a>
   </div>
 
   <div id="login_div">

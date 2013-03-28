@@ -3,9 +3,8 @@
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
   <title>UNA CLASS SCHEDULER</title>
-  <meta name="viewport" content="width=device-width">
 
   {{ HTML::script("js/jquery.js") }}
   {{ HTML::style("css/index.css") }}

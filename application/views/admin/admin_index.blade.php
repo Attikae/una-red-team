@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
+
   <title>UNA CLASS SCHEDULER</title>
 
   {{ HTML::script("js/jquery.js") }}
