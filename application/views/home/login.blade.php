@@ -25,8 +25,7 @@
       username: <input type="text"><br>
       password: <input type="password"><br>
 
-      <button class="login_btn" id="submit" type="submit">submit</button>
-      <button class="login_btn" id="cancel">cancel</button>
+      <button id="submit" type="submit">submit</button>
     </form>
   </div>
 </body>

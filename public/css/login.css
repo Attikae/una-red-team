@@ -24,18 +24,19 @@ body
 {
   position: relative;
   top: 10px;
-  font-size: 24px;
+  font-size: 20px;
   font-family: sans-serif;
   color: #EEB311;
   margin-left: 20px;
 }
 
-.login_btn
+#submit
 {
-  width: 100px;
   position: relative;
+  left: 50px;
+  width: 100px;
   top: 10px;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 input
