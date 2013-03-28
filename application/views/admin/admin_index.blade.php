@@ -21,8 +21,11 @@
 
   <div id="main_div">
 
-    <form>
-      <select>
+    <form method="POST" 
+          action="" 
+          id="semester-form">
+
+      <select id="semester-select">
         <option>
           select semester...
         </option>
@@ -48,7 +51,7 @@
         </option>
       </select>
 
-      <button type="submit">
+      <button type="submit" id="submit">
         submit
       </button>
 
