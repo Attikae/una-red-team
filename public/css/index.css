@@ -1,72 +1,44 @@
 body 
 {
-	background-color: #4f2e7f;
+  background-color: #4f2e7f;
 }
 
 #logo_div
 {
-	width:  513px;
-	height: 300px;
-	margin: 20px auto;
+  width:  513px;
+  height: 300px;
+  margin: 20px auto;
 }
 
 #main_div
 {
-	width: 300px;
-	margin: 20px auto;
+  width: 300px;
+  margin: 20px auto;
 }
 
 #sched_btn 
 {
-	width: 300px;
-	height: 150px;
-	font-size: 50px;
-	font-family: sans-serif;
+  width: 300px;
+  height: 150px;
+  font-size: 50px;
+  font-family: sans-serif;
 }
 
 #login_lnk
 {
-	position:relative;
-	left:170px;
-	top:5px;
-	font-family: sans-serif;
-	font-size: 24px;
-	color: white;
-	cursor:pointer;
-	text-decoration:underline;
+  position:relative;
+  left:170px;
+  top:5px;
+  font-family: sans-serif;
+  font-size: 24px;
+  color: white;
+  cursor:pointer;
+  text-decoration:underline;
 }
 
 #login_lnk:hover
 {
-	color: #eeb311;
+  color: #eeb311;
 }
 
-#login_div
-{
-	width: 250px;
-	height: 200px;
-	margin: 20px auto;
-	border:2px solid #EEB311;
-}
-#login_form
-{
-	position:relative;
-	top:10px;
-	font-size:24px;
-	font-family:sans-serif;
-	color:#EEB311;
-	margin-left:20px;
-}
 
-.login_btn
-{
-	width:100px;
-	position:relative;
-	top:10px;
-	font-size:24px;
-}
-
-input
-{
-	font-size:18px;
-}

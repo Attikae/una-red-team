@@ -1,0 +1,41 @@
+body 
+{
+  background-color: #4f2e7f;
+}
+
+#logo_div
+{
+  width:  513px;
+  height: 300px;
+  margin: 20px auto;
+}
+
+#login_div
+{
+  width: 250px;
+  height: 200px;
+  margin: 20px auto;
+  border:2px solid #EEB311;
+}
+#login_form
+{
+  position:relative;
+  top:10px;
+  font-size:24px;
+  font-family:sans-serif;
+  color:#EEB311;
+  margin-left:20px;
+}
+
+.login_btn
+{
+  width:100px;
+  position:relative;
+  top:10px;
+  font-size:24px;
+}
+
+input
+{
+  font-size:18px;
+}
