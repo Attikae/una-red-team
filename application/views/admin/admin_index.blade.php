@@ -7,8 +7,8 @@
   <title>UNA CLASS SCHEDULER</title>
 
   {{ HTML::script("js/jquery.js") }}
-  {{ HTML::style("css/admin.css") }}
-  {{ HTML::script("js/admin.js") }}
+  {{ HTML::style("css/admin_index.css") }}
+  {{ HTML::script("js/admin_index.js") }}
 </head>
 
 <body>
