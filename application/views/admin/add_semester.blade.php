@@ -7,8 +7,8 @@
   <title>UNA CLASS SCHEDULER</title>
 
   {{ HTML::script("js/jquery.js") }}
-  {{ HTML::style("css/admin_index.css") }}
-  {{ HTML::script("js/admin_index.js") }}
+  {{ HTML::style("css/add_semester.css") }}
+  {{ HTML::script("js/add_semester.js") }}
 </head>
 
 <body>
@@ -20,7 +20,24 @@
   </div>
 
   <div id="main_div">
+    <p>add semester</p>
+    <form method="post" action="">
 
+      <select id="select-season">
+        <option>Spring</option>
+        <option>Summer</option>
+        <option>Fall</option>
+      </select>
+
+      <select id="select-year">
+        <!-- FILLED BY JAVASCRIPT -->
+      </select>
+
+      <button>submit</button>
+      <br>
+      <button>cancel</button>
+
+    </form>
   </div>
 </body>
 
