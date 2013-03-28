@@ -15,7 +15,7 @@
   <div id="logo_div">
     <?php echo HTML::image( "img/LOGOBIG.jpg",
                             "UNA",
-                            array("id" => "logo_img") );
+                            array("id" => "logo_img"));
     ?>
   </div>
 
