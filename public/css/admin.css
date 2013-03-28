@@ -1,4 +1,3 @@
-
 body 
 {
   background-color: #4f2e7f;
@@ -7,15 +6,55 @@ body
 #logo_div
 {
   margin: 10px auto;
-  width:  513px;
+  width: 513px;
   height: 300px;
 }
 
 #main_div
 {
-  position:relative;
-  margin: 20px auto;
-  width: 800px;
+  position: relative;
+  margin: 40px auto;
+  width: 200px;
   height: 500px;
-  border:1px solid white;
+}
+
+form
+{
+  position: relative;
+  width: 200px;
+}
+
+select
+{
+  font-size: 20px;
+  font-family: sans-serif;
+}
+
+button
+{
+  position: relative;
+  left: 50px;
+  width: 100px;
+  font-size: 20px;
+}
+
+#faculty-lnk,
+#logout-lnk
+{
+  color: white;
+}
+
+#faculty-lnk:hover,
+#logout-lnk:hover
+{
+  color: #eeb311;
+}
+
+#links
+{
+  position: relative;
+  margin-top: 20px;
+  font-size: 20px;
+  font-family: sans-serif;
+  text-align: center;
 }
