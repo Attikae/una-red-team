@@ -5,35 +5,39 @@ body
 
 #logo_div
 {
-  width:  513px;
-  height: 300px;
   margin: 20px auto;
+  width: 300px;
+}
+
+#logo_img
+{
+  width: 300px;
 }
 
 #main_div
 {
-  width: 300px;
+  width: 250px;
   margin: 20px auto;
 }
 
 #sched_btn 
 {
-  width: 300px;
-  height: 150px;
-  font-size: 50px;
+  width: 250px;
+  height: 100px;
+  font-size: 40px;
   font-family: sans-serif;
 }
 
 #login_lnk
 {
-  position:relative;
-  left:170px;
-  top:5px;
+  position: relative;
+  left: 140px;
+  top: 5px;
   font-family: sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   color: white;
-  cursor:pointer;
-  text-decoration:underline;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 #login_lnk:hover
