@@ -1,0 +1,68 @@
+body 
+{
+  background-color: #4f2e7f;
+  font-family:      sans-serif;
+}
+
+#logo-div
+{
+  margin: 20px auto;
+  width:  300px;
+}
+
+#logo-img
+{
+  width: 300px;
+}
+
+#table-header
+{
+  margin: 10px auto;
+}
+
+#table-title
+{
+  position:   relative;
+  text-align: center;
+  margin:     0px;
+  color:      #eeb311;
+  font-size:  48px;
+}
+
+#back-lnk
+{
+  position:  relative;
+  font-size: 20px;
+
+}
+
+#faculty-table
+{
+  margin:          0px auto;
+  border:          1px solid #eeb311;
+  border-collapse: collapse;
+}
+
+th
+{
+  color:   #eeb311;
+  padding: 10px;
+  border:  1px solid #eeb311;
+}
+
+td
+{
+  padding: 10px;
+  border:  1px solid #eeb311;
+  color:   white;
+}
+
+a
+{
+  color: white;
+}
+
+a:hover
+{
+  color: #eeb311;
+}

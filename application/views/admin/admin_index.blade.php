@@ -58,7 +58,7 @@
     </form>
 
     <div id="links">
-      <?php echo HTML::link( "admin/admin_faculty",
+      <?php echo HTML::link( "admin/view_faculty",
                              "view/edit faculty",
                              array("id" => "faculty-lnk"));
       ?>
