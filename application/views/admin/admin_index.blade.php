@@ -22,29 +22,20 @@
   <div id="main_div">
 
     <form method="POST" 
-          action="" 
+          action="{{ URL::to("admin/admin_index") }}" 
           id="semester-form">
 
-      <select id="semester-select">
-        <option>
+      <select id="semester-select" name="semester-select">
+        <option value="default">
           select semester...
         </option>
 
-        <option value="f2013">
-          Fall 2013
-        </option>
-
-        <option value="su2013">
-          Summer 2013
-        </option>
-
-        <option value="sp2013">
-          Spring 2013
-        </option>
-
-        <option value="f2012">
-          Fall 2012
-        </option>
+        <?php
+          foreach ($schedules as $schedule)
+          {
+            echo "<option value=" . $schedule->id . ">" . $schedule->name . " " . $schedule->year . "</option>";
+          } 
+        ?>
 
         <option value="new">
           <--new semester -->
