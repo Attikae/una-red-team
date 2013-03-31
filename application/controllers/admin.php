@@ -20,5 +20,10 @@ class Admin_Controller extends Base_Controller
     return View::make('admin.view_faculty');
   }
 
+  public function get_semester_cp()
+  {
+    return View::make('admin.semester_cp');
+  }
+
 
 }
