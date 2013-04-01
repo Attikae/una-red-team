@@ -35,18 +35,18 @@
       </div>
     </div>
 
-    <!--//////////////////////////////////////-->
+    <!--////////////////////////////////////////////////////////////-->
     <div id="welcome-div" class="container">
       <div id="welcome-txt">
         Welcome to the administrator control panel.
       </div>
     </div>
 
-    <!--//////////////////////////////////////-->
+    <!--////////////////////////////////////////////////////////////-->
     <div id="versions-div" class="container">
     </div>
 
-    <!--//////////////////////////////////////-->
+    <!--////////////////////////////////////////////////////////////-->
     <div id="input-div" class="container">
 
       <!-- --------------------------------- -->
@@ -56,6 +56,8 @@
 
       <div id="class-time-div" class="file-div">
         <textarea></textarea>
+        <button class="open-btn">open file</button>
+        <button class="save-btn">save</button>
       </div>
 
       <!-- --------------------------------- -->
@@ -65,6 +67,8 @@
 
       <div id="room-div" class="file-div">
         <textarea></textarea>
+        <button class="open-btn">open file</button>
+        <button class="save-btn">save</button>
       </div>
 
       <!-- --------------------------------- -->
@@ -74,6 +78,8 @@
 
       <div id="course-div" class="file-div">
         <textarea></textarea>
+        <button class="open-btn">open file</button>
+        <button class="save-btn">save</button>
       </div>
 
       <!-- --------------------------------- -->
@@ -83,6 +89,8 @@
 
       <div id="conflict-div" class="file-div">
         <textarea></textarea>
+        <button class="open-btn">open file</button>
+        <button class="save-btn">save</button>
       </div>
 
       <!-- --------------------------------- -->
@@ -92,6 +100,8 @@
 
       <div id="prereq-div" class="file-div">
         <textarea></textarea>
+        <button class="open-btn">open file</button>
+        <button class="save-btn">save</button>
       </div>
 
       <!-- --------------------------------- -->
@@ -101,11 +111,13 @@
 
       <div id="faculty-div" class="file-div">
         <textarea></textarea>
+        <button class="open-btn">open file</button>
+        <button class="save-btn">save</button>
       </div>
 
     </div>
 
-    <!--//////////////////////////////////////-->
+    <!--////////////////////////////////////////////////////////////-->
     <div id="pref-div" class="container">
 
 

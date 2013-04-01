@@ -19,7 +19,7 @@ body
 {
   position: relative;
   margin:   40px auto;
-  width:    700px;
+  width:    710px;
   height:   500px;
 }
 
@@ -27,7 +27,7 @@ body
 {
   position:     relative;
   height:       200px;
-  width:        150px;
+  width:        160px;
   float:        left;
   border-right: 1px solid #eeb311;
 }
@@ -72,7 +72,7 @@ body
 .option-txt
 {
   position:  relative;
-  font-size: 16px;
+  font-size: 18px;
   top:       7px;
   color:     black;
 }
@@ -83,6 +83,7 @@ body
   margin: 10px auto;
   width: 300px;
   text-align: center;
+  font-size: 18px;
   background-color: #eeb311;
 }
 
@@ -94,7 +95,9 @@ body
 
 .file-div
 {
-  border: 1px dotted green;
+  border: 1px dotted #eeb311;
+  height:350px;
+  width: 553px;
 }
 
 textarea
@@ -104,4 +107,14 @@ textarea
   width: 547px;
   height: 300px;
   resize: none;
+}
+
+.open-btn,
+.save-btn
+{
+  position: relative;
+  left: 125px;
+  margin-top: 10px;
+  width: 150px;
+  font-size: 18px;
 }
