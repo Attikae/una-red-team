@@ -15,3 +15,9 @@ web1:
   php_extensions:
     - pdo_mysql
     - mcrypt
+  before_deploy:
+    - "php artisan migrate:install"
+    - "php artisan migrate"
+  after_deploy:
+    - "rm -f storage/cache/*"
+    - "rm -f storage/views/*"
