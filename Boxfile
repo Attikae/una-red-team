@@ -15,6 +15,9 @@ web1:
   php_extensions:
     - pdo_mysql
     - mcrypt
+    - mysql
+    - mysqli
+    - mbstring
   before_deploy:
     - "php artisan migrate:install"
     - "php artisan migrate"
