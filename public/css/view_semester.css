@@ -15,6 +15,18 @@ body
   width: 300px;
 }
 
+#home-lnk
+{
+  font-size: 18px;
+  color: white;
+  margin-left: 200px;
+}
+
+#home-lnk:hover
+{
+  color: #eeb311;
+}
+
 #main-div
 {
   position: relative;
@@ -109,12 +121,58 @@ textarea
   resize: none;
 }
 
-.open-btn,
+input
+{
+  position: relative;
+  font-size: 18px;
+  left: 50px;
+}
+
 .save-btn
 {
   position: relative;
-  left: 125px;
   margin-top: 10px;
+  left: 50px;
+  width: 100px;
+  font-size: 18px;
+}
+
+#new-version-btn
+{
+  position: relative;
+  margin: 20px auto;
   width: 150px;
   font-size: 18px;
+  background-color: #eeb311;
+  text-align: center;
+}
+
+#new-version-btn:hover
+{
+  background-color: yellow;
+  cursor: pointer;
+}
+
+#versions-list
+{
+  position: relative;
+  text-align: center;
+  border: 1px solid white;
+}
+
+.version-lnk
+{
+  color: white;
+}
+
+.version-lnk:hover
+{
+  
+}
+
+.delete-version-lnk
+{
+  position: relative;
+  left: 20px;
+  color: #eeb311;
 }

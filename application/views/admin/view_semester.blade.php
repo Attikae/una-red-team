@@ -19,6 +19,8 @@
     ?>
   </div>
 
+  <a id="home-lnk" href="">home</a>
+
   <div id="main-div">
 
     <div id="menu-div">
@@ -38,12 +40,26 @@
     <!--////////////////////////////////////////////////////////////-->
     <div id="welcome-div" class="container">
       <div id="welcome-txt">
-        Welcome to the administrator control panel.
+        Welcome to the semester control panel.
       </div>
     </div>
 
     <!--////////////////////////////////////////////////////////////-->
     <div id="versions-div" class="container">
+      <div id="new-version-btn">new version</div>
+
+      <div id="versions-list">
+        <a class="version-lnk" href="">f2012_a</a>
+        <a class="delete-version-lnk" href="">delete</a>
+        <br>
+
+        <a class="version-lnk" href="">f2012_b</a>
+        <a class="delete-version-lnk" href="">delete</a>
+        <br>
+
+        <a class="version-lnk" href="">f2012_c</a>
+        <a class="delete-version-lnk" href="">delete</a>
+      </div>
     </div>
 
     <!--////////////////////////////////////////////////////////////-->
@@ -56,8 +72,8 @@
 
       <div id="class-time-div" class="file-div">
         <textarea></textarea>
-        <button class="open-btn">open file</button>
-        <button class="save-btn">save</button>
+        <input type="file"</input>
+        <button class="save-btn">Save</button>
       </div>
 
       <!-- --------------------------------- -->
@@ -67,8 +83,8 @@
 
       <div id="room-div" class="file-div">
         <textarea></textarea>
-        <button class="open-btn">open file</button>
-        <button class="save-btn">save</button>
+        <input type="file"</input>
+        <button class="save-btn">Save</button>
       </div>
 
       <!-- --------------------------------- -->
@@ -78,8 +94,8 @@
 
       <div id="course-div" class="file-div">
         <textarea></textarea>
-        <button class="open-btn">open file</button>
-        <button class="save-btn">save</button>
+        <input type="file"</input>
+        <button class="save-btn">Save</button>
       </div>
 
       <!-- --------------------------------- -->
@@ -89,8 +105,8 @@
 
       <div id="conflict-div" class="file-div">
         <textarea></textarea>
-        <button class="open-btn">open file</button>
-        <button class="save-btn">save</button>
+        <input type="file"</input>
+        <button class="save-btn">Save</button>
       </div>
 
       <!-- --------------------------------- -->
@@ -100,8 +116,8 @@
 
       <div id="prereq-div" class="file-div">
         <textarea></textarea>
-        <button class="open-btn">open file</button>
-        <button class="save-btn">save</button>
+        <input type="file"</input>
+        <button class="save-btn">Save</button>
       </div>
 
       <!-- --------------------------------- -->
@@ -111,8 +127,8 @@
 
       <div id="faculty-div" class="file-div">
         <textarea></textarea>
-        <button class="open-btn">open file</button>
-        <button class="save-btn">save</button>
+        <input type="file"</input>
+        <button class="save-btn">Save</button>
       </div>
 
     </div>
