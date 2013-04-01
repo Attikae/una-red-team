@@ -20,6 +20,11 @@
   </div>
 
   <div id="main_div">
+    <?php
+      if(isset($message)){
+        echo "<p>" . $message . "</p>";
+      }
+    ?>
     <p>add semester</p>
     <form method="post" action="{{ URL::to("admin/add_semester") }}">
 

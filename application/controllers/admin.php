@@ -51,10 +51,24 @@ class Admin_Controller extends Base_Controller
   public function post_add_semester()
   {
 
-    $schedule = Schedule::create(array('name' => Input::get('select-season'),
-                                       'year' => Input::get('select-year') ));
+    $name = Input::get('select-season');
+    $year = Input::get('select-year');
 
-    return Redirect::to_action('admin@view_semester')->with('schedule_id', $schedule->id);
+    $query = Schedule::where_name_and_year($name, $year)->first();
+
+    if($query == NULL){
+
+      $schedule = Schedule::create(array('name' => $name,
+                                         'year' => $year ));
+
+      return Redirect::to_action('admin@view_semester')->with('schedule_id', $schedule->id);
+    }
+    else
+    {
+      return View::make('admin.add_semester')->with('message', 'Schedule already exists!');
+    }
+
+    
   }
 
   public function get_view_semester()
