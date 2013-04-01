@@ -72,7 +72,7 @@ return array(
 			'host'     => '127.0.0.1',
 			'database' => 'una_red_team',
 			'username' => 'root',
-			'password' => 'admin',
+			'password' => '',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 		),

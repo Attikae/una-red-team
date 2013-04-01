@@ -7,10 +7,18 @@
   <title>UNA CLASS SCHEDULER</title>
 
   {{ HTML::script("js/jquery.js") }}
+  {{ HTML::style("css/view_semester.css") }}
+  {{ HTML::script("js/view_semester.js") }}
 </head>
 
 <body>
-  
+  <div id="logo_div">
+    <?php echo HTML::image( "img/LOGOBIG.jpg",
+                            "UNA",
+                            array("id" => "logo_img"));
+    ?>
+  </div>
+
   <div id="main_div">
 
 
