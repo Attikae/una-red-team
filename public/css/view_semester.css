@@ -1,24 +1,107 @@
 body 
 {
   background-color: #4f2e7f;
+  font-family:      sans-serif;
 }
 
-#logo_div
+#logo-div
 {
   margin: 20px auto;
   width:  300px;
 }
 
-#logo_img
+#logo-img
 {
   width: 300px;
 }
 
-#main_div
+#main-div
 {
   position: relative;
   margin:   40px auto;
-  width:    205px;
-  border: 1px solid white;
+  width:    700px;
+  height:   500px;
 }
 
+#menu-div
+{
+  position:     relative;
+  height:       200px;
+  width:        150px;
+  float:        left;
+  border-right: 1px solid #eeb311;
+}
+
+#welcome-div,
+#versions-div,
+#input-div,
+#pref-div
+{
+  position:   relative;
+  height:     inherit;
+  float:      right;
+  width:      547px;
+  overflow-y: visible;
+}
+
+#welcome-txt
+{
+  position:    relative;
+  margin-top:  50px;
+  margin-left: 20px;
+  width:       500px;
+  text-align:  center;
+  font-size:   36px;
+  color:       white;
+}
+
+.menu-btn
+{
+  height:           35px;
+  margin-top:       15px;
+  text-align:       center;
+  background-color: #eeb311;
+}
+
+.menu-btn:hover
+{
+  background-color: yellow;
+  cursor:     pointer;
+}
+
+.option-txt
+{
+  position:  relative;
+  font-size: 16px;
+  top:       7px;
+  color:     black;
+}
+
+.file-btn
+{
+  position: relative;
+  margin: 10px auto;
+  width: 300px;
+  text-align: center;
+  background-color: #eeb311;
+}
+
+.file-btn:hover
+{
+  cursor: pointer;
+  background-color: yellow;
+}
+
+.file-div
+{
+  border: 1px dotted green;
+}
+
+textarea
+{
+  position: relative;
+  margin: 0px auto;
+  width: 547px;
+  height: 300px;
+  resize: none;
+}
