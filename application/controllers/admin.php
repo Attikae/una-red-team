@@ -48,6 +48,15 @@ class Admin_Controller extends Base_Controller
     return View::make('admin.add_semester');
   }
 
+  public function post_add_semester()
+  {
+
+    $schedule = Schedule::create(array('name' => Input::get('select-season'),
+                                       'year' => Input::get('select-year') ));
+
+    return Redirect::to_action('admin@view_semester')->with('schedule_id', $schedule->id);
+  }
+
   public function get_view_semester()
   {
 

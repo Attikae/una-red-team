@@ -21,21 +21,22 @@
 
   <div id="main_div">
     <p>add semester</p>
-    <form method="post" action="">
+    <form method="post" action="{{ URL::to("admin/add_semester") }}">
 
-      <select id="select-season">
+      <select id="select-season" name="select-season">
         <option>Spring</option>
         <option>Summer</option>
         <option>Fall</option>
       </select>
 
-      <select id="select-year">
+
+      <select id="select-year" name="select-year">
         <!-- FILLED BY JAVASCRIPT -->
       </select>
 
-      <button>submit</button>
+      <button type="submit">submit</button>
       <br>
-      <button>cancel</button>
+      <a href="{{ URL::to("admin/admin_index") }}"><button>cancel</button></a>
 
     </form>
   </div>
