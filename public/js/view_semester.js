@@ -15,6 +15,15 @@ $(document).ready(function(){
 
   // Toggle file divs
   $(".file-btn").on("click",toggleFileDiv);
+
+  $(".version-lnk").on("click",function(){
+    return false;
+  });
+
+  $(".delete-version-lnk").on("click",function(){
+    return false;
+  });
+  
 });
 
 function showVersions(){
@@ -65,5 +74,3 @@ function toggleFileDiv(){
     $("#"+file_div_id).hide();
   }
 }
-
-

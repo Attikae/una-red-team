@@ -20,7 +20,7 @@
   </div>
 
   <div id="table-header">
-    <a href="../admin" id="back-lnk">back</a>
+    <a href="admin_index" id="back-lnk">back</a>
     <p id="table-title">faculty accounts</p>
   </div>
 

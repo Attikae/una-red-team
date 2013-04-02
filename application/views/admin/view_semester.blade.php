@@ -19,7 +19,18 @@
     ?>
   </div>
 
-  <a id="home-lnk" href="">home</a>
+  <div id="top-menu">
+    <a id="home-lnk" href="admin_index">home</a>
+    <br>
+    
+  </div>
+
+  <div id="semester-title">
+    <?php
+      // Can take the following out. Just playing around with passing data. 
+      echo "Currently viewing " . $semester 
+    ?>
+  </div>
 
   <div id="main-div">
 
@@ -50,15 +61,14 @@
 
       <div id="versions-list">
         <a class="version-lnk" href="">f2012_a</a>
-        <a class="delete-version-lnk" href="">delete</a>
-        <br>
-
         <a class="version-lnk" href="">f2012_b</a>
-        <a class="delete-version-lnk" href="">delete</a>
-        <br>
-
         <a class="version-lnk" href="">f2012_c</a>
-        <a class="delete-version-lnk" href="">delete</a>
+      </div>
+
+      <div id="option-list">
+        <a class='delete-version-lnk' href=''>delete</a>
+        <a class='delete-version-lnk' href=''>delete</a>
+        <a class='delete-version-lnk' href=''>delete</a>
       </div>
     </div>
 
@@ -136,18 +146,107 @@
     <!--////////////////////////////////////////////////////////////-->
     <div id="pref-div" class="container">
 
+      <h1 id="pref-title">course preferences</h1>
+      <div class="course-div">
+        <div class="course-txt">
+          CS 155
+        </div>
 
+        <div class="checkbox-grp">
+          <div class="checkbox-txt">
+            morning
+            <input type="checkbox"></input>
+          </div>
 
+          <div class="checkbox-txt">
+            afternoon
+            <input type="checkbox"></input>
+          </div>
 
+          <div class="checkbox-txt">
+            evening
+            <input type="checkbox"></input>
+          </div>
+        </div>
+      </div>
+    
+      <div class="course-div">
+        <div class="course-txt">
+          CS 245
+        </div>
 
+        <div class="checkbox-grp">
+          <div class="checkbox-txt">
+            morning
+            <input type="checkbox"></input>
+          </div>
+
+          <div class="checkbox-txt">
+            afternoon
+            <input type="checkbox"></input>
+          </div>
+
+          <div class="checkbox-txt">
+            evening
+            <input type="checkbox"></input>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-div">
+        <div class="course-txt">
+          CS 255
+        </div>
+
+        <div class="checkbox-grp">
+          <div class="checkbox-txt">
+            morning
+            <input type="checkbox"></input>
+          </div>
+
+          <div class="checkbox-txt">
+            afternoon
+            <input type="checkbox"></input>
+          </div>
+
+          <div class="checkbox-txt">
+            evening
+            <input type="checkbox"></input>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-div">
+        <div class="course-txt">
+          CS 355
+        </div>
+
+        <div class="checkbox-grp">
+          <div class="checkbox-txt">
+            morning
+            <input type="checkbox"></input>
+          </div>
+
+          <div class="checkbox-txt">
+            afternoon
+            <input type="checkbox"></input>
+          </div>
+
+          <div class="checkbox-txt">
+            evening
+            <input type="checkbox"></input>
+          </div>
+        </div>
+      </div>
+
+      <div id="pref-btn-div">
+        <button id="pref-submit-btn">submit</button>
+        <button id="pref-reset-btn">reset</button>
+      </div>
     </div>
-
   </div>
 
-    <?php
-      // Can take the following out. Just playing around with passing data. 
-      echo "Currently viewing " . $semester 
-    ?>
+    
 </body>
 
 </html>
