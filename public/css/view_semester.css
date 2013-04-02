@@ -238,10 +238,11 @@ input[type=file]
   top: 10px;
 }
 
+/*
 input[type=checkbox]
 {
   float: left;
-}
+}*/
 
 .checkbox-txt
 {

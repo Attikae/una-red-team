@@ -223,19 +223,22 @@
 
         <div class="checkbox-grp">
           <div class="checkbox-txt">
-            morning
-            <input type="checkbox"></input>
+	    morning
+	    <input type="checkbox"></input>
           </div>
 
+            
           <div class="checkbox-txt">
-            afternoon
+	    afternoon
             <input type="checkbox"></input>
           </div>
+        
 
           <div class="checkbox-txt">
-            evening
+	    evening
             <input type="checkbox"></input>
           </div>
+            
         </div>
       </div>
 
