@@ -46,20 +46,28 @@ class Home_Controller extends Base_Controller {
     {
         $username = $_POST['username'];
         $password = $_POST['password'];
+        
+        //check after atticus makes a row for fail attempt
+        $fail_Counter = $user->failCounter;
 
-        if(($username) && !($password))
+        if(($username) && !($password)) //username without password
             echo'Password Required!';
-        elseif (!($username) && ($password))
+        elseif (!($username) && ($password)) //password without username
             echo'Username Required!';
-        elseif(!($username) && !($password)) 
+        elseif(!($username) && !($password)) //no username or password 
             echo'Username and Password required!';
         else
         {       
-            $user = user::find($username);
+            $user = User::where_username($username)->first();
             
-            if($user)
+            if($user) //username found
             {
-                if(($user->password) == $password)
+                if($failCounter == 3)
+                {
+                    echo'User locked! Maximum login attempt exceeded';
+                    echo'Email department administer to reset your account.';
+                }
+                elseif((($user->password) == $password) && ($failCounter < 3))
                 {
                     
                     //check faculty or admin
@@ -74,20 +82,25 @@ class Home_Controller extends Base_Controller {
                             return Redirect::to('faculty/initial_login');
                         }
                         
-                        return Rediret::to('faculty/faculty_index');//need this page setup
+                        return Rediret::to('faculty/faculty_index'); //need this page setup
                         
                     }
                     elseif (($user->user_type) == 'admin')
                         return Redirect::to('admin/admin_index');
                 }
                 else 
+                {
+                    if($failCounter == 1)
+                        echo'You have 2 more login attempt left!';
+                    elseif($failCounter == 2)
+                        echo'You have 1 more login attemp left';
+                    $failCounter = $failCounter + 1;
                     echo'Invalid Password!';    
-                
+                }
             }
             else
                 echo'Username Not Found!';    
                 
-
         }
         //return Redirect::to('admin/admin_index');
     }
