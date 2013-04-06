@@ -1,12 +1,10 @@
 <?php
 
-user_exists($username)
-{
-	$connect = mysql_connect("localhost","root","") or die("Connect Failed!");
-	mysql_select_db("users") or die(mysql_error("DB doesnot exists"));
+//check if it is first time login
 
-	$query = mysql_query("SELECT COUNT('user_id') FROM 'users' WHERE 'username' = '$username'");
-	return (mysql_query($query, 0) == 1) ? true : false;
-}
+//need a table row with value 0 or 1
+//0 = first time login
+//1 = change after setting up password
+//everytime admin reset password, needs to set this to 0
 
 ?>
