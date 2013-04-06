@@ -12,6 +12,7 @@
 </head>
 
 <body>
+  <iframe id="file-submit-iframe" name='file-submit-iframe' style='display: none;'></iframe>.
   <div id="logo-div">
     <?php echo HTML::image( "img/LOGOBIG.jpg",
                             "UNA",
@@ -81,9 +82,14 @@
       </div>
 
       <div id="class-time-div" class="file-div">
+
         <textarea></textarea>
-        <input type="file"</input>
-        <button class="save-btn">Save</button>
+        <form method='POST' action="{{ URL::to("admin/file_upload") }}" enctype='multipart/form-data' target='file-submit-iframe'>
+          <input name="input-type" type="hidden" value="class-times"/>
+          <input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"/>
+          <button class="button upload">Upload</button>
+          <button class="save-btn">Use</button>
+        </form>
       </div>
 
       <!-- --------------------------------- -->
@@ -93,8 +99,12 @@
 
       <div id="room-div" class="file-div">
         <textarea></textarea>
-        <input type="file"</input>
-        <button class="save-btn">Save</button>
+        <form method='POST' action="{{ URL::to("admin/file_upload") }}" enctype='multipart/form-data' target='file-submit-iframe'>
+          <input name="input-type" type="hidden" value="available-rooms"/>
+          <input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"/>
+          <button class="button upload">Upload</button>
+          <button class="save-btn">Use</button>
+        </form>
       </div>
 
       <!-- --------------------------------- -->
@@ -104,8 +114,12 @@
 
       <div id="course-div" class="file-div">
         <textarea></textarea>
-        <input type="file"</input>
-        <button class="save-btn">Save</button>
+        <form method='POST' action="{{ URL::to("admin/file_upload") }}" enctype='multipart/form-data' target='file-submit-iframe'>
+          <input name="input-type" type="hidden" value="courses-to-schedule"/>
+          <input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"/>
+          <button class="button upload">Upload</button>
+          <button class="save-btn">Use</button>
+        </form>
       </div>
 
       <!-- --------------------------------- -->
@@ -114,9 +128,14 @@
       </div>
 
       <div id="conflict-div" class="file-div">
+        
         <textarea></textarea>
-        <input type="file"</input>
-        <button class="save-btn">Save</button>
+        <form method='POST' action="{{ URL::to("admin/file_upload") }}" enctype='multipart/form-data' target='file-submit-iframe'>
+          <input name="input-type" type="hidden" value="conflict-times"/>
+          <input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"/>
+          <button class="button upload">Upload</button>
+          <button class="save-btn">Use</button>
+        </form>
       </div>
 
       <!-- --------------------------------- -->
@@ -126,8 +145,12 @@
 
       <div id="prereq-div" class="file-div">
         <textarea></textarea>
-        <input type="file"</input>
-        <button class="save-btn">Save</button>
+        <form method='POST' action="{{ URL::to("admin/file_upload") }}" enctype='multipart/form-data' target='file-submit-iframe'>
+          <input name="input-type" type="hidden" value="prerequisites"/>
+          <input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"/>
+          <button class="button upload">Upload</button>
+          <button class="save-btn">Use</button>
+        </form>
       </div>
 
       <!-- --------------------------------- -->
@@ -137,8 +160,12 @@
 
       <div id="faculty-div" class="file-div">
         <textarea></textarea>
-        <input type="file"</input>
-        <button class="save-btn">Save</button>
+        <form method='POST' action="{{ URL::to("admin/file_upload") }}" enctype='multipart/form-data' target='file-submit-iframe'>
+          <input name="input-type" type="hidden" value="faculty-members"/>
+          <input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"/>
+          <button class="button upload">Upload</button>
+          <button class="save-btn">Use</button>
+        </form>
       </div>
 
     </div>

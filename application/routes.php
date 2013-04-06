@@ -3,7 +3,7 @@
 Route::controller('home');
 Route::controller('admin');
 
-//Route::any('login', 'home@login');
+Route::any('admin/file_upload', 'admin@file_upload');
 
 /*
 |--------------------------------------------------------------------------

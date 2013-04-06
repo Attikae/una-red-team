@@ -37,6 +37,8 @@ class Admin_Controller extends Base_Controller
     return View::make('admin.view_faculty');
   }
 
+
+
   public function get_semester_cp()
   {
     return View::make('admin.semester_cp');
@@ -85,5 +87,34 @@ class Admin_Controller extends Base_Controller
 
     return View::make('admin.view_semester')->with('semester', $semester);
   }
+
+
+  public function post_file_upload()
+  {
+      $file = Input::file('fileToUpload');
+      $inputType = Input::get('input-type');
+
+
+      if ( $file['type'] == "text/plain" )
+      {
+        if ($file['error'] > 0)
+        {
+          echo "<div id='file-contents'>error</div>";
+        }
+        else
+        {
+          $contents = File::get( $file['tmp_name']  );
+
+          echo "<div id='file-contents'>" . $contents . "</div>";
+          echo "<div id='input-type'>" . $inputType . "</div>";
+        } 
+      }
+      else
+      {
+        echo "<div id='file-contents'>invalid_file</div>";
+      }  
+
+  }
+
 
 }

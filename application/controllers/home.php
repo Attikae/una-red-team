@@ -45,6 +45,11 @@ class Home_Controller extends Base_Controller {
 	public function post_login()
 	{
 
+
+
+
+		
+
 		return Redirect::to('admin/admin_index');
 	}
 

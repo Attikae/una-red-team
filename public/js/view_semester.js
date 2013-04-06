@@ -16,6 +16,7 @@ $(document).ready(function(){
   // Toggle file divs
   $(".file-btn").on("click",toggleFileDiv);
 
+
   $(".version-lnk").on("click",function(){
     return false;
   });
@@ -23,8 +24,20 @@ $(document).ready(function(){
   $(".delete-version-lnk").on("click",function(){
     return false;
   });
+
+  $("#file-submit-iframe").load( ajaxFileUpload )
+
+  $(".save-btn").on("click", function(e){
+    e.preventDefault();
+
+    //ajaxSaveInput();
+  })
+
   
 });
+
+
+
 
 function showVersions(){
 
@@ -74,3 +87,53 @@ function toggleFileDiv(){
     $("#"+file_div_id).hide();
   }
 }
+
+
+function ajaxFileUpload(){
+
+  var contents = $("#file-submit-iframe").contents().find('#file-contents').html();
+  var inputType = $("#file-submit-iframe").contents().find('#input-type').html();
+
+  if (contents == "invalid_file")
+  {
+    alert("Invalid file!");
+  }
+  else if (contents == "error") 
+  {
+    alert("Error uploading file!");
+  }
+  else
+  {
+  
+    switch(inputType)
+    {
+      case "class-times" :
+        $("#class-time-div textarea").val(contents);
+        break;
+      case "available-rooms" :
+        $("#room-div textarea").val(contents);
+        break;
+      case "courses-to-schedule" :
+        $("#course-div textarea").val(contents);
+        break;
+      case "conflict-times" :
+        $("#conflict-div textarea").val(contents);
+        break;
+      case "prerequisites" :
+        $("#prereq-div textarea").val(contents);
+        break;
+      case "faculty-members" :
+        $("#faculty-div textarea").val(contents);
+        break;
+    }
+  }
+}
+
+
+function ajaxSaveInput() {
+
+
+
+}
+
+
