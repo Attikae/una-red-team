@@ -1,4 +1,4 @@
-changed ths whole file
+Git command line test
 change is here
 change example
 but why?
