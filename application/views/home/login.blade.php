@@ -22,9 +22,22 @@
   </div>
 
   <div id="login_div">
+
     <form method="POST" action="{{ URL::to("home/login") }}" id="login_form">
-      username: <input type="text"><br>
-      password: <input type="password"><br>
+      <?php
+        if(isset($message))
+        {
+          echo "<p>" . $message['error'] . "</p>";
+          echo 'username: <input id="username" name="username" type="text"
+                value="' . $message['username'] . '"><br>';
+        }
+        else
+        {
+          echo 'username: <input id="username" name="username" type="text"><br>';
+        }
+      ?>
+
+      password: <input id="password" name="password" type="password"><br>
 
       <button id="submit" type="submit">submit</button>
     </form>

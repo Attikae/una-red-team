@@ -25,7 +25,7 @@
     </button>
 
     <?php echo HTML::link( "home/login",
-                           "faculty login",
+                           "login",
                            array("id" => "login_lnk"));
     ?>
   </div>

@@ -46,32 +46,31 @@ class Home_Controller extends Base_Controller {
     {
         $username = $_POST['username'];
         $password = $_POST['password'];
+        $message = array("error" => "", "username" => $username);
         
-        //check after atticus makes a row for fail attempt
-        $fail_Counter = $user->failCounter;
 
         if(($username) && !($password)) //username without password
-            echo'Password Required!';
+            $message["error"] = 'Password Required!';
         elseif (!($username) && ($password)) //password without username
-            echo'Username Required!';
+            $message["error"] = 'Username Required!';
         elseif(!($username) && !($password)) //no username or password 
-            echo'Username and Password required!';
+            $message["error"] = 'Username and Password required!';
         else
         {       
-            $user = User::where_username($username)->first();
+            $user = User::where_email($username)->first();
             
             if($user) //username found
             {
-                if($failCounter == 3)
+                if( $user->is_locked == 1)
                 {
-                    echo'User locked! Maximum login attempt exceeded';
-                    echo'Email department administer to reset your account.';
+                    $message["error"] = 'User locked!</br>Maximum login attempts exceeded</br>'
+                        . 'Email department administrator to reset your account.';
                 }
-                elseif((($user->password) == $password) && ($failCounter < 3))
+                else if( $user->password == $password )
                 {
                     
                     //check faculty or admin
-                    if(($user->user_type) == 'faculty')
+                    if(($user->user_type) == 2 ) // 2 for user_type in database represents faculty
                     {
                         //check bool val for first time login
                         if(($user->login_bool) == '0')
@@ -85,24 +84,40 @@ class Home_Controller extends Base_Controller {
                         return Rediret::to('faculty/faculty_index'); //need this page setup
                         
                     }
-                    elseif (($user->user_type) == 'admin')
+                    else if ( ($user->user_type == 1) || ($user->user_type == 3) )
                         return Redirect::to('admin/admin_index');
                 }
                 else 
                 {
-                    if($failCounter == 1)
-                        echo'You have 2 more login attempt left!';
-                    elseif($failCounter == 2)
-                        echo'You have 1 more login attemp left';
-                    $failCounter = $failCounter + 1;
-                    echo'Invalid Password!';    
+                    $fail_counter = Session::get("fail_counter");
+                    $message["error"] = "Invalid Password!</br>"; 
+
+                    if( $fail_counter == 1)
+                    {
+                        $message["error"] .= "You have 2 more login attempt left!";
+                    }
+                    else if($fail_counter == 2)
+                    {
+                        $message["error"] .= "You have 1 more login attemp left";
+                    }
+
+                    $fail_counter = $fail_counter + 1;
+
+                    if ($fail_counter == 3)
+                    {
+                        $user->is_locked = 1;
+                        $user->save();
+                    }
+
+                    Session::put("fail_counter", $fail_counter);
+
                 }
             }
             else
-                echo'Username Not Found!';    
+                $message["error"] = 'Username Not Found!';    
                 
         }
-        //return Redirect::to('admin/admin_index');
+        return View::make('home.login')->with("message", $message);
     }
 
 }
