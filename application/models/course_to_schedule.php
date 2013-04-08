@@ -28,61 +28,90 @@ class Course_To_Schedule extends Eloquent {
     $result = array("status" => "", "message" => "");
     
     $lineArray = mb_split('\n', $file_stream);
+
+    error_log("Count for array is: " . count($lineArray));
+
     for($count = 0; $count < count($lineArray); $count++)
     {
+
+
+
         $wordArray[$count] = mb_split(' ', $lineArray[$count]);
-        if(count($wordArray[$count] > 7))
+
+        error_log("WordArray is: " . $wordArray[$count][0] );
+
+        error_log("Count for word array is: " . count($wordArray[$count]));
+
+        if( count($wordArray[$count]) > 7)
         {
             // Push "Too Many Field Arguments" to error table
+            error_log("In word array count check");
             $readSuccess = FALSE;
             $result["status"] = "error";
+            $result["message"] = "error 1";
             break;
         }
-        if(preg_match('/[A-Z]{2,5}\d{3}[A-Z]{0,2}/', $wordArray[$count][0]) === 0)
+        if( preg_match('[A-Z]{2,5}\d{3}[A-Z]{0,2}', $wordArray[$count][0]) === 0)
         {
             // Push "Incorrect Class Field" to error table
+            error_log("In preg match");
             $readSuccess = FALSE;
             $result["status"] = "error";
+            $result["message"] = "error 2";
             break;
         }
-        if(($wordArray[$count][1] > 100) || ($wordArray[$count][2] > 100) ||
+        error_log("Past preg match");
+        if( ($wordArray[$count][1] > 100) || ($wordArray[$count][2] > 100) ||
             ($wordArray[$count][3] > 100))
         {
             // Push "Too Many Sessions" to error table
+            error_log("In 3rd if ");
             $readSuccess = FALSE;
             $result["status"] = "error";
+            $result["message"] = "error 3";
             break;
         }
+        error_log("Summing sessions!");
         $sessionSum = $wordArray[$count][1] + $wordArray[$count][2] + $wordArray[$count][3];
-        if(sessionSum > 100)
+        if($sessionSum > 100)
         {
             // Push "Too Many Sessions" to error table
+            error_log("In  4th if");
             $readSuccess = FALSE;
             $result["status"] = "error";
+            $result["message"] = "error 4";
             break;
         }
         if(($wordArray[$count][4] == 0) || ($wordArray[$count][4] > 100))
         {
             // Push "Incorrect Class Size" to error table
+            error_log("In 5th if");
             $readSuccess = FALSE;
             $result["status"] = "error";
+            $result["message"] = "error 5";
             break;
         }
         if(($wordArray[$count][5] != 'C') && ($wordArray[$count][5] != 'L'))
         {
             $result['message'] = "Incorrect Room Type on line: " + $count;
+            error_log("In 6th if");
             $readSuccess = FALSE;
             $result["status"] = "error";
+            $result["message"] = "error 6";
             break;
         }
         if(($wordArray[$count][6] < 1) || ($wordArray[$count][6] > 12))
         {
             // Push "Incorrect Number of Credit Hours" to error table
+            error_log("In 7th if ");
             $readSuccess = FALSE;
             $result["status"] = "error";
+            $result["message"] = "error 7";
             break;
         }
     }
+
+    error_log("Out of for loop");
     
     if($readSuccess == TRUE)
     {
@@ -100,9 +129,9 @@ class Course_To_Schedule extends Eloquent {
         $result["status"] = "success";
     }
        
-       $result = array("status" => "error", "message" => "course to schedule test");
 
-       return $result;
+
+    return $result;
 
   }
   
