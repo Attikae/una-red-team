@@ -17,6 +17,8 @@ class Admin_Controller extends Base_Controller
 
     $schedule_id = Input::get('semester-select');
 
+    Session::put('schedule_id', $schedule_id);
+
     if($schedule_id == "new")
     {
       return Redirect::to_action('admin@add_semester');
@@ -27,7 +29,7 @@ class Admin_Controller extends Base_Controller
     }
     else
     {
-      return Redirect::to_action('admin@view_semester')->with('schedule_id', $schedule_id);
+      return Redirect::to_action('admin@view_semester');
     }
 
   }
@@ -63,7 +65,9 @@ class Admin_Controller extends Base_Controller
       $schedule = Schedule::create(array('name' => $name,
                                          'year' => $year ));
 
-      return Redirect::to_action('admin@view_semester')->with('schedule_id', $schedule->id);
+      Session::put('schedule_id', $schedule->id);
+
+      return Redirect::to_action('admin@view_semester');
     }
     else
     {
@@ -76,16 +80,18 @@ class Admin_Controller extends Base_Controller
   public function get_view_semester()
   {
 
-    if (Session::get('schedule_id')){
+    if (Session::has('schedule_id')){
       $schedule = Schedule::find(Session::get('schedule_id'));
 
       $semester = $schedule->name . " " . $schedule->year;
+
+      Session::put('semester', $semester);
     } 
     else{
       $semester = "No semester";
     }
 
-    return View::make('admin.view_semester')->with('semester', $semester);
+    return View::make('admin.view_semester');
   }
 
 
@@ -103,7 +109,7 @@ class Admin_Controller extends Base_Controller
         }
         else
         {
-          $contents = File::get( $file['tmp_name']  );
+          $contents = File::get( $file['tmp_name'] );
 
           echo "<div id='file-contents'>" . $contents . "</div>";
           echo "<div id='input-type'>" . $inputType . "</div>";
@@ -116,5 +122,36 @@ class Admin_Controller extends Base_Controller
 
   }
 
+  public function post_scan()
+  {
 
+    $file_type = Input::get('file_type');
+    $file_string = Input::get('file_string');
+    $schedule_id = Input::get('schedule_id');
+
+    switch($file_type)
+    {
+      case "class_times" :
+        $result = Class_Time::scan($schedule_id, $file_string);
+        break;
+      case "available_rooms" :
+        $result = Available_Room::scan($schedule_id, $file_string);
+        break;
+      case "courses_to_schedule" :
+        $result = Course_To_Schedule::scan($schedule_id, $file_string);
+        break;
+      case "conflict_times" :
+        $result = Conflict_Time::scan($schedule_id, $file_string);
+        break;
+      case "prerequisites" :
+        $result = Prerequisite::scan($schedule_id, $file_string);
+        break;
+      case "faculty_members" :
+        $result = Faculty_Member::scan($schedule_id, $file_string);
+        break;
+    }
+
+    echo json_encode($result);
+
+  }
 }

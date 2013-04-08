@@ -21,6 +21,7 @@ $(document).ready(function(){
     return false;
   });
 
+
   $(".delete-version-lnk").on("click",function(){
     return false;
   });
@@ -30,8 +31,8 @@ $(document).ready(function(){
   $(".save-btn").on("click", function(e){
     e.preventDefault();
 
-    //ajaxSaveInput();
-  })
+    ajaxSaveInput($(this));
+  });
 
   
 });
@@ -130,9 +131,58 @@ function ajaxFileUpload(){
 }
 
 
-function ajaxSaveInput() {
+function ajaxSaveInput(saveButton) {
 
+  var fileString = saveButton.parents().siblings('textarea').val();
+  var fileId = saveButton.parents('.file-div').attr('id');
+  var scheduleId = $('#schedule_id').val();
+  
+  var fileType;
+  switch(fileId)
+  {
+    case "class-time-div" :
+      fileType = "class_times";
+      break;
+    case "room-div" :
+      fileType = "available_rooms";
+      break;
+    case "course-div" :
+      fileType = "courses_to_schedule";
+      break;
+    case "conflict-div" :
+      fileType = "conflict_times";
+      break;
+    case "prereq-div" :
+      fileType = "prerequisites";
+      break;
+    case "faculty-div" :
+      fileType = "faculty_members"
+      break;
+  } 
 
+ $.ajax({
+      url: "scan",
+      dataType: "json",
+      type: "POST",
+      data: {
+          file_type : fileType,
+          file_string : fileString,
+          schedule_id : scheduleId
+      },
+      success: function(data) {
+
+        if ( data.status == "success" )
+        {
+          alert("Input data verified and stored!");
+        }
+        else if ( data.status == "error")
+        {
+          alert(data.message);
+        }
+        
+      }
+
+  }); 
 
 }
 

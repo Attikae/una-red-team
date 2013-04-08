@@ -60,6 +60,14 @@ Laravel\Autoloader::$aliases = $aliases;
 
 Autoloader::map(array(
 	'Base_Controller' => path('app').'controllers/base.php',
+
+  // These are required for models which have underscores in there names
+  'Available_Room' => path('app').'models/available_room.php',
+  'Class_Time' => path('app').'models/class_time.php',
+  'Conflict_Time' => path('app').'models/conflict_time.php',
+  'Course_To_Schedule' => path('app').'models/course_to_schedule.php',
+  'Faculty_Member' => path('app').'models/faculty_member.php',
+
 ));
 
 /*
