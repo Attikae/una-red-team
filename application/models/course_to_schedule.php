@@ -42,7 +42,7 @@ class Course_To_Schedule extends Eloquent {
                                     line: " . $count . "\n";
         }
         
-        elseif(!mb_ereg_match('[A-Z]{2,5}\d{3}[A-Z]{0,2}', $wordArray[$count][0]))
+        elseif(!mb_ereg_match('^[A-Z]{2,5}\d{3}[A-Z]{0,2}$', $wordArray[$count][0]))
         {
             $readSuccess = FALSE;
             $result["status"] = "error";
