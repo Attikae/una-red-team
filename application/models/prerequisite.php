@@ -14,10 +14,67 @@ class Prerequisite extends Eloquent {
        If there is an issue, set result['message'] to a string containing the line number
        and description of the issue */
 
-       // For testing purposes
-       $result = array("status" => "error", "message" => "prerequisite test");
+    // For testing purposes
+    $file_stream = $file_string;
+    $readSuccess = TRUE;
+    
+    mb_regex_encoding('UTF-8');
+    mb_internal_encoding('UTF-8');
+    
+    $lineArray = array();
+    $wordArray = array();
+    $result = array("status" => "", "message" => "");
+    
+    $lineArray = mb_split('\n', $file_stream);
+    
+    for($count = 0; $count < count($lineArray); $count++)
+    {
+        $wordArray[$count] = mb_split(' ', $lineArray[$count]);
+        
+        if(count($wordArray[$count]) < 2)
+        {
+            $readSuccess = FALSE;
+            $result["status"] = "error";
+            $result["message"] = "Incorrect amount of field arguments on 
+                                    line: " . $count;
+            break;
+        }
+        
+        for($wordCount = 0; $wordCount < count(&lineArray[$count]; $wordCount++)
+        {
+            if(!mb_ereg_match('[A-Z]{2,5}\d{3}[A-Z]{0,2}', $wordArray[$count][$wordCount]))
+            {
+                $readSuccess = FALSE;
+                $result["status"] = "error";
+                $result["message"] = "Incorrect class field on line: " . $count;
+                break;
+            }
+        }
+    }
+    
+    if($readSuccess == TRUE)
+    {
+        for($lineCount = 0; $lineCount < count($lineArray); $lineCount++)
+        {
+            $new_prereq = new Prerequisite;
+            $new_prereq->schedule_id = $schedule_id;
+            for($wordCount = 0; $wordCount < count($lineArray[$lineCount]); $wordCount++)
+            {
+                if($wordCount == 0)
+                {
+                    //Insert course_id
+                }
+                else
+                {
+                    //Insert into prereq course list
+                }
+            }
+            $new_prereq->save();
+        }
+        $result["status"] = "success";
+    }
 
-       return $result;
+    return $result;
 
   }
   
