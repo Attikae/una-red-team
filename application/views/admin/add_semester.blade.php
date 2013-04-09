@@ -42,9 +42,8 @@
 
       <button type="submit">submit</button>
       <br>
-      <a href="{{ URL::to("admin/admin_index") }}"><button>cancel</button></a>
-
     </form>
+    <a href="{{ URL::to("admin/admin_index") }}"><button>cancel</button></a>
   </div>
 </body>
 
