@@ -31,68 +31,60 @@ class Course_To_Schedule extends Eloquent {
 
     for($count = 0; $count < count($lineArray); $count++)
     {
-
         $wordArray[$count] = mb_split(' ', $lineArray[$count]);
-
+        $sessionSum = $wordArray[$count][1] + $wordArray[$count][2] + $wordArray[$count][3];
+        
         if(count($wordArray[$count]) != 7)
         {
             $readSuccess = FALSE;
             $result["status"] = "error";
-            $result["message"] = "Incorrect amount of field arguments on 
-                                    line: " . $count;
-            break;
+            $result["message"] = $result["message"] . "Incorrect amount of field arguments on 
+                                    line: " . $count . "\n";
         }
         
-        if(!mb_ereg_match('[A-Z]{2,5}\d{3}[A-Z]{0,2}', $wordArray[$count][0]))
+        elseif(!mb_ereg_match('[A-Z]{2,5}\d{3}[A-Z]{0,2}', $wordArray[$count][0]))
         {
             $readSuccess = FALSE;
             $result["status"] = "error";
-            $result["message"] = "Incorrect Class Field on line: " . $count;
-            break;
+            $result["message"] = $result["message"] . "Incorrect Class Field on line: " . $count . "\n";
         }
         
-        if( ($wordArray[$count][1] > 100) || ($wordArray[$count][2] > 100) ||
+        elseif( ($wordArray[$count][1] > 100) || ($wordArray[$count][2] > 100) ||
             ($wordArray[$count][3] > 100))
         {
             $readSuccess = FALSE;
             $result["status"] = "error";
-            $result["message"] = "Too many sessions for one field on line: " . 
-                                    $count;
-            break;
+            $result["message"] = $result["message"] . "Too many sessions for one field on line: " . 
+                                    $count . "\n";
         }
         
-        $sessionSum = $wordArray[$count][1] + $wordArray[$count][2] + $wordArray[$count][3];
-        if($sessionSum > 100)
+        elseif($sessionSum > 100)
         {
             $readSuccess = FALSE;
             $result["status"] = "error";
-            $result["message"] = "Sum of sessions exceeds 100:"
-            break;
+            $result["message"] = $result["message"] . "Sum of sessions exceeds 100\n";
         }
         
-        if(($wordArray[$count][4] == 0) || ($wordArray[$count][4] > 100))
+        elseif(($wordArray[$count][4] == 0) || ($wordArray[$count][4] > 100))
         {
             $readSuccess = FALSE;
             $result["status"] = "error";
-            $result["message"] = "Incorrect Class Size on line: " . $count;
-            break;
+            $result["message"] = $result["message"] . "Incorrect Class Size on line: " . $count . "\n";
         }
         
-        if(($wordArray[$count][5] != 'C') && ($wordArray[$count][5] != 'L'))
+        elseif(($wordArray[$count][5] != 'C') && ($wordArray[$count][5] != 'L'))
         {
             $readSuccess = FALSE;
             $result["status"] = "error";
-            $result['message'] = "Incorrect Room Type on line: " + $count;
-            break;
+            $result['message'] = $result["message"] . "Incorrect Room Type on line: " . $count . "\n";
         }
         
-        if(($wordArray[$count][6] < 1) || ($wordArray[$count][6] > 12))
+        elseif(($wordArray[$count][6] < 1) || ($wordArray[$count][6] > 12))
         {
             $readSuccess = FALSE;
             $result["status"] = "error";
-            $result["message"] = "Incorrect Number of Credit Hours on line: " .
-                                    $count;
-            break;
+            $result["message"] = $result["message"] . "Incorrect Number of Credit Hours on line: " .
+                                    $count . "\n";
         }
     }
     
@@ -110,7 +102,7 @@ class Course_To_Schedule extends Eloquent {
             $new_course->room_type = $wordArray[$count][5];
             $new_course->credit_hours = $wordArray[$count][6];
             $new_course->save();
-        } 
+        }
         $result["status"] = "success";
     }
 
