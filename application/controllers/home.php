@@ -78,7 +78,7 @@ class Home_Controller extends Base_Controller {
                             $user->login_bool = 1;
                         
                             //call for initial_login.php page
-                            return Redirect::to('faculty/initial_login');
+                            return Redirect::to('faculty/initial_index'); //need this page setup
                         }
                         
                         return Rediret::to('faculty/faculty_index'); //need this page setup
