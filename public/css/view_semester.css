@@ -137,9 +137,7 @@ textarea
 
 input[type=file]
 {
-  position: relative;
   font-size: 18px;
-  left: 50px;
 }
 
 .input
@@ -149,17 +147,11 @@ input[type=file]
 
 .upload
 {
-  margin-left: 50px;
-  width: 100px;
   font-size: 18px;
 }
 
 .save-btn
 {
-  position: relative;
-  margin-top: 10px;
-  left: 10px;
-  width: 100px;
   font-size: 18px;
 }
 
