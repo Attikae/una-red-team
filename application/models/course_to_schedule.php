@@ -7,7 +7,8 @@ class Course_To_Schedule extends Eloquent {
   public static $timestamps = true;
 
   public static function scan($schedule_id, $file_string){
-
+    
+    error_log("Error log working!");
     /* Return an array called $result with the indices status & message.
        Set $result['status'] equal to 'success' if everything goes as planned.
        Set $result['status'] equal to 'error' if there is an issue.
@@ -32,62 +33,68 @@ class Course_To_Schedule extends Eloquent {
     for($count = 0; $count < count($lineArray); $count++)
     {
         $wordArray[$count] = mb_split(' ', $lineArray[$count]);
-        $sessionSum = $wordArray[$count][1] + $wordArray[$count][2] + $wordArray[$count][3];
         
         if(count($wordArray[$count]) != 7)
         {
+            error_log("Error 1");
             $readSuccess = FALSE;
             $result["status"] = "error";
             $result["message"] = $result["message"] . "Incorrect amount of field arguments on 
-                                    line: " . $count . "\n";
+                                    line: " . ($count + 1) . "\n";
         }
-        
-        elseif(!mb_ereg_match('^[A-Z]{2,5}\d{3}[A-Z]{0,2}$', $wordArray[$count][0]))
+        else
         {
-            $readSuccess = FALSE;
-            $result["status"] = "error";
-            $result["message"] = $result["message"] . "Incorrect Class Field on line: " . $count . "\n";
-        }
-        
-        elseif( ($wordArray[$count][1] > 100) || ($wordArray[$count][2] > 100) ||
-            ($wordArray[$count][3] > 100))
-        {
-            $readSuccess = FALSE;
-            $result["status"] = "error";
-            $result["message"] = $result["message"] . "Too many sessions for one field on line: " . 
-                                    $count . "\n";
-        }
-        
-        elseif($sessionSum > 100)
-        {
-            $readSuccess = FALSE;
-            $result["status"] = "error";
-            $result["message"] = $result["message"] . "Sum of sessions exceeds 100\n";
-        }
-        
-        elseif(($wordArray[$count][4] == 0) || ($wordArray[$count][4] > 100))
-        {
-            $readSuccess = FALSE;
-            $result["status"] = "error";
-            $result["message"] = $result["message"] . "Incorrect Class Size on line: " . $count . "\n";
-        }
-        
-        elseif(($wordArray[$count][5] != 'C') && ($wordArray[$count][5] != 'L'))
-        {
-            $readSuccess = FALSE;
-            $result["status"] = "error";
-            $result['message'] = $result["message"] . "Incorrect Room Type on line: " . $count . "\n";
-        }
-        
-        elseif(($wordArray[$count][6] < 1) || ($wordArray[$count][6] > 12))
-        {
-            $readSuccess = FALSE;
-            $result["status"] = "error";
-            $result["message"] = $result["message"] . "Incorrect Number of Credit Hours on line: " .
-                                    $count . "\n";
+            $sessionSum = $wordArray[$count][1] + $wordArray[$count][2] + $wordArray[$count][3];
+            
+            if(!mb_ereg_match('^[A-Z]{2,5}\d{3}[A-Z]{0,2}$', $wordArray[$count][0]))
+            {
+                error_log("Error 3");
+                $readSuccess = FALSE;
+                $result["status"] = "error";
+                $result["message"] = $result["message"] . "Incorrect Class Field on line: " . ($count + 1) . "\n";
+            }
+            elseif( ($wordArray[$count][1] > 100) || ($wordArray[$count][2] > 100) ||
+                ($wordArray[$count][3] > 100))
+            {
+                error_log("Error 5");
+                $readSuccess = FALSE;
+                $result["status"] = "error";
+                $result["message"] = $result["message"] . "Too many sessions for one field on line: " . 
+                                        ($count + 1) . "\n";
+            }
+            elseif($sessionSum > 100)
+            {
+                error_log("Error 7");
+                $readSuccess = FALSE;
+                $result["status"] = "error";
+                $result["message"] = $result["message"] . "Sum of sessions exceeds 100\n";
+            }
+            elseif(($wordArray[$count][4] == 0) || ($wordArray[$count][4] > 100))
+            {
+                error_log("Error 9");
+                $readSuccess = FALSE;
+                $result["status"] = "error";
+                $result["message"] = $result["message"] . "Incorrect Class Size on line: " . ($count + 1) . "\n";
+            }
+            elseif(($wordArray[$count][5] != 'C') && ($wordArray[$count][5] != 'L'))
+            {
+                error_log("Error 11");
+                $readSuccess = FALSE;
+                $result["status"] = "error";
+                $result['message'] = $result["message"] . "Incorrect Room Type on line: " . ($count + 1) . "\n";
+            }
+            elseif(($wordArray[$count][6] < 1) || ($wordArray[$count][6] > 12))
+            {
+                error_log("Error 13");
+                $readSuccess = FALSE;
+                $result["status"] = "error";
+                $result["message"] = $result["message"] . "Incorrect Number of Credit Hours on line: " .
+                                        ($count + 1) . "\n";
+            }
+            error_log("Error 14");
         }
     }
-    
+    error_log("Before readSuccess if ");
     if($readSuccess == TRUE)
     {
         for($count = 0; $count < count($wordArray); $count++)

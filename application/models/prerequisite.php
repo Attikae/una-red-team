@@ -56,20 +56,18 @@ class Prerequisite extends Eloquent {
     {
         for($lineCount = 0; $lineCount < count($lineArray); $lineCount++)
         {
-            $new_prereq = new Prerequisite;
-            $new_prereq->schedule_id = $schedule_id;
             for($wordCount = 0; $wordCount < count($lineArray[$lineCount]); $wordCount++)
             {
-                if($wordCount == 0)
-                {
-                    //Insert course_id
-                }
-                else
-                {
-                    //Insert into prereq course list
-                }
+                $new_prereq = new Prerequisite;
+                $new_prereq->schedule_id = $schedule_id;
+                
+                $new_prereq->course = $wordArray[$lineCount][0];
+                
+                $new_prereq->prereq = $wordArray[$lineCount][$wordCount];
+                
+                $new_prereq->save();
             }
-            $new_prereq->save();
+            
         }
         $result["status"] = "success";
     }
