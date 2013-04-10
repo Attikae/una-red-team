@@ -91,6 +91,8 @@ class Home_Controller extends Base_Controller {
                 {
                     $fail_counter = Session::get("fail_counter");
                     $message["error"] = "Invalid Password!</br>"; 
+					
+					$fail_counter = $fail_counter + 1;
 
                     if( $fail_counter == 1)
                     {
@@ -101,8 +103,7 @@ class Home_Controller extends Base_Controller {
                         $message["error"] .= "You have 1 more login attemp left";
                     }
 
-                    $fail_counter = $fail_counter + 1;
-
+                    
                     if ($fail_counter == 3)
                     {
                         $user->is_locked = 1;
