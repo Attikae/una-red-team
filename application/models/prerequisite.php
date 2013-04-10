@@ -42,7 +42,7 @@ class Prerequisite extends Eloquent {
         
         for($wordCount = 0; $wordCount < count(&lineArray[$count]; $wordCount++)
         {
-            if(!mb_ereg_match('[A-Z]{2,5}\d{3}[A-Z]{0,2}', $wordArray[$count][$wordCount]))
+            if(!mb_ereg_match('^[A-Z]{2,5}\d{3}[A-Z]{0,2}$', $wordArray[$count][$wordCount]))
             {
                 $readSuccess = FALSE;
                 $result["status"] = "error";
