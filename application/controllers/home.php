@@ -102,9 +102,7 @@ class Home_Controller extends Base_Controller {
                     {
                         $message["error"] .= "You have 1 more login attemp left";
                     }
-
-                    
-                    if ($fail_counter == 3)
+                    else if ($fail_counter == 3)
                     {
                         $user->is_locked = 1;
                         $user->save();
