@@ -16,35 +16,44 @@ class Available_Room extends Eloquent {
         
         $lineArray = mb_split("\n", $file_string);
         $success = true;
-        $result = array();
+        $result = array("status" => "", "message" => "");
         
         for ($i = 0; $i < count($lineArray); $i++)
         {
             $wordArray[$i] = mb_split (" ", $lineArray[$i]);
              
             if($wordArray[$i][0] != 'C' && $wordArray[$i][0] != 'L' && $wordArray[$i][0] != 'B'){
+            
                 $success = false;  
                 $result['status'] = "error";
                 $result['message'] =   $result['message'] . "\nIncorrect type of room on line " . $i .  ". ";
+  
             }
+            
             if($wordArray[$i][1] > 100 || $wordArray[$i][1] < 1){
+   
                 $success = false;
                 $result['status'] = "error";
                 $result['message'] =   $result['message'] . "\nIncorrect size of room on line " . $i . ". ";
             }
+
             if(!mb_ereg_match('^[A-Z]+$', $wordArray[$i][2]) || strlen($wordArray[$i][2]) > 6 || strlen($wordArray[$i][2])< 2)
             {
+            
                 $success = false;
                 $result['status'] = "error";
                 $result['message'] =  $result['message']  . "\nIncorrect building name on line " . $i . '. '; 
             }
+
             if(!mb_ereg_match('^[0-9]+$', $wordArray[$i][3]) || strlen($wordArray[$i][3]) < 1 || strlen($wordArray[$i][3]) > 3)
             {
+   
                 $success = false;
                 $result['status'] = "error";
                 $result['message'] =  $result['message']  . "\nIncorrect room number on line " . $i . '. '; 
             
-            }    
+            }
+     
         }
         
         if ($success == true)
