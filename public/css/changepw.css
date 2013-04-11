@@ -1,0 +1,44 @@
+body
+{
+  background-color: #4f2e7f;
+  font-family:      sans-serif;
+}
+
+#logo_div
+{
+  margin: 20px auto;
+  width:  300px;
+}
+
+#logo_img
+{
+  width: 300px;
+}
+
+#main-div
+{
+  width: 200px;
+  margin: 10px auto;
+}
+
+#pw-form
+{
+  color: #eeb311;
+  width: inherit;
+  font-size: 18px;
+}
+
+input
+{
+  font-size: 18px;
+  width: inherit;
+}
+
+button
+{
+  position: relative;
+  margin-top: 10px;
+  width: 100px;
+  left: 50px;
+  font-size: 18px;
+}
