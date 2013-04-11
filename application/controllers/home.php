@@ -42,6 +42,11 @@ class Home_Controller extends Base_Controller {
         return View::make('home.login');
     }
 
+    public function get_changepw()
+    {
+      return View::make('home.changepw');
+    }
+
     public function post_login()
     {
         $username = $_POST['username'];
