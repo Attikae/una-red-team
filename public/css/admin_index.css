@@ -44,14 +44,12 @@ button
   text-align:  center;
 }
 
-#faculty-lnk,
-#logout-lnk
+.link
 {
   color: white;
 }
 
-#faculty-lnk:hover,
-#logout-lnk:hover
+.link:hover
 {
   color: #eeb311;
 }

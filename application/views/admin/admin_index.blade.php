@@ -51,14 +51,21 @@
     <div id="links">
       <?php echo HTML::link( "admin/view_faculty",
                              "view/edit faculty",
-                             array("id" => "faculty-lnk"));
+                             array("class" => "link"));
+      ?>
+
+      <br> <!-- LINE BREAK BETWEEN LINKS -->
+
+      <?php echo HTML::link( "home/changepw",
+                             "change password",
+                             array("class" => "link"));
       ?>
 
       <br> <!-- LINE BREAK BETWEEN LINKS -->
 
       <?php echo HTML::link( "home/index",
                              "logout",
-                             array("id" => "logout-lnk"));
+                             array("class" => "link"));
       ?>
     </div>
   </div>
