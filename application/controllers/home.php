@@ -86,7 +86,7 @@ class Home_Controller extends Base_Controller {
                             return Redirect::to('home/changepw'); //need this page setup
                         }
                         
-                        return Rediret::to('faculty/faculty_index'); //need this page setup
+                        return Redirect::to('faculty/faculty_index'); //need this page setup
                         
                     }
                     else if ( ($user->user_type == 1) || ($user->user_type == 3) )
