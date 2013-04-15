@@ -81,17 +81,31 @@ class Admin_Controller extends Base_Controller
   {
 
     if (Session::has('schedule_id')){
-      $schedule = Schedule::find(Session::get('schedule_id'));
-
+      $schedule_id = Session::get('schedule_id');
+      $schedule = Schedule::find($schedule_id);
       $semester = $schedule->name . " " . $schedule->year;
-
       Session::put('semester', $semester);
+
+      $text['available_rooms'] = Available_Room::get_text($schedule_id);
+      $text['class_times'] = Class_Time::get_text($schedule_id);
+      $text['conflict_times'] = Conflict_Time::get_text($schedule_id);
+      $text['courses_to_schedule'] = Course_To_Schedule::get_text($schedule_id);
+      $text['faculty_members'] = Faculty_Member::get_text($schedule_id);
+      $text['prerequisites'] = Prerequisite::get_text($schedule_id);
+
+
     } 
     else{
       $semester = "No semester";
+      $text['available_rooms'] = "";
+      $text['class_times'] = "";
+      $text['conflict_times'] = "";
+      $text['courses_to_schedule'] = "";
+      $text['faculty_members'] = "";
+      $text['prerequisites'] = "";
     }
 
-    return View::make('admin.view_semester');
+    return View::make('admin.view_semester')->with('text', $text);
   }
 
 

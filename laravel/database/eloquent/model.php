@@ -370,7 +370,6 @@ abstract class Model {
 
 		$this->fire_event('saving');
 
-		error_log("In save method!");
 
 		// If the model exists, we only need to update it in the database, and the update
 		// will be considered successful if there is one affected row returned from the
@@ -383,7 +382,6 @@ abstract class Model {
 
 			if ($result) $this->fire_event('updated');
 
-			error_log("In save method. This existed!");
 		}
 
 		// If the model does not exist, we will insert the record and retrieve the last
@@ -391,10 +389,9 @@ abstract class Model {
 		// then we can consider the insert successful.
 		else
 		{
-			error_log("In save method. This did not exist");
 
 			$id = $this->query()->insert_get_id($this->attributes, $this->key());
-			error_log("Id is: " . $id );
+
 			$this->set_key($id);
 
 			$this->exists = $result = is_numeric($this->get_key());
@@ -412,8 +409,6 @@ abstract class Model {
 		{
 			$this->fire_event('saved');
 		}
-
-		error_log("In save before returning result");
 
 		return $result;
 	}

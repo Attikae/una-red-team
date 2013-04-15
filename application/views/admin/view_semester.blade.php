@@ -85,7 +85,7 @@
 
       <div id="class-time-div" class="file-div">
 
-        <textarea></textarea>
+        <textarea><?php echo $text['class_times'] ?></textarea>
         <form method='POST' action="{{ URL::to("admin/file_upload") }}" enctype='multipart/form-data' target='file-submit-iframe'>
           <input name="input-type" type="hidden" value="class-times"/>
           <input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"/>
@@ -100,7 +100,7 @@
       </div>
 
       <div id="room-div" class="file-div">
-        <textarea></textarea>
+        <textarea><?php echo $text['available_rooms'] ?></textarea>
         <form method='POST' action="{{ URL::to("admin/file_upload") }}" enctype='multipart/form-data' target='file-submit-iframe'>
           <input name="input-type" type="hidden" value="available-rooms"/>
           <input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"/>
@@ -115,7 +115,7 @@
       </div>
 
       <div id="course-div" class="file-div">
-        <textarea></textarea>
+        <textarea><?php echo $text['courses_to_schedule'] ?></textarea>
         <form method='POST' action="{{ URL::to("admin/file_upload") }}" enctype='multipart/form-data' target='file-submit-iframe'>
           <input name="input-type" type="hidden" value="courses-to-schedule"/>
           <input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"/>
@@ -131,7 +131,7 @@
 
       <div id="conflict-div" class="file-div">
         
-        <textarea></textarea>
+        <textarea><?php echo $text['conflict_times'] ?></textarea>
         <form method='POST' action="{{ URL::to("admin/file_upload") }}" enctype='multipart/form-data' target='file-submit-iframe'>
           <input name="input-type" type="hidden" value="conflict-times"/>
           <input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"/>
@@ -146,7 +146,7 @@
       </div>
 
       <div id="prereq-div" class="file-div">
-        <textarea></textarea>
+        <textarea><?php echo $text['prerequisites'] ?></textarea>
         <form method='POST' action="{{ URL::to("admin/file_upload") }}" enctype='multipart/form-data' target='file-submit-iframe'>
           <input name="input-type" type="hidden" value="prerequisites"/>
           <input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"/>
@@ -161,7 +161,7 @@
       </div>
 
       <div id="faculty-div" class="file-div">
-        <textarea></textarea>
+        <textarea><?php echo $text['faculty_members'] ?></textarea>
         <form method='POST' action="{{ URL::to("admin/file_upload") }}" enctype='multipart/form-data' target='file-submit-iframe'>
           <input name="input-type" type="hidden" value="faculty-members"/>
           <input id="fileToUpload" type="file" size="45" name="fileToUpload" class="input"/>

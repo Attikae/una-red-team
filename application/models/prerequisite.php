@@ -40,7 +40,7 @@ class Prerequisite extends Eloquent {
             break;
         }
         
-        for($wordCount = 0; $wordCount < count(&lineArray[$count]; $wordCount++)
+        for($wordCount = 0; $wordCount < count($lineArray[$count]); $wordCount++)
         {
             if(!mb_ereg_match('^[A-Z]{2,5}\d{3}[A-Z]{0,2}$', $wordArray[$count][$wordCount]))
             {
@@ -75,5 +75,35 @@ class Prerequisite extends Eloquent {
     return $result;
 
   }
+
+    public static function get_text($schedule_id)
+    {
+
+        $entries = Prerequisite::where_schedule_id($schedule_id)->order_by("id", "asc")->get();
+        $text = "";
+        $prev_course = "";
+
+        foreach ($entries as $entry)
+        {
+            $cur_course = $entry->course;
+            if($cur_course == $prev_course)
+            {
+                $text .= " " . $entry->prereq;
+            }
+            else
+            {
+                if($prev_course != "")
+                {
+                    $text .= "\n";
+                }
+
+                $text .= $entry->course . " " . $entry->prereq;
+                $prev_course = $cur_course;
+            }
+
+        }
+
+        return $text;
+    }
   
 }

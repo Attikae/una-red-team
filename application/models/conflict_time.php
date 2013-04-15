@@ -218,5 +218,73 @@ class Conflict_Time extends Eloquent {
 
         return $result;  
     }
+
+    public static function get_text($schedule_id)
+    {
+
+        $entries = Conflict_Time::where_schedule_id($schedule_id)->order_by("id", "asc")->get();
+        $text = "";
+        $prev_course = "";
+
+        foreach ($entries as $entry)
+        {
+            $cur_course = $entry->course;
+            $days_string = Conflict_Time::get_days_string($entry);
+            if($cur_course == $prev_course)
+            {
+                $text .= " " . $days_string . "/" . substr($entry->start_time, 0, 5);
+            }
+            else
+            {
+                if($prev_course != "")
+                {
+                    $text .= "\n";
+                }
+
+                $text .= $entry->course . " " . $days_string . "/" . substr($entry->start_time, 0, 5);
+                $prev_course = $cur_course;
+            }
+
+        }
+
+        return $text;
+    }
+
+    public static function get_days_string($entry){
+
+        $result = "";
+
+        if($entry->monday)
+        {
+          $result .= "M";
+        }
+
+        if($entry->tuesday)
+        {
+          $result .= "T";
+        }
+
+        if($entry->wednesday)
+        {
+          $result .= "W";
+        }
+
+        if($entry->thursday)
+        {
+          $result .= "R";
+        }
+
+        if($entry->friday)
+        {
+          $result .= "F";
+        }
+
+        if($entry->saturday)
+        {
+          $result .= "S";
+        }
+
+        return $result;
+    }
   
 }

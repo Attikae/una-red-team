@@ -116,5 +116,28 @@ class Course_To_Schedule extends Eloquent {
     return $result;
 
   }
+
+    public static function get_text($schedule_id)
+    {
+
+        $entries = Course_To_Schedule::where_schedule_id($schedule_id)->order_by("id", "asc")->get();
+        $text = "";
+        $first_entry = true;
+
+        foreach ($entries as $entry)
+        {
+            if($first_entry != true)
+            {
+                $text .= "\n";
+            }
+            $text .= $entry->course . " " . $entry->day_sections . " " . $entry->night_sections . " "
+                     . $entry->internet_sections . " " . $entry->class_size . " "
+                     . $entry->room_type . " " . $entry->credit_hours;
+
+            $first_entry = false;
+        }
+
+        return $text;
+    }
   
 }

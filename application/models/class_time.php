@@ -221,5 +221,75 @@ class Class_Time extends Eloquent {
 		  }
 	  }
   }
+
+
+  public static function get_text($schedule_id)
+  {
+
+      $entries = Class_Time::where_schedule_id($schedule_id)->order_by("id", "asc")->get();
+      $text = "";
+      $prev_days_string = "";
+
+      foreach ($entries as $entry)
+      {
+        $cur_days_string = Class_Time::get_days_string($entry);
+        if($cur_days_string == $prev_days_string)
+        {
+          $text .= " " . substr($entry->starting_time, 0, 5);
+        }
+        else
+        {
+          if($prev_days_string != "")
+          {
+            $text .= "\n";
+          }
+
+          $text .= $entry->duration . " " . $cur_days_string . "/ " . substr($entry->starting_time, 0, 5);
+
+          $prev_days_string = $cur_days_string;
+        }
+
+      }
+
+      return $text;
+  }
+
+  public static function get_days_string($entry){
+
+    $result = "";
+
+    if($entry->monday)
+    {
+      $result .= "M";
+    }
+
+    if($entry->tuesday)
+    {
+      $result .= "T";
+    }
+
+    if($entry->wednesday)
+    {
+      $result .= "W";
+    }
+
+    if($entry->thursday)
+    {
+      $result .= "R";
+    }
+
+    if($entry->friday)
+    {
+      $result .= "F";
+    }
+
+    if($entry->saturday)
+    {
+      $result .= "S";
+    }
+
+    return $result;
+
+  }
   
 }

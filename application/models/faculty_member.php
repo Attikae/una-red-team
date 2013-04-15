@@ -20,5 +20,30 @@ class Faculty_Member extends Eloquent {
        return $result;
 
   }
+
+
+  public static function get_text($schedule_id)
+  {
+
+    $entries = Faculty_Member::where_schedule_id($schedule_id)->order_by("id", "asc")->get();
+    $text = "";
+    $first_entry = true;
+
+    foreach ($entries as $entry)
+    {
+      $user = User::find($entry->user_id);
+
+      if($first_entry != true){
+        $text .= "\n";
+      }
+
+      $text .= $entry->last_name . ", " . $entry->first_name . " " . $entry->years_of_service . " "
+               . $user->email . " " . $entry->hours . "\n";
+
+      $first_entry = false;
+    }
+
+    return $text;
+  }
   
 }

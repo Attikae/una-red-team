@@ -75,5 +75,27 @@ class Available_Room extends Eloquent {
         return $result;
         
     }
+
+    public static function get_text($schedule_id)
+    {
+
+        $entries = Available_Room::where_schedule_id($schedule_id)->order_by("id", "asc")->get();
+        $text = "";
+        $first_entry = true;
+
+        foreach ($entries as $entry)
+        {
+            if($first_entry != true)
+            {
+                $text .= "\n";
+            }
+            $text .= $entry->type . " " . $entry->size . " " . $entry->building . " "
+                     . $entry->room_number;
+
+            $first_entry = false;
+        }
+
+        return $text;
+    }
   
 }
