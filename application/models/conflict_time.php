@@ -14,34 +14,31 @@ class Conflict_Time extends Eloquent {
        If there is an issue, set result['message'] to a string containing the line number
        and description of the issue */
 
-        error_log("new");
         $correct = true;
         $lineArray = mb_split("\n", $file_string);      //will hold an array of strings separted by newlines
         $store = array();       //will be used to store database entries
         $result = array("status" => "", "message" => "");
-        error_log ("here in 1"); 
+        $storeCount = 0; 
          
         for ($i = 0; $i < count($lineArray) ; $i++)
         {
             //Grab each string separated by spaces
             
             $wordArray[$i] = mb_split (" ", $lineArray[$i]);
-            error_log ("here in 2");
             
             for ($j = 0; $j < count($wordArray[$i]) ; $j++)
             {
-                error_log("here in 77"); 
                 if ( $j == 0)
                 {
-                    $store [$i][0] = $wordArray[$i][0];
-                    error_log ("here in 3"); 
+                    $store [$storeCount][0] = $wordArray[$i][0];
+                
                     //________________________________________________________
                     // CHECKING FOR CORRECT COURSE NAME
                     //________________________________________________________
                     
                     if (!mb_ereg_match('^[A-Z]{2,5}\d{3}[A-Z]{0,2}$', $wordArray[$i][0]))
                     {    
-                        error_log("here in 4");
+                     
                         $correct = false; 
                         $result['status'] = 'error';
                         $result['message'] = $result['message'] . '\nError with course name on line' . $i . '.';
@@ -136,7 +133,14 @@ class Conflict_Time extends Eloquent {
                             $correct = false;
                         }  
                   
-                        $store[$i][1] = $time;
+                        if ($j > 1){
+                            $storeCount++; 
+                            $store[$storeCount][0] = $store[$storeCount-1][0];
+                            $store[$storeCount][1] = $time;
+                        }
+                        else{
+                            $store[$storeCount][1] = $time;
+                        }
                     }
 
                     // False if the length of the string is not equal to 5
@@ -149,12 +153,12 @@ class Conflict_Time extends Eloquent {
                     //   END OF CHECKING FOR CORRECT TIME
                     //_______________________________________________________________________
                     
-                    $store[$i][2] = 0; 
-                    $store[$i][3] = 0;
-                    $store[$i][4] = 0;
-                    $store[$i][5] = 0;
-                    $store[$i][6] = 0;
-                    $store[$i][7] = 0;                
+                    $store[$storeCount][2] = 0; 
+                    $store[$storeCount][3] = 0;
+                    $store[$storeCount][4] = 0;
+                    $store[$storeCount][5] = 0;
+                    $store[$storeCount][6] = 0;
+                    $store[$storeCount][7] = 0;                
                     
                     //______________________________________________________________________
                     //CHECKING FOR CORRECT DAYS
@@ -163,22 +167,22 @@ class Conflict_Time extends Eloquent {
                             if ($days[$dayCount] == 'M' || $days[$dayCount] == "T" || $days[$dayCount] == "W" || $days[$dayCount] == "R" || $days[$dayCount]== "F" || $days[$dayCount] == "S"){
 
                                 if ($days[$dayCount] == "M"){
-                                    $store[$i][2] = 1;
+                                    $store[$storeCount][2] = 1;
                                 }
                                 elseif ($days[$dayCount] == "T"){
-                                    $store[$i][3] = 1;
+                                    $store[$storeCount][3] = 1;
                                 }
                                 elseif ($days[$dayCount] == "W"){
-                                    $store[$i][4] = 1;
+                                    $store[$storeCount][4] = 1;
                                 }
                                 elseif ($days[$dayCount] == "R"){
-                                    $store[$i][5] = 1;
+                                    $store[$storeCount][5] = 1;
                                 }
                                 elseif ($days[$dayCount] == "F"){
-                                    $store[$i][6] = 1;
+                                    $store[$storeCount][6] = 1;
                                 }
                                 elseif ($days[$dayCount] == "S"){
-                                    $store[$i][7] = 1;
+                                    $store[$storeCount][7] = 1;
                                 }
                             }
                             else{
@@ -191,6 +195,7 @@ class Conflict_Time extends Eloquent {
                         }          
                     }
             }
+            $storeCount++;
         }
                 
         if($correct == TRUE)
@@ -199,7 +204,6 @@ class Conflict_Time extends Eloquent {
        
             for($count = 0; $count < count($store); $count++)
             {
-                error_log("ISCORRECT");
                 $new_conflictTime = new Conflict_Time;
                 $new_conflictTime->schedule_id = $schedule_id;
                 $new_conflictTime->course = $store[$count][0];
