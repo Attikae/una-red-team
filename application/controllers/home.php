@@ -101,16 +101,25 @@ class Home_Controller extends Base_Controller {
 
                     if( $fail_counter == 1)
                     {
-                        $message["error"] .= "You have 2 more login attempt left!";
+                        $message["error"] = "You have 2 more login attempt left!";
                     }
                     else if($fail_counter == 2)
                     {
-                        $message["error"] .= "You have 1 more login attemp left";
+                        $message["error"] = "You have 1 more login attemp left";
                     }
                     else if ($fail_counter == 3)
                     {
-                        $user->is_locked = 1;
-                        $user->save();
+						if($user->user_type == 3)//if user is admin
+						{
+							//call for random_pw.php
+							$message["error"] = "Admin account locked!</br> New password sent to your email! ";
+							return Redirect::to('random_pw.php');
+						}
+						else
+						{
+							$user->is_locked = 1;
+							$user->save();
+						}
                     }
 
                     Session::put("fail_counter", $fail_counter);
