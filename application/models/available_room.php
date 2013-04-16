@@ -21,38 +21,59 @@ class Available_Room extends Eloquent {
         for ($i = 0; $i < count($lineArray); $i++)
         {
             $wordArray[$i] = mb_split (" ", $lineArray[$i]);
-             
-            if($wordArray[$i][0] != 'C' && $wordArray[$i][0] != 'L' && $wordArray[$i][0] != 'B'){
             
-                $success = false;  
-                $result['status'] = "error";
-                $result['message'] =   $result['message'] . "\nIncorrect type of room on line " . $i .  ". ";
-  
-            }
-            
-            if($wordArray[$i][1] > 100 || $wordArray[$i][1] < 1){
-   
-                $success = false;
-                $result['status'] = "error";
-                $result['message'] =   $result['message'] . "\nIncorrect size of room on line " . $i . ". ";
-            }
-
-            if(!mb_ereg_match('^[A-Z]+$', $wordArray[$i][2]) || strlen($wordArray[$i][2]) > 6 || strlen($wordArray[$i][2])< 2)
+            if (count($wordArray[$i]) == 4)  
             {
             
-                $success = false;
-                $result['status'] = "error";
-                $result['message'] =  $result['message']  . "\nIncorrect building name on line " . $i . '. '; 
-            }
+                //Correct classroom type is C, L, or B
+                
+                if($wordArray[$i][0] != 'C' && $wordArray[$i][0] != 'L' && $wordArray[$i][0] != 'B'){
+                
+                    $success = false;  
+                    $result['status'] = "error";
+                    $result['message'] =   $result['message'] . "\nIncorrect type of room on line " . ($i+1) .  ". ";
+      
+                }
+                
+                //Size of room has to be between 1 and 100.
+                
+                if($wordArray[$i][1] > 100 || $wordArray[$i][1] < 1){
+       
+                    $success = false;
+                    $result['status'] = "error";
+                    $result['message'] =   $result['message'] . "\nIncorrect size of room on line " . ($i+1) . ". ";
+                }
+                
+                //Building name must contain all alphabetic characters
 
-            if(!mb_ereg_match('^\d{1,3}$', $wordArray[$i][3]) || strlen($wordArray[$i][3]) < 1 || strlen($wordArray[$i][3]) > 3)
+                if(!mb_ereg_match('^[A-Z]+$', $wordArray[$i][2]) || strlen($wordArray[$i][2]) > 6 || strlen($wordArray[$i][2])< 2)
+                {
+                
+                    $success = false;
+                    $result['status'] = "error";
+                    $result['message'] =  $result['message']  . "\nIncorrect building name on line " . ($i+1) . '. '; 
+                }
+
+                //Room number can be 1 to 3 digits
+                
+                if(!mb_ereg_match('^\d{1,3}$', $wordArray[$i][3]) || strlen($wordArray[$i][3]) < 1 || strlen($wordArray[$i][3]) > 3)
+                {
+       
+                    $success = false;
+                    $result['status'] = "error";
+                    $result['message'] =  $result['message']  . "\nIncorrect room number on line " . ($i+1) . '. '; 
+                
+                }
+                
+            }
+            
+            else
             {
-   
                 $success = false;
                 $result['status'] = "error";
-                $result['message'] =  $result['message']  . "\nIncorrect room number on line " . $i . '. '; 
-            
+                $result['message'] =  $result['message']  . "\nIncorrect amount of arguments on line " . ($i+1) . '. '; 
             }
+        
      
         }
         
@@ -73,6 +94,7 @@ class Available_Room extends Eloquent {
                 $new_room->room_number = $wordArray[$count][3];
                 $new_room->save();
             } 
+            
         }
         
         return $result;

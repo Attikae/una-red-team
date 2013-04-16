@@ -28,6 +28,7 @@ class Conflict_Time extends Eloquent {
             
             for ($j = 0; $j < count($wordArray[$i]) ; $j++)
             {
+            
                 if ( $j == 0)
                 {
                     $store [$storeCount][0] = $wordArray[$i][0];
@@ -41,189 +42,245 @@ class Conflict_Time extends Eloquent {
                      
                         $correct = false; 
                         $result['status'] = 'error';
-                        $result['message'] = $result['message'] . "\nError with course name on line " . $i . '.';
+                        $result['message'] = $result['message'] . "\nError with course name on line " . ($i+1) . '.';
+                        break;
                        
                     }
+                    
                 }
+                
                 else
                 {
-                    $time = " ";                    //will hold the time for storage into database
+                    $time = " ";                        //will hold the time for storage into database
                     $days = array();                    //will hold the days for storage into database
-                    $tempword[0] = $wordArray[$i][$j]; //will hold day(s)/time combinations
-                    $tempcount = 0;                 //counter
-                    $count = 0;                     //counter
-                   
-                    while ($tempword[0][$tempcount] != "/" && $tempcount < strlen($tempword[0]) )
+                    $tempword[0] = $wordArray[$i][$j];  //will hold day(s)/time combinations
+                    $tempcount = 0;                     //counter
+                    $count = 0;                         //counter
+                    
+                    
+                    
+                    //If the combination has a slash it will enter into this loop
+                    if (!mb_ereg_match('^[^:]*$', $tempword[0]))
                     {
-                        $days[$tempcount] = $tempword[0][$tempcount];    
+                                                              
+                        while ($tempword[0][$tempcount] != "/" && $tempcount < strlen($tempword[0]) )
+                        {
+                            //gather all the days
+                            
+                            $days[$tempcount] = $tempword[0][$tempcount];    
+                            $tempcount++; 
+                        }
+                        
+                        //skip over the slash
+                        
                         $tempcount++;
-                    }
-                    
-                    $tempcount++;
-                    $count = 0; 
-                
-                    while ($tempcount < strlen($tempword[0]))
-                    {
-                    
-                        //Will separate the times from days 
-                        $time[$count] = $tempword[0][$tempcount];
-                        $tempcount++;
-                        $count++;
-                    
-                    }
-                    //_________________________________________________________________________
-                    //CHECKING FOR CORRECT TIME
-                    //_________________________________________________________________________
-                    if (strlen($time) == 5 )
-                    {
-                        //ex 09:00
-                       
-                        if ($time[0] == 0 )
+                        $count = 0; 
+                        
+                        while ($tempcount < strlen($tempword[0]))
                         {
                         
-                            if ( $time[1] >= 7 && $time[1] <= 9)
-                            {
-                 
-                                if ( ($time[3] + $time[4]) == 0 || ($time[3] + $time[4]) == 3 )
-                                {
-                                    if ($time[4] == 3 && $time[1] == 8) 
-                                    {
-                                        $result["status"] = "error";
-                                        $result["message"] = $result["message"] . "\nError with time on line " . $i . '.';
-                                        $correct = false;
-                                    }
-                                } 
-                            } 
-                            else
-                            {
-                                $result["status"] = "error";
-                                $result["message"] = $result["message"] . "\nError with time on line " . $i . '.';
-                                $correct = false;
-                            } 
+                            //Will separate the times from days 
+                            
+                            $time[$count] = $tempword[0][$tempcount];
+                            $tempcount++;
+                            $count++;
+                        
                         }
                         
-                        // ex: 10:00
-                         
-                        elseif ($time[0] == 1)
-                        {        
-                            if ( $time[1] >= 0 && $time[1] <= 8)
+                        //_________________________________________________________________________
+                        // CHECKING FOR CORRECT TIME
+                        // ***Time has to be between 07:00 and 18:30
+                        //_________________________________________________________________________
+                        
+                        if (strlen($time) == 5 )
+                        {
+                            //ex 09:00
+                           
+                            if ($time[0] == 0 )
                             {
-                                if (($time[3] + $time[4]) == 0 || ($time[3] + $time[4]) == 3 )
+                            
+                                if ( $time[1] >= 7 && $time[1] <= 9)
                                 {
-                                    if ($time[4] == 3 )
+                     
+                                    if ( ($time[3] + $time[4]) == 0 || ($time[3] + $time[4]) == 3 )
                                     {
-                                        $result["status"] = "error";
-                                        $result["message"] = $result["message"] . "\nError with time on line " . $i . '.';
-                                        $correct = false;
+                                    
+                                        if ($time[4] == 3 && $time[1] == 8) 
+                                        {
+                                            $result["status"] = "error";
+                                            $result["message"] = $result["message"] . "\nError with time on line " . ($i+1) . '.';
+                                            $correct = false;
+                                        }
+                                        
                                     }
-
-                                    elseif ( $time[1] == 8 && $time[3] == 3)
-                                    {
-                                        $result["status"] = "error";
-                                        $result["message"] = $result["message"] . "\nError with time on line " . $i . '.';
-                                        $correct = false;
-                                    }
-                                }  
+                                    
+                                }
+                                                 
+                                else
+                                {
+                                    $result["status"] = "error";
+                                    $result["message"] = $result["message"] . "\nError with time on line " . ($i+1) . '.';
+                                    $correct = false;
+                                } 
                             }
-                            else
+                            
+                            // ex: 10:00
+                             
+                            elseif ($time[0] == 1)
+                            {    
+                            
+                                if ( $time[1] >= 0 && $time[1] <= 8)
+                                {
+                                
+                                    if (($time[3] + $time[4]) == 0 || ($time[3] + $time[4]) == 3 )
+                                    {
+                                    
+                                        if ($time[4] == 3 )
+                                        {
+                                            $result["status"] = "error";
+                                            $result["message"] = $result["message"] . "\nError with time on line " . ($i+1) . '.';
+                                            $correct = false;
+                                        }
+
+                                        elseif ( $time[1] == 8 && $time[3] == 3)
+                                        {
+                                            $result["status"] = "error";
+                                            $result["message"] = $result["message"] . "\nError with time on line " . ($i+1) . '.';
+                                            $correct = false;
+                                        }
+                                        
+                                    }
+                                    
+                                }
+                              
+                                else
+                                {
+                                    $result["status"] = "error";
+                                    $result["message"] = $result["message"] . "\nError with time on line " . ($i+1) . '.';
+                                    $correct = false;
+                                }
+                                
+                            }
+
+                            // False if the time does not fall between 10:00 and 18:00
+
+                            elseif($time[0] == 2)
                             {
                                 $result["status"] = "error";
-                                $result["message"] = $result["message"] . "\nError with time on line " . $i . '.';
+                                $result["message"] = $result["message"] . "\nError with time on line " . ($i+1) . '.';
                                 $correct = false;
                             }
+
+                            //If it has more than one conflict time, this loop
+                            // will be entered.
+                      
+                            if ($j > 1)
+                            {
+                                                                                       
+                                $storeCount++; 
+                                $store[$storeCount][0] = $store[$storeCount-1][0];
+                                $store[$storeCount][1] = $time;
+                            }
+                            
+                            else{
+                                $store[$storeCount][1] = $time;
+                            }
+                            
                         }
 
-                        // False if the time does not fall between 10:00 and 18:00
-
-                        elseif($time[0] == 2)
+                        // False if the length of the string is not equal to 5
+                        else
                         {
                             $result["status"] = "error";
-                            $result["message"] = $result["message"] . "\nError with time on line " . $i . '.';
+                            $result["message"] = $result["message"] . "\nError with time on line " . ($i+1) . '.';
                             $correct = false;
-                        }  
-                  
-                        if ($j > 1)
-                        {
-                            $storeCount++; 
-                            $store[$storeCount][0] = $store[$storeCount-1][0];
-                            $store[$storeCount][1] = $time;
                         }
-                        else{
-                            $store[$storeCount][1] = $time;
-                        }
-                    }
+                        //______________________________________________________________________
+                        //   END OF CHECKING FOR CORRECT TIME
+                        //_______________________________________________________________________
+                        
+                        
+                        //setting the tables value days to 0.
+                        
+                        $store[$storeCount][2] = 0; 
+                        $store[$storeCount][3] = 0;
+                        $store[$storeCount][4] = 0;
+                        $store[$storeCount][5] = 0;
+                        $store[$storeCount][6] = 0;
+                        $store[$storeCount][7] = 0;                
+                        
+                        //______________________________________________________________________
+                        //CHECKING FOR CORRECT DAYS
+                        //_______________________________________________________________________
+                            for ( $dayCount = 0; $dayCount < count($days) && count($days) <= 6 ; $dayCount++)
+                            {
+                                if ($days[$dayCount] == 'M' || $days[$dayCount] == "T" || $days[$dayCount] == "W" || $days[$dayCount] == "R" 
+                                || $days[$dayCount]== "F" || $days[$dayCount] == "S")
+                                {
 
-                    // False if the length of the string is not equal to 5
+                                    if ($days[$dayCount] == "M")
+                                    {
+                                        $store[$storeCount][2] = 1;
+                                    }
+                                    
+                                    elseif ($days[$dayCount] == "T")
+                                    {
+                                        $store[$storeCount][3] = 1;
+                                    }
+                                    
+                                    elseif ($days[$dayCount] == "W")
+                                    {
+                                        $store[$storeCount][4] = 1;
+                                    }
+                                    
+                                    elseif ($days[$dayCount] == "R")
+                                    {
+                                        $store[$storeCount][5] = 1;
+                                    }
+                                    
+                                    elseif ($days[$dayCount] == "F")
+                                    {
+                                        $store[$storeCount][6] = 1;
+                                    }
+                                    
+                                    elseif ($days[$dayCount] == "S")
+                                    {
+                                        $store[$storeCount][7] = 1;
+                                    }
+                                    
+                                }
+                                
+                                //not a correct day
+                                else
+                                {
+                                    $result["status"] = "error";
+                                    $result["message"] = $result["message"] . "\nError with days on line " . ($i+1) . '.';
+                                    $correct = false;
+                                }
+                            
+                            
+                            } 
+                    }
+                    
+                    //False if missing a slash
                     else
                     {
                         $result["status"] = "error";
-                        $result["message"] = $result["message"] . "\nError with time on line " . $i . '.';
+                        $result["message"] = $result["message"] . "\nMissing slash on line " . ($i+1) . '.';
                         $correct = false;
+                        break; 
                     }
-                    //______________________________________________________________________
-                    //   END OF CHECKING FOR CORRECT TIME
-                    //_______________________________________________________________________
-                    
-                    $store[$storeCount][2] = 0; 
-                    $store[$storeCount][3] = 0;
-                    $store[$storeCount][4] = 0;
-                    $store[$storeCount][5] = 0;
-                    $store[$storeCount][6] = 0;
-                    $store[$storeCount][7] = 0;                
-                    
-                    //______________________________________________________________________
-                    //CHECKING FOR CORRECT DAYS
-                    //_______________________________________________________________________
-                        for ( $dayCount = 0; $dayCount < count($days) && count($days) <= 6 ; $dayCount++)
-                        {
-                            if ($days[$dayCount] == 'M' || $days[$dayCount] == "T" || $days[$dayCount] == "W" || $days[$dayCount] == "R" || $days[$dayCount]== "F" || $days[$dayCount] == "S")
-                            {
-
-                                if ($days[$dayCount] == "M")
-                                {
-                                    $store[$storeCount][2] = 1;
-                                }
-                                elseif ($days[$dayCount] == "T")
-                                {
-                                    $store[$storeCount][3] = 1;
-                                }
-                                elseif ($days[$dayCount] == "W")
-                                {
-                                    $store[$storeCount][4] = 1;
-                                }
-                                elseif ($days[$dayCount] == "R")
-                                {
-                                    $store[$storeCount][5] = 1;
-                                }
-                                elseif ($days[$dayCount] == "F")
-                                {
-                                    $store[$storeCount][6] = 1;
-                                }
-                                elseif ($days[$dayCount] == "S")
-                                {
-                                    $store[$storeCount][7] = 1;
-                                }
-                            }
-                            else
-                            {
-                                $result["status"] = "error";
-                                $result["message"] = $result["message"] . "\nError with days on line " . $i . '.';
-                                $correct = false;
-                            }
-                        
-                        
-                        }          
-                    }
+                }                
             }
             $storeCount++;
         }
-
+    
 
 
                 
         if($correct == TRUE)
         {
-            error_log("correct");
+        
             $result['status'] = "success";
 
             // delete old records
@@ -231,6 +288,8 @@ class Conflict_Time extends Eloquent {
 
             for($count = 0; $count < count($store); $count++)
             {
+            
+                //inserting new records into table
                 $fields = array("schedule_id" => $schedule_id,
                                 "course" => $store[$count][0],
                                 "start_time" => $store[$count][1],
