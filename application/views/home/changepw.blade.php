@@ -19,7 +19,13 @@
   <div id="main-div">
     <form id="pw-form" 
           method="POST"
-          action="{{ URL::to("home/login") }}">
+          action="{{ URL::to("home/changepw") }}">
+      <?php
+        if(isset($message))
+        {
+          echo "<p>" . $message['error'] . "</p>";
+        }
+      ?>
       old pasword: <input id="old-pw" name="old-pw" type="text"><br>
       new password: <input id="new-pw" name="new-pw" type="text"><br>
       repeat new password: <input id="rpt-new-pw" name="rpt-new-pw" type="text">
