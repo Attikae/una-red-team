@@ -45,7 +45,7 @@ class Available_Room extends Eloquent {
                 $result['message'] =  $result['message']  . "\nIncorrect building name on line " . $i . '. '; 
             }
 
-            if(!mb_ereg_match('^[0-9]+$', $wordArray[$i][3]) || strlen($wordArray[$i][3]) < 1 || strlen($wordArray[$i][3]) > 3)
+            if(!mb_ereg_match('^\d{1,3}$', $wordArray[$i][3]) || strlen($wordArray[$i][3]) < 1 || strlen($wordArray[$i][3]) > 3)
             {
    
                 $success = false;
