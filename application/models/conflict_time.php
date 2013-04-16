@@ -197,22 +197,27 @@ class Conflict_Time extends Eloquent {
             }
             $storeCount++;
         }
+
+
+
                 
         if($correct == TRUE)
         {
             $result['status'] = "success";
 
-
-            $fields = array("schedule_id" => $schedule_id,
-                            "course" => $store[$count][0],
-                            "start_time" => $store[$count][1],
-                            "monday" => $store[$count][2],
-                            "tuesday" => $store[$count][3],
-                            "wednesday" => $store[$count][4],
-                            "thursday" => $store[$count][5],
-                            "friday" => $store[$count][6],
-                            "saturday" => $store[$count][7]);
-            DB::table("conflict_times")->insert($fields);
+            for($count = 0; $count < count($store); $count++)
+            {
+                $fields = array("schedule_id" => $schedule_id,
+                                "course" => $store[$count][0],
+                                "start_time" => $store[$count][1],
+                                "monday" => $store[$count][2],
+                                "tuesday" => $store[$count][3],
+                                "wednesday" => $store[$count][4],
+                                "thursday" => $store[$count][5],
+                                "friday" => $store[$count][6],
+                                "saturday" => $store[$count][7]);
+                Conflict_Time::insert($fields);
+            }
         }
             
 
