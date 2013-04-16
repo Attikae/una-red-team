@@ -59,6 +59,9 @@ class Available_Room extends Eloquent {
         if ($success == true)
         {
             $result['status'] = "success";
+
+            // delete old records
+            Available_Room::where_schedule_id($schedule_id)->delete();
             
             for($count = 0; $count < count($wordArray); $count++)
             {

@@ -119,6 +119,10 @@ class Course_To_Schedule extends Eloquent {
 
         if($readSuccess == TRUE)
         {
+
+            // delete old records
+            Course_To_Schedule::where_schedule_id($schedule_id)->delete();
+
             for($count = 0; $count < count($wordArray); $count++)
             {
                 $new_course = new Course_To_Schedule;

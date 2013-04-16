@@ -226,6 +226,9 @@ class Conflict_Time extends Eloquent {
             error_log("correct");
             $result['status'] = "success";
 
+            // delete old records
+            Conflict_Time::where_schedule_id($schedule_id)->delete();
+
             for($count = 0; $count < count($store); $count++)
             {
                 $fields = array("schedule_id" => $schedule_id,

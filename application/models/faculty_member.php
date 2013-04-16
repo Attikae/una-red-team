@@ -14,6 +14,9 @@ class Faculty_Member extends Eloquent {
        If there is an issue, set result['message'] to a string containing the line number
        and description of the issue */
 
+      // delete old records
+      //Faculty_Member::where_schedule_id($schedule_id)->delete();
+
        // For testing purposes
        $result = array("status" => "error", "message" => "faculty member test");
 

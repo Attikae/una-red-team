@@ -55,6 +55,10 @@ class Prerequisite extends Eloquent {
     
     if($readSuccess == TRUE)
     {
+
+        // delete old records
+        Prerequisite::where_schedule_id($schedule_id)->delete();
+            
         for($lineCount = 0; $lineCount < count($lineArray); $lineCount++)
         {
             for($wordCount = 0; $wordCount < count($lineArray[$lineCount]); $wordCount++)

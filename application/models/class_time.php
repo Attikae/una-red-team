@@ -14,6 +14,10 @@ class Class_Time extends Eloquent {
        If there is an issue, set result['message'] to a string containing the line number
        and description of the issue */
 
+
+       // delete old records
+       //Class_Time::where_schedule_id($schedule_id)->delete();
+
        // For testing purposes
        $result = array("status" => "error", "message" => "class time test");
 
