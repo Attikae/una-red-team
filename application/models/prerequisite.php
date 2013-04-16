@@ -1,5 +1,6 @@
 <?php
 
+
 class Prerequisite extends Eloquent {
 
   public static $table = 'prerequisites';
@@ -26,28 +27,28 @@ class Prerequisite extends Eloquent {
     $result = array("status" => "", "message" => "");
     
     $lineArray = mb_split('\n', $file_stream);
-    
+
     for($count = 0; $count < count($lineArray); $count++)
     {
         $wordArray[$count] = mb_split(' ', $lineArray[$count]);
-        
+
         if(count($wordArray[$count]) < 2)
         {
             $readSuccess = FALSE;
             $result["status"] = "error";
-            $result["message"] = "Incorrect amount of field arguments on 
-                                    line: " . $count;
-            break;
+            $result["message"] = $result["message"] . "Incorrect amount of field arguments on line: " . ($count + 1) . "\n";
         }
-        
-        for($wordCount = 0; $wordCount < count($lineArray[$count]); $wordCount++)
+        else
         {
-            if(!mb_ereg_match('^[A-Z]{2,5}\d{3}[A-Z]{0,2}$', $wordArray[$count][$wordCount]))
+            for($wordCount = 0; $wordCount < count($wordArray[$count]); $wordCount++)
             {
-                $readSuccess = FALSE;
-                $result["status"] = "error";
-                $result["message"] = "Incorrect class field on line: " . $count;
-                break;
+                if(!mb_ereg_match('^[A-Z]{2,5}\d{3}[A-Z]{0,2}$', $wordArray[$count][$wordCount]))
+                {
+                    $readSuccess = FALSE;
+                    $result["status"] = "error";
+                    $result["message"] = $result["message"] . "Incorrect class field on line: " . ($count + 1) . "\n";
+                    break;
+                }
             }
         }
     }
