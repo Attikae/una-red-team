@@ -164,9 +164,9 @@ class Home_Controller extends Base_Controller {
                 $message["error"] = "Password must begin with alphabet!</br>";
             else
             {
-                if(!preg_match("/^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*$/", $new_pw))//check if all the char are valid char
+                if(!preg_match("/[a-zA-z0-9.,!?]+$/", $new_pw))//check if all the char are valid char
                     $message["error"] = "Password can only contain . , ! ? 0-9 a-z A-Z</br>";  
-                else if(!preg_match('^[/.,?!]+', $new_pw))//check is pw do contain at least one valid symbols
+                else if(!preg_match("[/.,?!]+$/", $new_pw))//check is pw do contain at least one valid symbols
                     $message["error"] = "Password must contain atleast one , or . or ! or ?";
                 else
                 {
