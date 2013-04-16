@@ -16,7 +16,7 @@ class Conflict_Time extends Eloquent {
 
         $correct = true;
         $lineArray = mb_split("\n", $file_string);      //will hold an array of strings separted by newlines
-        $store = array();       //will be used to store database entries
+        $store = array();                               //will be used to store database entries
         $result = array("status" => "", "message" => "");
         $storeCount = 0; 
          
@@ -41,23 +41,24 @@ class Conflict_Time extends Eloquent {
                      
                         $correct = false; 
                         $result['status'] = 'error';
-                        $result['message'] = $result['message'] . '\nError with course name on line' . $i . '.';
+                        $result['message'] = $result['message'] . "\nError with course name on line " . $i . '.';
                        
                     }
                 }
-                else{
+                else
+                {
                     $time = " ";                    //will hold the time for storage into database
                     $days = array();                    //will hold the days for storage into database
                     $tempword[0] = $wordArray[$i][$j]; //will hold day(s)/time combinations
                     $tempcount = 0;                 //counter
                     $count = 0;                     //counter
-                    
+                   
                     while ($tempword[0][$tempcount] != "/" && $tempcount < strlen($tempword[0]) )
                     {
                         $days[$tempcount] = $tempword[0][$tempcount];    
                         $tempcount++;
                     }
-         
+                    
                     $tempcount++;
                     $count = 0; 
                 
@@ -93,7 +94,8 @@ class Conflict_Time extends Eloquent {
                                     }
                                 } 
                             } 
-                            else{
+                            else
+                            {
                                 $result["status"] = "error";
                                 $result["message"] = $result["message"] . "\nError with time on line " . $i . '.';
                                 $correct = false;
@@ -123,17 +125,25 @@ class Conflict_Time extends Eloquent {
                                     }
                                 }  
                             }
+                            else
+                            {
+                                $result["status"] = "error";
+                                $result["message"] = $result["message"] . "\nError with time on line " . $i . '.';
+                                $correct = false;
+                            }
                         }
 
                         // False if the time does not fall between 10:00 and 18:00
 
-                        elseif($time[0] == 2){
+                        elseif($time[0] == 2)
+                        {
                             $result["status"] = "error";
                             $result["message"] = $result["message"] . "\nError with time on line " . $i . '.';
                             $correct = false;
                         }  
                   
-                        if ($j > 1){
+                        if ($j > 1)
+                        {
                             $storeCount++; 
                             $store[$storeCount][0] = $store[$storeCount-1][0];
                             $store[$storeCount][1] = $time;
@@ -144,7 +154,8 @@ class Conflict_Time extends Eloquent {
                     }
 
                     // False if the length of the string is not equal to 5
-                    else{
+                    else
+                    {
                         $result["status"] = "error";
                         $result["message"] = $result["message"] . "\nError with time on line " . $i . '.';
                         $correct = false;
@@ -163,29 +174,38 @@ class Conflict_Time extends Eloquent {
                     //______________________________________________________________________
                     //CHECKING FOR CORRECT DAYS
                     //_______________________________________________________________________
-                        for ( $dayCount = 0; $dayCount < count($days) && count($days) <= 6 ; $dayCount++){
-                            if ($days[$dayCount] == 'M' || $days[$dayCount] == "T" || $days[$dayCount] == "W" || $days[$dayCount] == "R" || $days[$dayCount]== "F" || $days[$dayCount] == "S"){
+                        for ( $dayCount = 0; $dayCount < count($days) && count($days) <= 6 ; $dayCount++)
+                        {
+                            if ($days[$dayCount] == 'M' || $days[$dayCount] == "T" || $days[$dayCount] == "W" || $days[$dayCount] == "R" || $days[$dayCount]== "F" || $days[$dayCount] == "S")
+                            {
 
-                                if ($days[$dayCount] == "M"){
+                                if ($days[$dayCount] == "M")
+                                {
                                     $store[$storeCount][2] = 1;
                                 }
-                                elseif ($days[$dayCount] == "T"){
+                                elseif ($days[$dayCount] == "T")
+                                {
                                     $store[$storeCount][3] = 1;
                                 }
-                                elseif ($days[$dayCount] == "W"){
+                                elseif ($days[$dayCount] == "W")
+                                {
                                     $store[$storeCount][4] = 1;
                                 }
-                                elseif ($days[$dayCount] == "R"){
+                                elseif ($days[$dayCount] == "R")
+                                {
                                     $store[$storeCount][5] = 1;
                                 }
-                                elseif ($days[$dayCount] == "F"){
+                                elseif ($days[$dayCount] == "F")
+                                {
                                     $store[$storeCount][6] = 1;
                                 }
-                                elseif ($days[$dayCount] == "S"){
+                                elseif ($days[$dayCount] == "S")
+                                {
                                     $store[$storeCount][7] = 1;
                                 }
                             }
-                            else{
+                            else
+                            {
                                 $result["status"] = "error";
                                 $result["message"] = $result["message"] . "\nError with days on line " . $i . '.';
                                 $correct = false;
@@ -203,6 +223,7 @@ class Conflict_Time extends Eloquent {
                 
         if($correct == TRUE)
         {
+            error_log("correct");
             $result['status'] = "success";
 
             for($count = 0; $count < count($store); $count++)
@@ -219,8 +240,6 @@ class Conflict_Time extends Eloquent {
                 Conflict_Time::insert($fields);
             }
         }
-            
-
         return $result;  
     }
 
