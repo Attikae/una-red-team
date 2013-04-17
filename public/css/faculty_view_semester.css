@@ -1,0 +1,184 @@
+body 
+{
+  background-color: #4f2e7f;
+  font-family:      sans-serif;
+}
+
+#logo-div
+{
+  margin: 20px auto;
+  width:  300px;
+}
+
+#logo-img
+{
+  width: 300px;
+}
+
+#top-menu
+{
+  position: relative;
+  margin:   10px auto;
+  width:    300px;
+}
+
+#home-lnk
+{
+  font-size: 18px;
+  color:     white;
+}
+
+#home-lnk:hover
+{
+  color: #eeb311;
+}
+
+#semester-title
+{
+  color:      #eeb311;
+  text-align: center;
+  font-size:  24px;
+}
+
+#main-div
+{
+  position:   relative;
+  margin:     40px auto;
+  width:      710px;
+  height:     500px;
+  border-top: 1px solid #eeb311;
+}
+
+#menu-div
+{
+  position:     relative;
+  height:       200px;
+  width:        160px;
+  float:        left;
+  border-right: 1px solid #eeb311;
+}
+
+#welcome-div,
+#versions-div,
+#pref-div
+{
+  position:   relative;
+  height:     inherit;
+  float:      right;
+  width:      547px;
+  overflow-y: visible;
+}
+
+#welcome-txt
+{
+  position:    relative;
+  margin-top:  50px;
+  margin-left: 20px;
+  width:       500px;
+  text-align:  center;
+  font-size:   36px;
+  color:       white;
+}
+
+.menu-btn
+{
+  height:           35px;
+  margin-top:       15px;
+  text-align:       center;
+  background-color: #eeb311;
+}
+
+.menu-btn:hover
+{
+  background-color: yellow;
+  cursor:           pointer;
+}
+
+.option-txt
+{
+  position:  relative;
+  font-size: 18px;
+  top:       7px;
+  color:     black;
+}
+
+#versions-list
+{
+  position:       absolute;
+  width:          60px;
+  margin-top:     20px;
+  margin-left:    184px;
+  border-spacing: 10px 5px;
+}
+
+
+.version-lnk
+{
+  color: white;
+}
+
+.version-lnk:hover
+{
+  color: #eeb311;
+}
+
+#pref-title
+{
+  color:      #eeb311;
+  text-align: center;
+}
+
+.course-div
+{
+  position: relative;
+  border:   1px dotted white;
+  width:    300px;
+  height:   80px;
+  margin:   20px auto;
+}
+
+.course-txt
+{
+  
+  float:      left;
+  width:      150px;
+  position:   relative;
+  width:      150px;
+  top:        25px;
+  left:       15px;
+  font-size:  24px;
+  color:      #eeb311;;
+  text-align: center;
+}
+
+.checkbox-grp
+{
+  position: absolute;
+  left:     200px;
+  top:      10px;
+}
+
+/*
+input[type=checkbox]
+{
+  float: left;
+}*/
+
+.checkbox-txt
+{
+  color: white;
+}
+
+#pref-btn-div
+{
+  position: relative;
+  margin:   5px auto;
+  width:    146px;
+}
+
+#pref-submit-btn,
+#pref-reset-btn
+{
+  font-size: 18px;
+}
+
