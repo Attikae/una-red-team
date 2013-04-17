@@ -62,17 +62,37 @@
     <div id="versions-div" class="container">
       <div id="new-version-btn">new version</div>
 
-      <div id="versions-list">
-        <a class="version-lnk" href="">f2012_a</a>
-        <a class="version-lnk" href="">f2012_b</a>
-        <a class="version-lnk" href="">f2012_c</a>
-      </div>
 
-      <div id="option-list">
+      <table id="versions-list">
+
+        <?php
+
+          if(empty($versions))
+          {
+            echo "<tr><th>No versions currently exist.</th></tr>";
+          }
+          else
+          {
+            foreach($versions as $version)
+            {
+              echo "<tr><td><span id='". $version->id ."' class='version-lnk'>"
+                   . $version->name
+                   . "</span></td><td><a class='delete-version-lnk' href=''>delete</a></td></tr>";
+            }
+          }
+
+
+        ?>
+        <!-- <a class="version-lnk" href="">f2012_a</a>
+        <a class="version-lnk" href="">f2012_b</a>
+        <a class="version-lnk" href="">f2012_c</a> -->
+      </table>
+
+      <!---<div id="option-list">
         <a class='delete-version-lnk' href=''>delete</a>
         <a class='delete-version-lnk' href=''>delete</a>
         <a class='delete-version-lnk' href=''>delete</a>
-      </div>
+      </div> -->
     </div>
 
     <!--////////////////////////////////////////////////////////////-->

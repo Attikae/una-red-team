@@ -175,7 +175,8 @@ input[type=file]
 {
   position: absolute;
   width: 60px;
-  margin-left: 200px;
+  margin-left: 184px;
+  border-spacing: 10px 5px;
 }
 
 #option-list

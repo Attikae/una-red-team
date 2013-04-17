@@ -67,6 +67,8 @@ Autoloader::map(array(
   'Conflict_Time' => path('app').'models/conflict_time.php',
   'Course_To_Schedule' => path('app').'models/course_to_schedule.php',
   'Faculty_Member' => path('app').'models/faculty_member.php',
+  'Output_Version' => path('app').'models/output_version.php',
+  'Scheduled_Course' => path('app').'models/scheduled_course.php',
 
 ));
 
