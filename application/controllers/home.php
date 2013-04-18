@@ -108,6 +108,8 @@ class Home_Controller extends Base_Controller {
 						if( ($user->user_type == 1) || ($user->user_type == 3) )//if user is admin
 						{
 							//call for random_pw.php
+							$user->is_locked = 1;
+                            $user->save();
 							$message["error"] = "Admin account locked!</br> New password sent to your email! ";
 							//return Redirect::to('random_pw.php');
                             User::random_pw($user->id);

@@ -22,7 +22,7 @@ class User extends Eloquent
 
 	}
 
-	private static function generatePassword($length = 20)
+	private static function generatePassword($length = 10)
 	{
 		$chars =  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.
             '0123456789``.,!?';
