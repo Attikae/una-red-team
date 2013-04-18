@@ -143,12 +143,16 @@ class Home_Controller extends Base_Controller {
         $old_pw = $_POST['old-pw'];
         $new_pw = $_POST['new-pw'];
         $repeat_new_pw = $_POST['rpt-new-pw'];
+        
 
         if($user->password != $old_pw) //check if current password match
             $message["error"] = "Password Invalid!</br>";
          
         else if($new_pw != $repeat_new_pw) //check is new and repeat password match
             $message["error"] = "Password Mismatch!</br>";
+        
+        else if($old_pw == $new_pw)
+            $message["error"] = "New password must be different than current password";
         
         else
         {
@@ -165,18 +169,19 @@ class Home_Controller extends Base_Controller {
             {
                 for($count = 0; $count < strlen($new_pw); $count++ )
                 {
-                    if(ctype_alpha($new_pw[count]) || (isdigit($new_pw[count])) || ($new_pw[count] == '.') || ($new_pw[count] == '!') || ($new_pw[count] == '/') || ($new_pw[count] == ','))
-                        $boolValid == 1; //store 1 if valid characters for pw
+                    if(ctype_alpha($new_pw[$count]) || (is_numeric($new_pw[$count])) || ($new_pw[$count] == '.') || ($new_pw[$count] == '!') || ($new_pw[$count] == '/') || ($new_pw[$count] == ','))
+                        $boolValid = 1; //store 1 if valid characters for pw 
                     else 
-                        $boolValid == 0; //stores 0 if invalid characters for pw                       
-                }
+	                    $boolValid = 0;//stores 0 if invalid characters for pw
+           }
                 
-                for($loop = 0; $count < strlen($new_pw); $loop++)
+                for($loop = 0; $loop < strlen($new_pw); $loop++)
                 {
-                    if(!(ctype_alpha($new_pw[count])) || (!(isdigit($new_pw[count]))) || ($new_pw[count] != '.') || ($new_pw[count] != '!') || ($new_pw[count] != '/') || ($new_pw[count] != ','))
-                        $symbolBool == 0; //stores 0 if no special valid char is found
-                    else
-                        $symbolBool == 1; //stores 1 if valid char is found
+                    if(!(ctype_alpha($new_pw[$loop])) || (!(is_numeric($new_pw[$loop]))) || ($new_pw[$loop] != '.') || ($new_pw[$loop] != '!') || ($new_pw[$loop] != '/') || ($new_pw[$loop] != ','))
+                        $symbolBool = 0; //stores 0 if no special valid char is found
+                    else 
+	                    $symbolBool = 1; //stores 1 if valid char is found
+
                 }
                         
                 if($boolValid == 0)
