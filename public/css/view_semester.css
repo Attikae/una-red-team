@@ -18,14 +18,14 @@ body
 #top-menu
 {
   position: relative;
-  margin: 10px auto;
-  width: 300px;
+  margin:   10px auto;
+  width:    300px;
 }
 
 #home-lnk
 {
   font-size: 18px;
-  color: white;
+  color:     white;
 }
 
 #home-lnk:hover
@@ -35,17 +35,17 @@ body
 
 #semester-title
 {
-  color: #eeb311;
+  color:      #eeb311;
   text-align: center;
-  font-size: 24px;
+  font-size:  24px;
 }
 
 #main-div
 {
-  position: relative;
-  margin:   40px auto;
-  width:    710px;
-  height:   500px;
+  position:   relative;
+  margin:     40px auto;
+  width:      710px;
+  height:     500px;
   border-top: 1px solid #eeb311;
 }
 
@@ -92,7 +92,7 @@ body
 .menu-btn:hover
 {
   background-color: yellow;
-  cursor:     pointer;
+  cursor:           pointer;
 }
 
 .option-txt
@@ -105,34 +105,34 @@ body
 
 .file-btn
 {
-  position: relative;
-  margin: 10px auto;
-  width: 300px;
-  text-align: center;
-  font-size: 18px;
+  position:         relative;
+  margin:           10px auto;
+  width:            300px;
+  text-align:       center;
+  font-size:        18px;
   background-color: #eeb311;
 }
 
 .file-btn:hover
 {
-  cursor: pointer;
+  cursor:           pointer;
   background-color: yellow;
 }
 
 .file-div
 {
   border: 1px dotted #eeb311;
-  height:350px;
-  width: 553px;
+  height: 350px;
+  width:  553px;
 }
 
 textarea
 {
   position: relative;
-  margin: 0px auto;
-  width: 547px;
-  height: 300px;
-  resize: none;
+  margin:   0px auto;
+  width:    547px;
+  height:   300px;
+  resize:   none;
 }
 
 input[type=file]
@@ -157,32 +157,32 @@ input[type=file]
 
 #new-version-btn
 {
-  position: relative;
-  margin: 20px auto;
-  width: 150px;
-  font-size: 18px;
+  position:         relative;
+  margin:           20px auto;
+  width:            150px;
+  font-size:        18px;
   background-color: #eeb311;
-  text-align: center;
+  text-align:       center;
 }
 
 #new-version-btn:hover
 {
   background-color: yellow;
-  cursor: pointer;
+  cursor:           pointer;
 }
 
 #versions-list
 {
-  position: absolute;
-  width: 60px;
-  margin-left: 184px;
+  position:       absolute;
+  width:          60px;
+  margin-left:    184px;
   border-spacing: 10px 5px;
 }
 
 #option-list
 {
-  position: absolute;
-  width: 45px;
+  position:    absolute;
+  width:       45px;
   margin-left: 300px;
 }
 
@@ -199,10 +199,9 @@ input[type=file]
 .delete-version-lnk
 {
   position: relative;
-  color: #eeb311;
+  color:    #eeb311;
 }
 
-<<<<<<< HEAD
 .delete-version-lnk:hover
 {
   color: white;
@@ -210,38 +209,46 @@ input[type=file]
 
 #pref-title
 {
-  color: #eeb311;
+  color:      #eeb311;
   text-align: center;
+}
+
+#pref-version-div
+{
+  position: relative;
+  margin:   10px auto;
+  width:    300px;
+  color:    white;
 }
 
 .course-div
 {
   position: relative;
-  border: 1px dotted white;
-  width: 300px;
-  height: 80px;
-  margin: 20px auto;
+  border:   1px dotted white;
+  width:    300px;
+  height:   80px;
+  margin:   20px auto;
 }
 
 .course-txt
 {
   
-  float: left;
-  width: 150px;
-  position: relative;
-  width: 150px;
-  top: 25px;
-  left: 15px;
-  font-size: 24px;
-  color: #eeb311;;
+  float:      left;
+  width:      150px;
+  position:   relative;
+  width:      150px;
+  top:        25px;
+  left:       15px;
+  font-size:  24px;
+  color:      #eeb311;;
   text-align: center;
 }
 
 .checkbox-grp
 {
   position: absolute;
-  left: 200px;
-  top: 10px;
+  left:     200px;
+  top:      10px;
 }
 
 /*
@@ -258,8 +265,8 @@ input[type=checkbox]
 #pref-btn-div
 {
   position: relative;
-  margin: 5px auto;
-  width: 146px;
+  margin:   5px auto;
+  width:    146px;
 }
 
 #pref-submit-btn,

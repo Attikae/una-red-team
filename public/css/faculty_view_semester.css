@@ -128,10 +128,23 @@ body
   text-align: center;
 }
 
+#pref-version-div
+{
+  position: relative;
+  margin:   10px auto;
+  width:    300px;
+  color:    white;
+}
+
+#pref-version-select
+{
+  width: 90px;
+}
+
 .course-div
 {
   position: relative;
-  border:   1px dotted white;
+  border-bottom:   1px solid #eeb311;
   width:    300px;
   height:   80px;
   margin:   20px auto;
