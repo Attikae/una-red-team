@@ -40,18 +40,15 @@ class Faculty_Member extends Eloquent {
 	  //________________________________________________________________
         if(count($wordArray[$count]) != 5)
 	    {
-	    	error_log("1");
 		    $readSuccess = FALSE;
 	        $result["status"] = "error";
 		    $result["message"] = $result["message"] . "Incorrect amount of field arguments on line: " . ($count + 1) . "\n";
-            
-			break;
 	    }
 	  //________________________________________________________________
 	  //End of checking for correct number of entries
 	  //________________________________________________________________
 	  
-	  
+
 	  
 	  
 	  //________________________________________________________________
@@ -60,7 +57,6 @@ class Faculty_Member extends Eloquent {
 	  //________________________________________________________________
 	    if(!mb_ereg_match('\A[A-Za-z]+,\z', $wordArray[$count][0]))
 	    {
-	    	error_log("2");
 	        $readSuccess = FALSE;
 		    $result["status"] = "error";
 		    $result["message"] = $result["message"] . "Incorrect entry for last name or missing comma on line: " . ($count + 1) . "\n";
@@ -77,7 +73,6 @@ class Faculty_Member extends Eloquent {
 	  //________________________________________________________________
 	    if(!ctype_alpha($wordArray[$count][1]))
 	    {
-	    	error_log("3");
 	        $readSuccess = FALSE;
 		    $result["status"] = "error";
 		    $result["message"] = $result["message"] . "Incorrect entry for the first name on line: " . ($count + 1) . "\n";
@@ -96,7 +91,6 @@ class Faculty_Member extends Eloquent {
 	    if((strlen($wordArray[$count][0]) + strlen($wordArray[$count][1])) > 24
 	  		|| strlen($wordArray[$count][0]) < 1 || strlen($wordArray[$count][1]) < 1)
 	    {
-	    	error_log("4");
 	        $readSuccess = FALSE;
 		    $result["status"] = "error";
 		    $result["message"] = $result["message"] . "Incorrect length for the name on line: " . ($count + 1) . "\n";
@@ -114,7 +108,6 @@ class Faculty_Member extends Eloquent {
 	  //____________________________________________________________________
 	    if(!is_numeric($wordArray[$count][2]) || $wordArray[$count][2] < 0 || $wordArray[$count][2] > 60)
 	    {
-	    	error_log("5");
 	        $readSuccess = FALSE;
 		    $result["status"] = "error";
 		    $result["message"] = $result["message"] . "Incorrect entry for years of service on line: " . ($count + 1) . "\n";
@@ -144,7 +137,6 @@ class Faculty_Member extends Eloquent {
 	  
 	    if($tempCount1 == strlen($emailArray))
 	    {
-	    	error_log("6");
 	        $readSuccess = FALSE;
 	        $result["status"] = "error";
 		    $result["message"] = $result["message"] . "Incorrect email entry on line: " . ($count + 1) . "\n";
@@ -170,7 +162,6 @@ class Faculty_Member extends Eloquent {
 	  //___________________________________________________________
 	    if($part2 != "una.edu")
 	    {
-	    	error_log("7");
 	        $readSuccess = FALSE;
 	        $result["status"] = "error";
 		    $result["message"] = $result["message"] . "Invalid university email entered on line: " . ($count + 1) . "\n";
@@ -181,14 +172,13 @@ class Faculty_Member extends Eloquent {
 	  
 
 	  
-	  
+
 	  //________________________________________________________________
 	  //Checking to make sure the Hours to teach input is within the
 	  //correct range (0-18 inclusive)
 	  //________________________________________________________________
-	    if($wordArray[$count][4] < 0 || $wordArray[$count][4] > 18)
+	    if(count($wordArray[$count]) < 5 || !is_numeric($wordArray[$count][4]) || $wordArray[$count][4] < 0 || $wordArray[$count][4] > 18)
 	    {
-	    	error_log("8");
 	        $readSuccess = FALSE;
 		    $result["status"] = "error";
 		    $result["message"] = $result["message"] . "Incorrect input for number of hours to teach on line: " . ($count + 1) . "\n";
@@ -198,7 +188,7 @@ class Faculty_Member extends Eloquent {
 	  //________________________________________________________________
 
 	  
-	  
+
     }
 
     if($readSuccess == TRUE)
