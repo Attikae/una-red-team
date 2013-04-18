@@ -165,7 +165,7 @@ class Home_Controller extends Base_Controller {
             {
                 for($count = 0; $count < strlen($new_pw); $count++ )
                 {
-                    if(isalpha($new_pw[count]) || (isdigit($new_pw[count])) || ($new_pw[count] == '.') || ($new_pw[count] == '!') || ($new_pw[count] == '/') || ($new_pw[count] == ','))
+                    if(ctype_alpha($new_pw[count]) || (isdigit($new_pw[count])) || ($new_pw[count] == '.') || ($new_pw[count] == '!') || ($new_pw[count] == '/') || ($new_pw[count] == ','))
                         $boolValid == 1; //store 1 if valid characters for pw
                     else 
                         $boolValid == 0; //stores 0 if invalid characters for pw                       
@@ -173,7 +173,7 @@ class Home_Controller extends Base_Controller {
                 
                 for($loop = 0; $count < strlen($new_pw); $loop++)
                 {
-                    if(!(isalpha($new_pw[count])) || (!(isdigit($new_pw[count]))) || ($new_pw[count] != '.') || ($new_pw[count] != '!') || ($new_pw[count] != '/') || ($new_pw[count] != ','))
+                    if(!(ctype_alpha($new_pw[count])) || (!(isdigit($new_pw[count]))) || ($new_pw[count] != '.') || ($new_pw[count] != '!') || ($new_pw[count] != '/') || ($new_pw[count] != ','))
                         $symbolBool == 0; //stores 0 if no special valid char is found
                     else
                         $symbolBool == 1; //stores 1 if valid char is found
