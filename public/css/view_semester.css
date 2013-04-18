@@ -223,11 +223,11 @@ input[type=file]
 
 .course-div
 {
-  position: relative;
-  border:   1px dotted white;
-  width:    300px;
-  height:   80px;
-  margin:   20px auto;
+  position:        relative;
+  border-bottom:   1px solid #eeb311;
+  width:           300px;
+  height:          80px;
+  margin:          20px auto;
 }
 
 .course-txt
