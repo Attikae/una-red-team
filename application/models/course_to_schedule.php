@@ -75,7 +75,7 @@ class Course_To_Schedule extends Eloquent {
                     $result["status"] = "error";
                     $result["message"] = $result["message"] . "Incorrect session field on line: " . ($count + 1) . "\n";
                 }
-                elseif($sessionSum > 100)
+                elseif(($sessionSum > 100) || ($sessionSum < 1))
                 {
                     $readSuccess = FALSE;
                     $result["status"] = "error";
@@ -113,6 +113,20 @@ class Course_To_Schedule extends Eloquent {
                             $result["message"] = $result["message"] . "Incorrect Number of field arguments on line: " . ($count + 1) . "\n";
                         }
                     }
+                }
+            }
+        }
+        
+        for($lCount = 0; $lCount < count($wordArray); $lCount++)
+        {
+            $temp = $wordArray[$lCount][0];
+            for($wCount = $lCount + 1; $wCount < count($wordArray); $wCount++)
+            {
+                if($temp == $wordArray[$wCount][0])
+                {
+                    $readSuccess = FALSE;
+                    $result["status"] = "error";
+                    $result["message"] = $result["message"] . "Duplicate entry found on line: " . ($wCount + 1) . "\n";
                 }
             }
         }
