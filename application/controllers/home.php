@@ -97,11 +97,11 @@ class Home_Controller extends Base_Controller {
 
                     if( $fail_counter == 1)
                     {
-                        $message["error"] = "You have 2 more login attempt left!";
+                        $message["error"] = "Incorrect Password! You have 2 more login attempt left!";
                     }
                     else if($fail_counter == 2)
                     {
-                        $message["error"] = "You have 1 more login attemp left";
+                        $message["error"] = "Incorrect Password! You have 1 more login attemp left";
                     }
                     else if ($fail_counter == 3)
                     {
