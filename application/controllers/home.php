@@ -158,7 +158,7 @@ class Home_Controller extends Base_Controller {
             else if (count($new_pw) > 10)//check for pw longer than 10 char
                 $message["error"] = "Password cannot be longer than 10 character!</br>";
             
-            else if(!ctype_alpha($new_pw[0])))//check if first char is not alpha
+            else if(!ctype_alpha($new_pw[0]))//check if first char is not alpha
                 $message["error"] = "Password must begin with alphabet!</br>";
             
             else
