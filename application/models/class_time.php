@@ -132,6 +132,8 @@ class Class_Time extends Eloquent {
             $readSuccess = FALSE;
             $result["status"] = "error";
             $result["message"] = $result["message"] . "Incorrect amount of field arguments on line: " . ($count + 1) . "\n";
+			
+			break;
         }
 	  //___________________________________________________________________
 	  //End checking for at least two entries
@@ -148,7 +150,7 @@ class Class_Time extends Eloquent {
 	    {
 	        $readSuccess = FALSE;
 	        $result["status"] = "error";
-	        $result["message"] = $result["message"] . "An entry for the minutes does not fall within the range on line: " . ($count + 1) . "\n";
+	        $result["message"] = $result["message"] . "Incorrect entry for duration on line: " . ($count + 1) . "\n";
 	    }
 	  //____________________________________________________________________
 	  //End of checking for correct number of minutes
@@ -352,7 +354,7 @@ class Class_Time extends Eloquent {
 		    {
 		    	$readSuccess = FALSE;
 		        $result["status"] = "error";
-			    $result["message"] = $result["message"] . "Incorrect on time entry on line: " . ($count + 1) . "\n";
+			    $result["message"] = $result["message"] . "Incorrect time entry on line: " . ($count + 1) . "\n";
 		    }
 	    }
     }
