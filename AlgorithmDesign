@@ -1,28 +1,44 @@
 
 
 
+int depth
+int prefNum
 
 
 for each course
-  if sections of the course are available
+  create course section array
+  for each section of the course
     for each faculty
 
-      // This is the point where we think the following code might could be placed into a recursive function
-      if faculty has available hours && not already teaching course
-            if the faculty has prefs for course ??? Maybe here is where we do a check for prefs that apply in recursion cases
-              Get valid prefs
-              if there are valid prefs
-                if number of valid prefs > 1 && sections > 1
-                  choose min of #prefs and #sections
-                  Recursive function call to go check lower priority faculty with relevant prefs
-                else
-                  schedule section of course for them
-            end if
-      end if
+      if section is day && facultyPrefs->daySecNum
+        prefNum = Get valid prefs
+        depth = min of (prefNum and sections)
+        RecursiveFunction(faculty, &depth, faculty->pref_bools)
+      else if section is night && facultyPrefs->nightSecNum
+        if they have pref, they get course
+      else if internet && facultyPrefs->internetSecNum
+        if they have pref, they get course
 
     end for each faculty
-  end if
+  end while
 end for each course
+
+
+
+RecursiveFunction(faculty, &depth, pref_bools)
+{
+    if depth > 0
+      if faculty has available hours && not already teaching course
+            if faculty->pref_bools intersects pref_bools
+              Get valid prefs
+              if valid prefs not zero
+                  RecursiveFunction(faculty+1, depth-1, pref_bools)
+              schedule section of course for them
+            else
+              RecursiveFunction(faculty+1, depth, pref_bools)
+            end if
+      end if
+}
 
 
 
