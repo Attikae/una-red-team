@@ -12,8 +12,8 @@ class Prerequisite extends Eloquent {
     /* Return an array called $result with the indices status & message.
        Set $result['status'] equal to 'success' if everything goes as planned.
        Set $result['status'] equal to 'error' if there is an issue.
-       If there is an issue, set result['message'] to a string containing the line number
-       and description of the issue */
+       If there is an issue, set result['message'] to a string containing the 
+       line number and description of the issue */
 
     // For testing purposes
     $file_stream = $file_string;
@@ -36,19 +36,39 @@ class Prerequisite extends Eloquent {
         {
             $readSuccess = FALSE;
             $result["status"] = "error";
-            $result["message"] = $result["message"] . "Incorrect amount of field arguments on line: " . ($count + 1) . "\n";
+            $result["message"] = $result["message"] . 
+            "Incorrect amount of field arguments on line: " . ($count + 1) . 
+            "\n";
         }
         else
         {
-            for($wordCount = 0; $wordCount < count($wordArray[$count]); $wordCount++)
+            for($wordCount = 0; $wordCount < count($wordArray[$count]); 
+                    $wordCount++)
             {
-                if(!mb_ereg_match('^[A-Z]{2,5}\d{3}[A-Z]{0,2}$', $wordArray[$count][$wordCount]))
+                if(!mb_ereg_match('^[A-Z]{2,5}\d{3}[A-Z]{0,2}$', 
+                    $wordArray[$count][$wordCount]))
                 {
                     $readSuccess = FALSE;
                     $result["status"] = "error";
-                    $result["message"] = $result["message"] . "Incorrect class field on line: " . ($count + 1) . "\n";
+                    $result["message"] = $result["message"] . 
+                    "Incorrect class field on line: " . ($count + 1) . "\n";
                     break;
                 }
+            }
+        }
+    }
+    
+    for($lCount = 0; $lCount < count($wordArray); $lCount++)
+    {
+        $temp = $wordArray[$lCount][0];
+        for($wCount = $lCount + 1; $wCount < count($wordArray); $wCount++)
+        {
+            if($temp == $wordArray[$wCount][0])
+            {
+                $readSuccess = FALSE;
+                $result["status"] = "error";
+                $result["message"] = $result["message"] . 
+                "Duplicate entry found on line: " . ($wCount + 1) . "\n";
             }
         }
     }
@@ -61,7 +81,8 @@ class Prerequisite extends Eloquent {
             
         for($lineCount = 0; $lineCount < count($lineArray); $lineCount++)
         {
-            for($wordCount = 0; $wordCount < count($lineArray[$lineCount]); $wordCount++)
+            for($wordCount = 0; $wordCount < count($lineArray[$lineCount]); 
+                    $wordCount++)
             {
                 $new_prereq = new Prerequisite;
                 $new_prereq->schedule_id = $schedule_id;
@@ -84,7 +105,8 @@ class Prerequisite extends Eloquent {
     public static function get_text($schedule_id)
     {
 
-        $entries = Prerequisite::where_schedule_id($schedule_id)->order_by("id", "asc")->get();
+        $entries = Prerequisite::where_schedule_id($schedule_id)->order_by("id",
+                                                    "asc")->get();
         $text = "";
         $prev_course = "";
 
