@@ -1,0 +1,39 @@
+
+
+
+
+
+for each course
+  if sections of the course are available
+    for each faculty
+
+
+      if faculty has available hours && not already teaching course
+            if the faculty has prefs for course ??? Maybe here is where we do a check for prefs that apply in recursion cases
+              Get valid prefs
+              if there are valid prefs
+                if number of valid prefs > 1 && sections > 1
+                  choose min of #prefs and #sections
+                  go check lower priority faculty with relevant prefs
+                else
+                  schedule section of course for them
+            end if
+      end if
+
+
+
+    end for each faculty
+  end if
+end for each course
+
+
+
+Get valid prefs
+  for each pref (pref is a time period)
+    Get available time in the pref's range
+    if there are times available for the pref
+      pref is valid
+  end for                   
+
+
+  Get available times must take into account conflict times, other courses that have been scheduled, and other same level courses that are scheduled at the same time that are not prereqs for a course
