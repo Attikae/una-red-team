@@ -39,17 +39,23 @@ class Course_To_Schedule extends Eloquent {
             {
                 $readSuccess = FALSE;
                 $result["status"] = "error";
-                $result["message"] = $result["message"] . "Incorrect amount of field arguments on line: " . ($count + 1) . "\n"; 
+                $result["message"] = $result["message"] . 
+                "Incorrect amount of field arguments on line: " . 
+                ($count + 1) . "\n"; 
             }
+            // test
             else
             {
-                $sessionSum = $wordArray[$count][1] + $wordArray[$count][2] + $wordArray[$count][3];
+                $sessionSum = $wordArray[$count][1] + $wordArray[$count][2] + 
+                $wordArray[$count][3];
                 
-                if(!mb_ereg_match('^[A-Z]{2,5}\d{3}[A-Z]{0,2}$', $wordArray[$count][0]))
+                if(!mb_ereg_match('^[A-Z]{2,5}\d{3}[A-Z]{0,2}$', 
+                    $wordArray[$count][0]))
                 {
                     $readSuccess = FALSE;
                     $result["status"] = "error";
-                    $result["message"] = $result["message"] . "Incorrect Class Field on line: " . ($count + 1) . "\n";
+                    $result["message"] = $result["message"] . 
+                    "Incorrect Class Field on line: " . ($count + 1) . "\n";
                 }
                 elseif( ($wordArray[$count][1] > 100) || 
                         ($wordArray[$count][2] > 100) ||
@@ -57,7 +63,9 @@ class Course_To_Schedule extends Eloquent {
                 {
                     $readSuccess = FALSE;
                     $result["status"] = "error";
-                    $result["message"] = $result["message"] . "Too many sessions for one field on line: " . ($count + 1) . "\n";
+                    $result["message"] = $result["message"] . 
+                    "Too many sessions for one field on line: " . 
+                    ($count + 1) . "\n";
                 }
                 elseif( ($wordArray[$count][1] < 0) || 
                         ($wordArray[$count][2] < 0) ||
@@ -65,7 +73,9 @@ class Course_To_Schedule extends Eloquent {
                 {
                     $readSuccess = FALSE;
                     $result["status"] = "error";
-                    $result["message"] = $result["message"] . "Too many sessions for one field on line: " . ($count + 1) . "\n";
+                    $result["message"] = $result["message"] . 
+                    "Too many sessions for one field on line: " . 
+                    ($count + 1) . "\n";
                 }
                 elseif(!mb_ereg_match('^\d{1,3}$', $wordArray[$count][1]) ||
                         !mb_ereg_match('^\d{1,3}$', $wordArray[$count][2]) ||
@@ -73,44 +83,53 @@ class Course_To_Schedule extends Eloquent {
                 {
                     $readSuccess = FALSE;
                     $result["status"] = "error";
-                    $result["message"] = $result["message"] . "Incorrect session field on line: " . ($count + 1) . "\n";
+                    $result["message"] = $result["message"] . 
+                    "Incorrect session field on line: " . ($count + 1) . "\n";
                 }
                 elseif(($sessionSum > 100) || ($sessionSum < 1))
                 {
                     $readSuccess = FALSE;
                     $result["status"] = "error";
-                    $result["message"] = $result["message"] . "Sum of sessions exceeds 100\n";
+                    $result["message"] = $result["message"] . 
+                    "Sum of sessions exceeds 100\n";
                 }
                 elseif( ($wordArray[$count][4] == 0) || 
                         ($wordArray[$count][4] > 100) )
                 {
                     $readSuccess = FALSE;
                     $result["status"] = "error";
-                    $result["message"] = $result["message"] . "Incorrect Class Size on line: " . ($count + 1) . "\n";
+                    $result["message"] = $result["message"] . 
+                    "Incorrect Class Size on line: " . ($count + 1) . "\n";
                 }
                 elseif( ($wordArray[$count][5] != 'C') && 
                         ($wordArray[$count][5] != 'L') )
                 {
                     $readSuccess = FALSE;
                     $result["status"] = "error";
-                    $result['message'] = $result["message"] . "Incorrect Room Type on line: " . ($count + 1) . "\n";
+                    $result['message'] = $result["message"] . 
+                    "Incorrect Room Type on line: " . ($count + 1) . "\n";
                 }
                 elseif( ($wordArray[$count][6] < 1) || 
                         ($wordArray[$count][6] > 12) )
                 {
                     $readSuccess = FALSE;
                     $result["status"] = "error";
-                    $result["message"] = $result["message"] . "Incorrect Number of Credit Hours on line: " . ($count + 1) . "\n";
+                    $result["message"] = $result["message"] . 
+                    "Incorrect Number of Credit Hours on line: " . 
+                    ($count + 1) . "\n";
                 }
                 else
                 {
-                    for($itemCount = 0; $itemCount < count($wordArray[$count]); $itemCount++)
+                    for($itemCount = 0; $itemCount < count($wordArray[$count]); 
+                    $itemCount++)
                     {
                         if($wordArray[$count][$itemCount] == NULL)
                         {
                             $readSuccess = FALSE;
                             $result["status"] = "error";
-                            $result["message"] = $result["message"] . "Incorrect Number of field arguments on line: " . ($count + 1) . "\n";
+                            $result["message"] = $result["message"] . 
+                            "Incorrect Number of field arguments on line: " . 
+                            ($count + 1) . "\n";
                         }
                     }
                 }
@@ -126,7 +145,8 @@ class Course_To_Schedule extends Eloquent {
                 {
                     $readSuccess = FALSE;
                     $result["status"] = "error";
-                    $result["message"] = $result["message"] . "Duplicate entry found on line: " . ($wCount + 1) . "\n";
+                    $result["message"] = $result["message"] . 
+                    "Duplicate entry found on line: " . ($wCount + 1) . "\n";
                 }
             }
         }
