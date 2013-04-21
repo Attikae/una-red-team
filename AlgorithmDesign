@@ -28,12 +28,13 @@ end for each course
 RecursiveFunction(faculty, &depth, pref_bools)
 {
     if depth > 0
-      if faculty has available hours && not already teaching course
+      if faculty has available hours 
             if faculty->pref_bools intersects pref_bools
               Get valid prefs
               if valid prefs not zero
                   RecursiveFunction(faculty+1, depth-1, pref_bools)
-              schedule section of course for them
+              else
+                schedule section of course for them
             else
               RecursiveFunction(faculty+1, depth, pref_bools)
             end if
