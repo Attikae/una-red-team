@@ -76,6 +76,30 @@ class Available_Room extends Eloquent {
         
      
         }
+  
+        for($i = 0; $i < count($wordArray); $i++)
+        {
+            $temp = $wordArray[$i];
+                   
+            for ($j = 0; $j < count($wordArray); $j++)
+            {
+                    
+                if ( $j != $i)
+                {
+                
+                    if ($temp[2] == $wordArray[$j][2] && $temp[3] == $wordArray[$j][3])
+                    { 
+                        $success = false;
+                        $result['status'] = "error";
+                        $result['message'] =  $result['message']  . "\nDuplicate entries on line " . ($i+1) . " and " . ($j+1) . '. ';
+                    }
+                    
+                }
+            
+            }
+            
+        }
+        
         
         if ($success == true)
         {
