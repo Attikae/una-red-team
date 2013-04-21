@@ -2,14 +2,14 @@
 
 class Scheduler {
 
-  public static function schedule_driver($schedule_id, )
+  public static function schedule_driver($schedule_id )
   {
 
     $schedule = Schedule::find($schedule_id);
     $time_string = date('m-d-Y H:i:s');
-    $name = $schedule->name . " " $schedule->year . " " . $time_string;
+    $name = $schedule->name . " " . $schedule->year . " " . $time_string;
 
-    $output_version = Output_Version::create(array())
+    $output_version = Output_Version::create(array());
 
   }
 
@@ -35,39 +35,76 @@ class Scheduler {
 
     foreach( $faculty as $x )
     {
+      $faculty_list[$i] = new Faculty_Blob;
+
       $faculty_list[$i]->faculty_id = $x->id;
       $faculty_list[$i]->hours = $x->hours;
 
-      $prefs = Faculty_Preference::where_faculty_id($x->id)
-                   ->where_schedule_id($schedule_id)->get();
-
-      $course_list = get_course_list( $schedule_id );
+      $course_list = Scheduler::get_course_list( $schedule_id );
 
       $j = 0;
 
-      foreach( $prefs as $y )
+      foreach( $course_list as $y )
       {
-        $faculty_list[$i]->sections[$j] = 
+        $prefs = Faculty_Preference::where_faculty_id($x->id)
+                     ->where_schedule_id($schedule_id)
+                     ->where_course_id($y[0]->id)->first();
+
+        if( $prefs  )
+        {
+          $faculty_list[$i]->sections[$j][0] = $prefs->day_sections;
+          $faculty_list[$i]->sections[$j][1] = $prefs->evening_sections;
+          $faculty_list[$i]->sections[$j][2] = $prefs->internet_sections;
+
+          $faculty_list[$i]->day_prefs[$j][0] = $prefs->early_morning;
+          $faculty_list[$i]->day_prefs[$j][1] = $prefs->mid_day;
+          $faculty_list[$i]->day_prefs[$j][2] = $prefs->late_afternoon;
+        }
+        else
+        {
+          // Handle setting everything to zero
+          $faculty_list[$i]->sections[$j][0] = 0;
+          $faculty_list[$i]->sections[$j][1] = 0;
+          $faculty_list[$i]->sections[$j][2] = 0;
+
+          $faculty_list[$i]->day_prefs[$j][0] = 0;
+          $faculty_list[$i]->day_prefs[$j][1] = 0;
+          $faculty_list[$i]->day_prefs[$j][2] = 0;
+        }
+
+        $j++;
       }
 
-      $i = $i + 1;
+      $i++;
     }
+
+    return $faculty_list;
   }
-}
+
 
   public static function get_course_list( $schedule_id )
   {
     $courses = Course_To_Schedule::where_schedule_id($schedule_id)->get();
 
     $course_list;
-
     $i = 0;
     foreach( $courses as $x )
     {
       $course_list[$i][0] = $x;
       $course_list[$i][1] = filter_var( $x->course, FILTER_SANITIZE_NUMBER_INT);
-      $i = $i + 1;
+      $i++;
     }
+
+    $i = 0;
+    foreach( $course_list as $x )
+    {
+      $sortCourse[$i] = $x[1];
+      $i++;
+    }
+
+    array_multisort( $sortCourse, SORT_DESC, $course_list );
 
     return $course_list;
   }
+
+}

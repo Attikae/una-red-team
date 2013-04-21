@@ -179,15 +179,20 @@ class Admin_Controller extends Base_Controller
 
   public function post_scheduler()
   {
-
-    
-
     $schedule_id = Input::get('schedule_id');
 
-    $result = array("status" => "error", "message" => $int);
+    $faculty_list = Scheduler::get_faculty_list( $schedule_id, 0 );
+
+    ob_start();
+    var_dump($faculty_list);
+    $contents = ob_get_contents();
+    ob_end_clean();
+
+    error_log( $contents );
+
+    $result = array("status" => "error", "message" => "It works!");
 
     echo json_encode($result);
-
   }
 
 }
