@@ -197,17 +197,6 @@
 
     <h1 id="pref-title">course preferences</h1>
 
-    <div id="pref-version-div">
-      <form id="pref-version-form" action="POST">
-        Choose schedule version:
-        <select id="pref-version-select" name="">
-          <option>
-            blablabla
-          </option>
-        </select>
-      </form>
-    </div>
-
       <div class="course-div">
         <div class="course-txt">
           CS 155
