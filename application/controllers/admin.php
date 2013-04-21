@@ -176,4 +176,18 @@ class Admin_Controller extends Base_Controller
     echo json_encode($result);
 
   }
+
+  public function post_scheduler()
+  {
+
+    
+
+    $schedule_id = Input::get('schedule_id');
+
+    $result = array("status" => "error", "message" => $int);
+
+    echo json_encode($result);
+
+  }
+
 }

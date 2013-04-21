@@ -6,6 +6,7 @@ Route::controller('faculty');
 
 Route::any('admin/file_upload', 'admin@file_upload');
 Route::any('admin/scan', 'admin@scan');
+Route::any('admin/scheduler', 'admin@scheduler');
 
 /*
 |--------------------------------------------------------------------------

@@ -26,13 +26,15 @@ $(document).ready(function(){
     return false;
   });
 
-  $("#file-submit-iframe").load( ajaxFileUpload )
+  $("#file-submit-iframe").load( ajaxFileUpload );
 
   $(".save-btn").on("click", function(e){
     e.preventDefault();
 
     ajaxSaveInput($(this));
   });
+
+  $("#new-version-btn").on("click", ajaxCallScheduler);
 
   
 });
@@ -183,7 +185,38 @@ function ajaxSaveInput(saveButton) {
       }
 
   }); 
+}
+
+
+function ajaxCallScheduler(element){
+
+  var scheduleId = $('#schedule_id').val();
+
+  $.ajax({
+    url: "scheduler",
+    dataType: "json",
+    type: "POST",
+    data: {
+        schedule_id : scheduleId
+    },
+    success: function(data) {
+
+      if ( data.status == "success" )
+      {
+        alert("Call to run scheduling algorithm worked!");
+      }
+      else if ( data.status == "error")
+      {
+        alert(data.message);
+      }
+      
+    }
+
+  }); 
+
+
 
 }
+
 
 
