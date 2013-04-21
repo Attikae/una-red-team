@@ -66,9 +66,14 @@ Autoloader::map(array(
   'Class_Time' => path('app').'models/class_time.php',
   'Conflict_Time' => path('app').'models/conflict_time.php',
   'Course_To_Schedule' => path('app').'models/course_to_schedule.php',
+  'Faculty_Blob' => path('app').'models/faculty_blob.php',
   'Faculty_Member' => path('app').'models/faculty_member.php',
+  'Faculty_Preference' => path('app').'models/faculty_preference.php',
   'Output_Version' => path('app').'models/output_version.php',
+  'Room_Blob' => path('app').'models/room_blob.php'
   'Scheduled_Course' => path('app').'models/scheduled_course.php',
+  'Time_Blob' => path('app').'models/time_blob.php',
+
 
 ));
 
