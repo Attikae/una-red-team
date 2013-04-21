@@ -35,14 +35,39 @@ class Scheduler {
 
     foreach( $faculty as $x )
     {
-      $faculty_list[i]->faculty_id = $x->id;
-      $faculty_list[i]->hours = $x->hours;
+      $faculty_list[$i]->faculty_id = $x->id;
+      $faculty_list[$i]->hours = $x->hours;
 
       $prefs = Faculty_Preference::where_faculty_id($x->id)
-                  ->where_schedule_id($schedule_id)->get();
+                   ->where_schedule_id($schedule_id)->get();
 
+      $course_list = get_course_list( $schedule_id );
+
+      $j = 0;
+
+      foreach( $prefs as $y )
+      {
+        $faculty_list[$i]->sections[$j] = 
+      }
 
       $i = $i + 1;
     }
   }
 }
+
+  public static function get_course_list( $schedule_id )
+  {
+    $courses = Course_To_Schedule::where_schedule_id($schedule_id)->get();
+
+    $course_list;
+
+    $i = 0;
+    foreach( $courses as $x )
+    {
+      $course_list[$i][0] = $x;
+      $course_list[$i][1] = filter_var( $x->course, FILTER_SANITIZE_NUMBER_INT);
+      $i = $i + 1;
+    }
+
+    return $course_list;
+  }
