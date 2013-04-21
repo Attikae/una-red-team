@@ -70,7 +70,7 @@ Autoloader::map(array(
   'Faculty_Member' => path('app').'models/faculty_member.php',
   'Faculty_Preference' => path('app').'models/faculty_preference.php',
   'Output_Version' => path('app').'models/output_version.php',
-  'Room_Blob' => path('app').'models/room_blob.php'
+  'Room_Blob' => path('app').'models/room_blob.php',
   'Scheduled_Course' => path('app').'models/scheduled_course.php',
   'Time_Blob' => path('app').'models/time_blob.php',
 
