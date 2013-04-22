@@ -193,13 +193,14 @@ class Home_Controller extends Base_Controller {
                 else
                 {
                     $user->password = $new_pw;  //set new pw
+                    $user->login_bool = 1;
                     $user->save();              //save new pw
                     $message["error"] = "Password changed! Login with new password.";
                         
                     if($user->user_type == 2)  //redirect to admin
-                        return Redirect::to('admin/admin_index');
-                    else if($user->user_type == 1 || $user->user_type == 3)//redirect to faculty
                         return Redirect::to('faculty/faculty_index');
+                    else if($user->user_type == 1 || $user->user_type == 3)//redirect to faculty
+                        return Redirect::to('admin/admin_index');
 
                     return View::make('home.login')->with("message", $message);
                 }
