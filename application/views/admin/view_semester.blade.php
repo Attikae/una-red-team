@@ -12,7 +12,9 @@
 </head>
 
 <body>
-  <iframe id="file-submit-iframe" name='file-submit-iframe' style='display: none;'></iframe>.
+  <iframe id="file-submit-iframe" name='file-submit-iframe' style='display: none;'></iframe>
+
+  <button id="fill-prefs">Fill Prefs</button>
   <div id="logo-div">
     <?php echo HTML::image( "img/LOGOBIG.jpg",
                             "UNA",

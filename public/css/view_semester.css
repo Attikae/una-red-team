@@ -274,3 +274,10 @@ input[type=checkbox]
 {
   font-size: 18px;
 }
+
+#fill-prefs
+{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}

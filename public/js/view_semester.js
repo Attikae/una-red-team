@@ -36,6 +36,11 @@ $(document).ready(function(){
 
   $("#new-version-btn").on("click", ajaxCallScheduler);
 
+  $("#fill-prefs").on("click", function(e){
+    e.preventDefault();
+    ajaxFillPrefs();
+  });
+
   
 });
 
@@ -213,8 +218,27 @@ function ajaxCallScheduler(element){
     }
 
   }); 
+}
 
 
+function ajaxFillPrefs(){
+
+  var scheduleId = $('#schedule_id').val();
+
+  $.ajax({
+    url: "fill_prefs",
+    dataType: "json",
+    type: "POST",
+    data: {
+        schedule_id : scheduleId
+    },
+    success: function(data) {
+
+      alert(data.message);
+      
+    }
+
+  }); 
 
 }
 

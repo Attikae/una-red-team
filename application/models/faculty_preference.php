@@ -7,10 +7,10 @@ class Faculty_Preference extends Eloquent {
   public static $timestamps = true;
 
 
-  puplic static function fill_prefs($schedule_id)
+  public static function fill_prefs($schedule_id)
   {
 
-    $faculty_members = Faculy_Member::where_schedule_id($schedule_id);
+    $faculty_members = Faculty_Member::where_schedule_id($schedule_id);
     $courses = Course_To_Schedule::where_schedule_id($schedule_id);
 
     foreach ($faculty_members as $faculy_member) {
