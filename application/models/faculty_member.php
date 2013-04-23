@@ -160,18 +160,36 @@ class Faculty_Member extends Eloquent {
         // Input all entries into the database if there are no errors found
         if($readSuccess == TRUE)
         {
-        	// delete old records
+
+        	  // delete old records
             Faculty_Member::where_schedule_id($schedule_id)->delete();
-			// For testing purposes
-			
+
             for($count = 0; $count < count($wordArray); $count++)
             {
                 $new_faculty = new Faculty_Member;
+
+                // Check to see if user with email already exists
+                $email = $wordArray[$count][3];
+                $user = User::where_email($email)->first();
+
+
+                if(is_null($user)) // If user doesn't exist create one
+                {
+                  $new_user = User::create(array('email' => $email,
+                                                 'password' => 'test',
+                                                 'user_type' => 2));
+
+                  $new_faculty->user_id = $new_user->id;
+                }
+                else // If user does exist, use their id
+                {
+                  $new_faculty->user_id = $user->id;
+                }
+                
                 $new_faculty->schedule_id = $schedule_id;
                 $new_faculty->last_name = $wordArray[$count][0];
                 $new_faculty->first_name = $wordArray[$count][1];
                 $new_faculty->years_of_service = $wordArray[$count][2];
-                //$new_faculty-> = $wordArray[$count][3];
                 $new_faculty->hours = $wordArray[$count][4];
                 $new_faculty->save();
             } 
@@ -209,9 +227,8 @@ class Faculty_Member extends Eloquent {
                 $text .= "\n";
             }
 
-            $text .= $entry->last_name . ", " . $entry->first_name . " "
-            . $entry->years_of_service . " " . $user->email . " " . $entry->hours .
-            "\n";
+            $text .= $entry->last_name . " " . $entry->first_name . " "
+            . $entry->years_of_service . " " . $user->email . " " . $entry->hours;
 
             $first_entry = false;
         }

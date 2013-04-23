@@ -62,26 +62,20 @@ class Faculty_Controller extends Base_Controller
     error_log("Before for loop");
     for($i = 0; $i < count($prefs_data); $i++)
     {
-      error_log("In for loop");
+
       $pref = new Faculty_Preference;
       $pref->schedule_id = $schedule_id;
       $pref->faculty_id = $faculty_id;
-      error_log("Before first using pref array");
       $pref->course_id = $prefs_data[$i][0];
-      error_log("After first using pref array");
       $pref->early_morning = $prefs_data[$i][1];
       $pref->mid_day = $prefs_data[$i][2];
       $pref->late_afternoon = $prefs_data[$i][3];
       $pref->day_sections = $prefs_data[$i][4];
       $pref->evening_sections = $prefs_data[$i][5];
       $pref->internet_sections = $prefs_data[$i][6];
-      error_log("Before save");
       $pref->save();
     }
-    error_log("After for loop");
-
   
-
   }
 
 }
