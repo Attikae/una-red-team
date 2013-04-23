@@ -145,6 +145,15 @@ class Scheduler {
       $time_list[$i]->start_offset = ($hour-7)*60 + $minute;
       $time_list[$i]->end_offset = $time_list[$i]->start_offset + $x->duration;
 
+      $num_days = $time_list[$i]->m +
+                  $time_list[$i]->t +
+                  $time_list[$i]->w +
+                  $time_list[$i]->r +
+                  $time_list[$i]->f +
+                  $time_list[$i]->s;
+
+      $time_list[$i]->credit_hours = intval(($x->duration*$num_days)/50);
+
       $j = 0;
 
       foreach( $avail_rooms as $y )
@@ -161,7 +170,7 @@ class Scheduler {
       $i++;
     }
 
-    //return $time_list;
+    return $time_list;
   }
 
 }
