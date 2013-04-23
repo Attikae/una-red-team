@@ -23,23 +23,32 @@ class Scheduler {
     $time_list = Scheduler::get_time_list( $schedule_id );
 
     Scheduler::create_scheduled_courses( $schedule_id,
-                              $output_version->id,
-                              $course_list,
-                              $faculty_list,
-                              $time_list );
+                                         $output_version->id,
+                                         $course_list,
+                                         $faculty_list,
+                                         0,
+                                         $time_list );
     
 
     $faculty_list = Scheduler::get_faculty_list( $schedule_id, $course_list, 1 );
+
+    Scheduler::create_scheduled_courses( $schedule_id,
+                                         $output_version->id,
+                                         $course_list,
+                                         $faculty_list,
+                                         1,
+                                         $time_list );
 
   }
 
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  public static function create_scheduled_courses( $schedule_id, 
-                                                   $output_id, 
-                                                   $course_list, 
-                                                   $faculty_list, 
+  public static function create_scheduled_courses( $schedule_id,
+                                                   $output_id,
+                                                   $course_list,
+                                                   $faculty_list,
+                                                   $faculty_priority,
                                                    $time_list )
   {
     foreach( $course_list as $course )
@@ -66,12 +75,23 @@ class Scheduler {
           {
             // Give internet section to faculty
             // Decrement faculty hours
-            /*
-            Scheduled_Course::create( array( 
-                  "output_version_id" => $output_id,
+            
+            $user_id = Faculty_Member::where_id( $faculty->faculty_id )->user_id;
+            $last_name = Faculty_Member::where_id( $faculty->faculty_id )
+                                         ->last_name;
+            $first_name = Faculty_Member::where_id( $faculty->faculty_id )
+                                          ->first_name;
+            $faculty_name = $last_name . ", " . $first_name;
+            error_log( $faculty_name );
 
+            Scheduled_Course::create( array(
+                  "output_version_id" => $output_id,
+                  "priority_flag"     => $faculty_priority,
+                  "user_id"           => $user_id,
+                  "faculty_name"      => $faculty_name,
+                  "course"            => $course->course,
+                  "course_type"       => $course->room_type,
                 ) );
-             */
           }
         }
       }
