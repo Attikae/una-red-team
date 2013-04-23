@@ -107,10 +107,10 @@ class Faculty_Member extends Eloquent {
 	            }
 	  
 	  
-	            $emailArray = array();					    //temporary storage
-	            $emailArray = $wordArray[$count][3];		//will hold the entire email
-	            $part1 = " ";								//holds the beginning of the email
-	            $part2 = " ";								//holds the end of the email (una.edu)
+	            $emailArray = array();					//temporary storage
+	            $emailArray = $wordArray[$count][3];	//will hold the entire email
+	            $part1 = " ";							//holds the beginning of the email
+	            $part2 = " ";							//holds the end of the email (una.edu)
 	            $tempCount1 = 0;
 	            $tempCount2 = 0;
 
@@ -125,7 +125,9 @@ class Faculty_Member extends Eloquent {
 	            {
 	                $readSuccess = FALSE;
 	                $result["status"] = "error";
-		            $result["message"] = $result["message"] . "Incorrect email entry on line: " . ($count + 1) . "\n";
+		            $result["message"] = $result["message"] .
+		            "Incorrect email entry on line: " . ($count + 1) .
+		            "\n";
 	            }
 	  
 	            $tempCount1++;
@@ -142,16 +144,20 @@ class Faculty_Member extends Eloquent {
 	            {
 	                $readSuccess = FALSE;
 	                $result["status"] = "error";
-		            $result["message"] = $result["message"] . "Invalid university email entered on line: " . ($count + 1) . "\n";
+		            $result["message"] = $result["message"] .
+		            "Invalid university email entered on line: " . ($count + 1) .
+		            "\n";
 	            }
 
 	            // Check for Hours to Teach
-	            if(count($wordArray[$count]) < 5 || !is_numeric($wordArray[$count][4]) || $wordArray[$count][4] < 0
-	                || $wordArray[$count][4] > 18)
+	            if(count($wordArray[$count]) < 5 || !is_numeric($wordArray[$count][4])
+	                || $wordArray[$count][4] < 0 || $wordArray[$count][4] > 18)
 	            {
 	                $readSuccess = FALSE;
 		            $result["status"] = "error";
-		            $result["message"] = $result["message"] . "Incorrect input for number of hours to teach on line: " . ($count + 1) . "\n";
+		            $result["message"] = $result["message"] .
+		            "Incorrect input for number of hours to teach on line: " . ($count + 1) .
+		            "\n";
 	            }
             }
         }
