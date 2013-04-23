@@ -1,5 +1,10 @@
 <?php
 
+/*
+ *  File: scheduler.php
+ *  Authors: P. Clark, A. Wright
+ */
+
 class Scheduler {
 
   public static function schedule_driver($schedule_id )
@@ -36,9 +41,13 @@ class Scheduler {
   {
     foreach( $course_list as $course )
     {
-      $sections = Scheduler::get_course_sections( $course->day_sections, 
-                                                  $course->night_sections, 
-                                                  $course->internet_sections );
+      $section_list = Scheduler::get_section_list( $course->day_sections, 
+                                                   $course->night_sections, 
+                                                   $course->internet_sections );
+      foreach( $section_list as $section )
+      {
+
+      }
     }
   }
 
@@ -207,6 +216,40 @@ class Scheduler {
     }
 
     return $time_list;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
+  public static function get_section_list( $day_sections, $night_sections, $internet_sections )
+  {
+    $course_sections;
+
+    $i = 0;
+
+    for( $j = 0; $j < $day_sections; $j++ )
+    {
+      $course_sections[$i] = 0;
+      $i++;  
+    }
+
+    for( $j = 0; $j < $night_sections; $j++ )
+    {
+      $course_sections[$i] = 1;
+      $i++;
+    }
+
+    for( $j = 0; $j < $internet_sections; $j++ )
+    {
+      $course_sections[$i] = 2;
+      $i++;
+    }
+
+    // Shuffle the array so that the sections we
+    // try to schedule will be spread out
+    shuffle( $course_sections );
+
+    return $course_sections;
   }
 
 }

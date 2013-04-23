@@ -183,7 +183,7 @@ class Admin_Controller extends Base_Controller
 
     Scheduler::schedule_driver($schedule_id);
 
-    $time_list = Scheduler::get_course_list( $schedule_id );
+    $time_list = Scheduler::get_course_sections( 4, 3, 5 );
 
     ob_start();
     var_dump($time_list);
