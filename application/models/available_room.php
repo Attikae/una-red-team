@@ -26,6 +26,7 @@ class Available_Room extends Eloquent {
     **************************************************************************/
     public static function scan($schedule_id, $file_string)
     {
+        error_log("1");
         // Separate each line of the file into an array
         $lineArray = mb_split("\n", $file_string);
         
@@ -36,67 +37,67 @@ class Available_Room extends Eloquent {
         {
             // Separate each word of a line into a multi-dimensional array
             // $i -> line number
-            $wordArray[$i] = mb_split (" ", $lineArray[$i]);
-            
+            $wordArray[$i] = mb_split(" ", $lineArray[$i]);
+            error_log("2");
             if (count($wordArray[$i]) == 4)  
             {
             
                 //Correct classroom type is C, L, or B
-                
-                if($wordArray[$i][0] != 'C' && $wordArray[$i][0] != 'L' && 
-                    $wordArray[$i][0] != 'B'){
-                
-                    $success = false;  
+                error_log("3");
+                if(($wordArray[$i][0] != 'C') && ($wordArray[$i][0] != 'L') && 
+                   ($wordArray[$i][0] != 'B'))
+                {
+                    error_log("4");
+                    $success = false;
                     $result['status'] = "error";
-                    $result['message'] =   $result['message'] . 
-                    "\nIncorrect type of room on line " . ($i+1) .  ". ";
+                    $result['message'] = $result['message'] . 
+                    "\nIncorrect type of room on line " . ($i+1) . ". ";
                 }
                 
                 //Size of room has to be between 1 and 100.
-                
-                if($wordArray[$i][1] > 100 || $wordArray[$i][1] < 1){
-       
+                error_log("5");
+                if(($wordArray[$i][1] > 100) || ($wordArray[$i][1] < 1))
+                {
+                    error_log("6");
                     $success = false;
                     $result['status'] = "error";
-                    $result['message'] =   $result['message'] . 
+                    $result['message'] = $result['message'] . 
                     "\nIncorrect size of room on line " . ($i+1) . ". ";
                 }
                 
                 //Building name must contain all alphabetic characters
-
-                if(!mb_ereg_match('^[A-Z]+$', $wordArray[$i][2]) || 
-                    strlen($wordArray[$i][2]) > 6 || 
-                    strlen($wordArray[$i][2])< 2)
+                error_log("7");
+                if((!mb_ereg_match('^[A-Z]+$', $wordArray[$i][2])) || 
+                   (strlen($wordArray[$i][2]) > 6) || 
+                   (strlen($wordArray[$i][2])< 2))
                 {
-                
+                    error_log("8");
                     $success = false;
                     $result['status'] = "error";
-                    $result['message'] =  $result['message']  . 
+                    $result['message'] = $result['message'] . 
                     "\nIncorrect building name on line " . ($i+1) . '. '; 
                 }
 
                 //Room number can be 1 to 3 digits
-                
-                if(!mb_ereg_match('^\d{1,3}$', $wordArray[$i][3]) || 
-                    strlen($wordArray[$i][3]) < 1 || 
-                    strlen($wordArray[$i][3]) > 3)
+                error_log("9");
+                if((!mb_ereg_match('^\d{1,3}$', $wordArray[$i][3])) || 
+                   (strlen($wordArray[$i][3]) < 1) || 
+                   (strlen($wordArray[$i][3]) > 3))
                 {
-       
+                    error_log("10");
                     $success = false;
                     $result['status'] = "error";
-                    $result['message'] =  $result['message']  . 
-                    "\nIncorrect room number on line " . ($i+1) . '. '; 
-                
+                    $result['message'] = $result['message'] . 
+                    "\nIncorrect room number on line " . ($i+1) . '. ';
                 }
                 
             }
-            
             else
             {
                 $success = false;
                 $result['status'] = "error";
-                $result['message'] =  $result['message']  . 
-                "\nIncorrect amount of arguments on line " . ($i+1) . '. '; 
+                $result['message'] = $result['message'] . 
+                "\nIncorrect amount of arguments on line " . ($i+1) . '. ';
             }
         
      
@@ -120,7 +121,7 @@ class Available_Room extends Eloquent {
                     { 
                         $success = false;
                         $result['status'] = "error";
-                        $result['message'] =  $result['message']  . 
+                        $result['message'] =  $result['message'] . 
                         "\nDuplicate entries on line " . ($i+1) . " and " . 
                         ($j+1) . '. ';
                     }
@@ -151,7 +152,7 @@ class Available_Room extends Eloquent {
             } 
             
         }
-        
+
         return $result;
     }
     //*************************************************************************
