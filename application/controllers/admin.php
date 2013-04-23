@@ -181,10 +181,10 @@ class Admin_Controller extends Base_Controller
   {
     $schedule_id = Input::get('schedule_id');
 
-    $faculty_list = Scheduler::get_faculty_list( $schedule_id, 0 );
+    $time_list = Scheduler::get_time_list( $schedule_id, 0 );
 
     ob_start();
-    var_dump($faculty_list);
+    var_dump($time_list);
     $contents = ob_get_contents();
     ob_end_clean();
 

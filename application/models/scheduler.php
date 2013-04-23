@@ -13,6 +13,9 @@ class Scheduler {
 
   }
 
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+  
   public static function get_faculty_list( $schedule_id, $priority_bool )
   {
     // If priority_bool is 0, use seniority
@@ -81,6 +84,8 @@ class Scheduler {
     return $faculty_list;
   }
 
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
 
   public static function get_course_list( $schedule_id )
   {
@@ -105,6 +110,58 @@ class Scheduler {
     array_multisort( $sortCourse, SORT_DESC, $course_list );
 
     return $course_list;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
+  public static function get_time_list( $schedule_id )
+  {
+    $class_times = Class_Time::where_schedule_id($schedule_id)->get();
+    $avail_rooms = Available_Room::where_schedule_id($schedule_id)->get();
+
+    $time_list;
+
+    $i = 0;
+
+    foreach( $class_times as $x )
+    {
+      $time_list[$i] = new Time_Blob;
+      $time_list[$i]->class_time_id = $x->id;
+      $time_list[$i]->m = $x->monday;
+      $time_list[$i]->t = $x->tuesday;
+      $time_list[$i]->w = $x->wednesday;
+      $time_list[$i]->r = $x->thursday;
+      $time_list[$i]->f = $x->friday;
+      $time_list[$i]->s = $x->saturday;
+
+      // calculate start_offset, end_offset, and credit_hours
+
+      $start_time = strtotime( $x->starting_time );
+      
+      $hour = date( "H", $start_time );
+      $minute = date( "i", $start_time );
+
+      $time_list[$i]->start_offset = ($hour-7)*60 + $minute;
+      $time_list[$i]->end_offset = $time_list[$i]->start_offset + $x->duration;
+
+      $j = 0;
+
+      foreach( $avail_rooms as $y )
+      {
+        $time_list[$i]->room_blobs[$j] = new Room_Blob;
+        $time_list[$i]->room_blobs[$j]->id = $y->id;
+        $time_list[$i]->room_blobs[$j]->type = $y->type;
+        $time_list[$i]->room_blobs[$j]->size = $y->size;
+        $time_list[$i]->room_blobs[$j]->is_taken = false;
+
+        $j++;
+      }
+
+      $i++;
+    }
+
+    //return $time_list;
   }
 
 }
