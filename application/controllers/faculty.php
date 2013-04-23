@@ -2,57 +2,87 @@
 
 class Faculty_Controller extends Base_Controller
 {
-    public $restful = true;
+  public $restful = true;
 
-    public function get_faculty_index()
+  public function get_faculty_index()
+  {
+    $query = Schedule::order_by('created_at', 'desc')->get();
+
+    return View::make('faculty.faculty_index', array('schedules' => $query));
+  }
+
+  public function post_faculty_index()
+  {
+    $schedule_id = Input::get('semester-select');
+
+    Session::put('faculty_schedule_id', $schedule_id);
+
+    if($schedule_id == "default")
     {
-        $query = Schedule::order_by('created_at', 'desc')->get();
-
-        return View::make('faculty.faculty_index', array('schedules' => $query));
+      return Redirect::to_action('faculty@faculty_index');
     }
-
-    public function post_faculty_index()
+    else
     {
-        $schedule_id = Input::get('semester-select');
-
-        Session::put('schedule_id', $schedule_id);
-
-        if($schedule_id == "default")
-        {
-            return Redirect::to_action('faculty@faculty_index');
-        }
-        else
-        {
-            return Redirect::to_action('faculty@faculty_view_semester');
-        }
+      return Redirect::to_action('faculty@faculty_view_semester');
     }
+  }
 
-    public function get_faculty_view_semester()
-    {
-        if (Session::has('schedule_id')){
+  public function get_faculty_view_semester()
+  {
+    if (Session::has('faculty_schedule_id')){
 
             // Get schedule data
-            $schedule_id = Session::get('schedule_id');
-            $schedule = Schedule::find($schedule_id);
-            $semester = $schedule->name . " " . $schedule->year;
-            Session::put('semester', $semester);
+      $schedule_id = Session::get('faculty_schedule_id');
+      $schedule = Schedule::find($schedule_id);
+      $semester = $schedule->name . " " . $schedule->year;
+      Session::put('semester', $semester);
 
-            // Get schedule versions data
-            $versions = Output_Version::where_schedule_id($schedule_id)->get();
+      $courses = Course_To_Schedule::where_schedule_id($schedule_id)->get();
 
-        } 
-        else{
-            $semester = "No semester";
-            $text['available_rooms'] = "";
-            $text['class_times'] = "";
-            $text['conflict_times'] = "";
-            $text['courses_to_schedule'] = "";
-            $text['faculty_members'] = "";
-            $text['prerequisites'] = "";
-        }
 
-        return View::make('faculty.faculty_view_semester')
-                      ->with('versions', $versions);
+    } 
+    else{
+      $semester = "No semester";
+      $courses = "";
     }
 
+    return View::make('faculty.faculty_view_semester')->with('courses', $courses);
+  }
+
+  public function post_submit_prefs()
+  {
+
+    $schedule_id = Session::get('faculty_schedule_id');
+    $faculty_id = Session::get('user_id');
+
+    // delete old preferences
+    Faculty_Preference::where_schedule_id_and_faculty_id($schedule_id, $faculty_id)->delete();
+    $prefs_data = $_REQUEST['prefs_array'];
+
+    error_log("Before for loop");
+    for($i = 0; $i < count($prefs_data); $i++)
+    {
+      error_log("In for loop");
+      $pref = new Faculty_Preference;
+      $pref->schedule_id = $schedule_id;
+      $pref->faculty_id = $faculty_id;
+      error_log("Before first using pref array");
+      $pref->course_id = $prefs_data[$i][0];
+      error_log("After first using pref array");
+      $pref->early_morning = $prefs_data[$i][1];
+      $pref->mid_day = $prefs_data[$i][2];
+      $pref->late_afternoon = $prefs_data[$i][3];
+      $pref->day_sections = $prefs_data[$i][4];
+      $pref->evening_sections = $prefs_data[$i][5];
+      $pref->internet_sections = $prefs_data[$i][6];
+      error_log("Before save");
+      $pref->save();
+    }
+    error_log("After for loop");
+
+  
+
+  }
+
 }
+

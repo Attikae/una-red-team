@@ -33,7 +33,7 @@
     ?>
   </div>
 
-  <?php echo '<input id="schedule_id" type="hidden" value="' . Session::get('schedule_id') . '"></input>'; ?> 
+  <?php echo '<input id="faculty_schedule_id" type="hidden" value="' . Session::get('faculty_schedule_id') . '"></input>'; ?> 
 
   <div id="main-div">
 
@@ -83,100 +83,61 @@
 
       <h1 id="pref-title">course preferences</h1>
 
-      <div class="course-div">
-        <div class="course-txt">
-          CS 155
-        </div>
+      <table id="course-prefs-table">
+        <thead>
+          <tr>
+            <th>Course</th>
+            <th>Morning</th>
+            <th>Midday</th>
+            <th>Late Aft.</th>
+            <th># Day Sect.</th>
+            <th># Night Sect.</th>
+            <th># Internet Sect.</th>
+          </tr>
+        </thead>
+        <tbody>
 
-        <div class="checkbox-grp">
-          <div class="checkbox-txt">
-            morning
-            <input type="checkbox"></input>
-          </div>
+        <?php 
 
-          <div class="checkbox-txt">
-            afternoon
-            <input type="checkbox"></input>
-          </div>
-
-          <div class="checkbox-txt">
-            evening
-            <input type="checkbox"></input>
-          </div>
-        </div>
-      </div>
-    
-      <div class="course-div">
-        <div class="course-txt">
-          CS 245
-        </div>
-
-        <div class="checkbox-grp">
-          <div class="checkbox-txt">
-            morning
-            <input type="checkbox"></input>
-          </div>
-
-          <div class="checkbox-txt">
-            afternoon
-            <input type="checkbox"></input>
-          </div>
-
-          <div class="checkbox-txt">
-            evening
-            <input type="checkbox"></input>
-          </div>
-        </div>
-      </div>
-
-      <div class="course-div">
-        <div class="course-txt">
-          CS 255
-        </div>
-
-        <div class="checkbox-grp">
-          <div class="checkbox-txt">
-            morning
-            <input type="checkbox"></input>
-          </div>
-
-          <div class="checkbox-txt">
-            afternoon
-            <input type="checkbox"></input>
-          </div>
-
-          <div class="checkbox-txt">
-            evening
-            <input type="checkbox"></input>
-          </div>
-        </div>
-      </div>
-
-      <div class="course-div">
-        <div class="course-txt">
-          CS 355
-        </div>
-
-        <div class="checkbox-grp">
-          <div class="checkbox-txt">
-	    morning
-	    <input type="checkbox"></input>
-          </div>
-
-            
-          <div class="checkbox-txt">
-	    afternoon
-            <input type="checkbox"></input>
-          </div>
+        if ($courses != "")
+        {
+          foreach ($courses as $course)
+          {
+            echo "<tr id='" . $course->id . "'>";
+            echo "<td>" . $course->course . "</td>";
+            echo "<td><input class='morning' type='checkbox'></input></td>";
+            echo "<td><input class='midday' type='checkbox'></input></td>";
+            echo "<td><input class= 'late-aft' type='checkbox'></input></td>";
+            echo "<td><select class='day-sections'>";
+            for($i = 0; $i <= $course->day_sections; $i++)
+            {
+              echo "<option>" . $i . "</option>";
+            }
+            echo "</select></td>";
+            echo "<td><select class='night-sections'>";
+            for($i = 0; $i <= $course->night_sections; $i++)
+            {
+              echo "<option>" . $i . "</option>";
+            }
+            echo "</select></td>";
+            echo "<td><select class='internet-sections'>";
+            for($i = 0; $i <= $course->internet_sections; $i++)
+            {
+              echo "<option>" . $i . "</option>";
+            }
+            echo "</select></td>";
+            echo "</tr>"; 
+          }
+        }
+        else{
+          echo "<h2>Administrator has not enabled course preference" .
+               "submissions for this semester</h2>";
+        }
         
+        ?>
+        </tbody>
+      </table>
 
-          <div class="checkbox-txt">
-	    evening
-            <input type="checkbox"></input>
-          </div>
-            
-        </div>
-      </div>
 
       <div id="pref-btn-div">
         <button id="pref-submit-btn">submit</button>
