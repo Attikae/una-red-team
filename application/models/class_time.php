@@ -204,7 +204,7 @@ class Class_Time extends Eloquent {
 		$m = 0;
         $t = 0;
         $w = 0;
-        $h = 0;
+        $r = 0;
         $f = 0;
         $s = 0;
 		
@@ -213,106 +213,115 @@ class Class_Time extends Eloquent {
 	  //____________________________________________________________________
 	  //Checking for correct days
 	  //____________________________________________________________________  
-	    for($dayCount = 0; $dayCount < strlen($days) && strlen($days) <= 6; $dayCount++)
+	    if(!ctype_alpha($days))
 	    {
+	        $readSuccess = FALSE;
+			$result["status"] = "error";
+			$result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";
+	    }
+		
+		else
+		{
+	        for($dayCount = 0; $dayCount < strlen($days) && strlen($days) <= 6; $dayCount++)
+	        {
 		  
-	        if($days[$dayCount] == "M")
-		    {
-		  	    if($m == 1){
-		  	        $readSuccess = FALSE;
-				    $result["status"] = "error";
-				    $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";
-		  	    }
+	            if($days[$dayCount] == "M")
+		        {
+		  	        if($m == 1){
+		  	            $readSuccess = FALSE;
+				        $result["status"] = "error";
+				        $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";
+		  	        }
 			  
-			    else 
-			    {
-			  	    $store[$count][0] = 1;
-			        $m = 1;  
-			    }
-		    }
-		  
-		    else if($days[$dayCount] == "T")
-		    {
-		        if($t == 1){
-		            $readSuccess = FALSE;
-				    $result["status"] = "error";
-				    $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";
+			        else 
+			        {
+			  	        $store[$count][0] = 1;
+			            $m = 1;  
+			        }
 		        }
-			  
-			    else
-			    {
-			  	    $store[$count][1] = 1;
-			        $t = 1;  
-			    }
-		    }
 		  
-		    else if($days[$dayCount] == "W")
-		    {
-		        if($w == 1){
-		            $readSuccess = FALSE;
-				    $result["status"] = "error";
-				    $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";
+		        else if($days[$dayCount] == "T")
+		        {
+		            if($t == 1){
+		                $readSuccess = FALSE;
+				        $result["status"] = "error";
+				        $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";
+		            }
+			  
+			        else
+			        {
+			  	        $store[$count][1] = 1;
+			            $t = 1;  
+			        }
 		        }
-			  
-			    else
-			    {
-			  	    $store[$count][2] = 1;
-			        $w = 1;  
-			    }
-		    }
 		  
-		    else if($days[$dayCount] == "R")
-		    {
-		        if($h == 1){
-		            $readSuccess = FALSE;
-				    $result["status"] = "error";
-				    $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";
+		        else if($days[$dayCount] == "W")
+		        {
+		            if($w == 1){
+		                $readSuccess = FALSE;
+				        $result["status"] = "error";
+				        $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";
+		            }
+			  
+			        else
+			        {
+			  	        $store[$count][2] = 1;
+			            $w = 1;  
+			        }
 		        }
-			  
-			    else
-			    {
-			  	    $store[$count][3] = 1;
-			        $h = 1;  
-			    }
-		    }
 		  
-		    else if($days[$dayCount] == "F")
-		    {
-		        if($f == 1){
-		            $readSuccess = FALSE;
-				    $result["status"] = "error";
-				    $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";
+		        else if($days[$dayCount] == "R")
+		        {
+		            if($r == 1){
+		                $readSuccess = FALSE;
+				        $result["status"] = "error";
+				        $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";
+		            }
+			  
+			        else
+			        {
+			  	        $store[$count][3] = 1;
+			            $r = 1;  
+			        }
 		        }
-			  
-			    else
-			    {
-			  	    $store[$count][4] = 1;
-			        $f = 1;  
-			    }
-		    }
 		  
-		    else if($days[$dayCount] == "S")
-		    {
-		        if($s == 1){
-		            $readSuccess = FALSE;
-				    $result["status"] = "error";
-				    $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";
+		        else if($days[$dayCount] == "F")
+		        {
+		            if($f == 1){
+		                $readSuccess = FALSE;
+				        $result["status"] = "error";
+				        $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";
+		            }
+			  
+			        else
+			        {
+			  	        $store[$count][4] = 1;
+			            $f = 1;  
+			        }
 		        }
-			  
-			    else
-			    {
-			  	    $store[$count][5] = 1;
-			        $s = 1;  
-			    }
-		    }
 		  
-            else
-            {
-            	error_log("idk!");
-                $readSuccess = FALSE;
-			    $result["status"] = "error";
-			    $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";	
-            }
+		        else if($days[$dayCount] == "S")
+		        {
+		            if($s == 1){
+		                $readSuccess = FALSE;
+				        $result["status"] = "error";
+				        $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";
+		            }
+			  
+			        else
+			        {
+			  	        $store[$count][5] = 1;
+			            $s = 1;  
+			        }
+		        }
+		  
+                else
+                {
+                    $readSuccess = FALSE;
+			        $result["status"] = "error";
+			        $result["message"] = $result["message"] . "Incorrect day entry on line: " . ($count + 1) . "\n";	
+                }
+	        }
 	    }  
 	  //____________________________________________________________________
 	  //End of checking for correct days
