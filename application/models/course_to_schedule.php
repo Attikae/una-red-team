@@ -6,17 +6,26 @@ class Course_To_Schedule extends Eloquent {
 
     public static $timestamps = true;
     
-    // Name: scan
-    //
-    public static function scan($schedule_id, $file_string){
-    
-        /* Return an array called $result with the indices status & message.
-        Set $result['status'] equal to 'success' if everything goes as planned.
-        Set $result['status'] equal to 'error' if there is an issue.
-        If there is an issue, set result['message'] to a string containing the 
-        line number and description of the issue */
-        
-        // Scanner for Courses to Schedule
+  /****************************************************************************
+  /* @function    scan
+  /* @author      CJ Stokes
+  /* @description This segment of code will scan an incoming file(the format of
+  /*              which can be found in section A.3 of the specification
+  /*              document) to ensure the correct format is found.
+  /* @input       $schedule_id -> the identification number of the schedule
+  /*              currently being created. This value is used when inputing to 
+  /*              and extracting from into the database.
+  /*              @file_string -> the string that holds the information to be
+  /*              processed by the scanner.
+  /* @output      Returns an array called $result with the indices status & 
+  /*              message. Set $result['status'] equal to 'success' if 
+  /*              everything goes as planned. Set $result['status'] equal to 
+  /*              'error' if there is an issue. If there is an issue, set 
+  /*              result['message'] to a string containing the line number and
+  /*              description of the issue.
+  ****************************************************************************/
+    public static function scan($schedule_id, $file_string)
+    {
         $file_stream = $file_string;
         $readSuccess = TRUE;
         $sessionSum = 0;
@@ -28,13 +37,17 @@ class Course_To_Schedule extends Eloquent {
         $wordArray = array();
         $result = array("status" => "", "message" => "");
         
+        // Separate each line of the file into an array
         $lineArray = mb_split('\n', $file_stream);
 
         //Process each line of the file string
         for($count = 0; $count < count($lineArray); $count++)
         {
+            // Separate each word of a line into a multi-dimensional array
+            // $count -> line number
             $wordArray[$count] = mb_split(' ', $lineArray[$count]);
             
+            // Check for correct number of arguments for a line
             if(count($wordArray[$count]) != 7)
             {
                 $readSuccess = FALSE;
@@ -43,12 +56,12 @@ class Course_To_Schedule extends Eloquent {
                 "Incorrect amount of field arguments on line: " . 
                 ($count + 1) . "\n"; 
             }
-            // test
             else
             {
                 $sessionSum = $wordArray[$count][1] + $wordArray[$count][2] + 
                 $wordArray[$count][3];
                 
+                // Check each field of the array to for correct format
                 if(!mb_ereg_match('^[A-Z]{2,5}\d{3}[A-Z]{0,2}$', 
                     $wordArray[$count][0]))
                 {
@@ -136,6 +149,7 @@ class Course_To_Schedule extends Eloquent {
             }
         }
         
+        // Check for duplicates within the entries
         for($lCount = 0; $lCount < count($wordArray); $lCount++)
         {
             $temp = $wordArray[$lCount][0];
@@ -151,10 +165,10 @@ class Course_To_Schedule extends Eloquent {
             }
         }
 
+        // Input all entries into the database if there are no errors found
         if($readSuccess == TRUE)
         {
-
-            // delete old records
+            // Delete old records
             Course_To_Schedule::where_schedule_id($schedule_id)->delete();
 
             for($count = 0; $count < count($wordArray); $count++)
@@ -174,10 +188,21 @@ class Course_To_Schedule extends Eloquent {
         }
 
         return $result;
+    }
+    //*************************************************************************
+    //* End of scan function
+    //*************************************************************************
 
-
-  }
-
+  /****************************************************************************
+  /* @function    get_text
+  /* @author      Atticus Wright
+  /* @description This segment of code will retreive the contents of the values
+  /*              of the prerequisite database entries.
+  /* @input       $schedule_id -> the identification number of the schedule
+  /*              currently being created. This value is used when inputing to 
+  /*              and extracting from into the database.
+  /* @output      $text -> A string of the information for an entry.
+  /***************************************************************************/
     public static function get_text($schedule_id)
     {
 
@@ -191,14 +216,17 @@ class Course_To_Schedule extends Eloquent {
             {
                 $text .= "\n";
             }
-            $text .= $entry->course . " " . $entry->day_sections . " " . $entry->night_sections . " "
-                     . $entry->internet_sections . " " . $entry->class_size . " "
-                     . $entry->room_type . " " . $entry->credit_hours;
+            $text .= $entry->course . " " . $entry->day_sections . " " . 
+                     $entry->night_sections . " "
+                     . $entry->internet_sections . " " . $entry->class_size . 
+                     " " . $entry->room_type . " " . $entry->credit_hours;
 
             $first_entry = false;
         }
 
         return $text;
     }
-  
+  //***************************************************************************
+  //* End of get_text function
+  //***************************************************************************
 }
