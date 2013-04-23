@@ -64,7 +64,14 @@ class Scheduler {
           // Make sure faculty has internet sections specified
           else if( $section == 2 && $faculty->sections[2] )
           {
-            // Give section to faculty
+            // Give internet section to faculty
+            // Decrement faculty hours
+            /*
+            Scheduled_Course::create( array( 
+                  "output_version_id" => $output_id,
+
+                ) );
+             */
           }
         }
       }
