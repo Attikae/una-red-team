@@ -193,20 +193,21 @@ class Course_To_Schedule extends Eloquent {
     //* End of scan function
     //*************************************************************************
 
-  /****************************************************************************
-  /* @function    get_text
-  /* @author      Atticus Wright
-  /* @description This segment of code will retreive the contents of the values
-  /*              of the prerequisite database entries.
-  /* @input       $schedule_id -> the identification number of the schedule
-  /*              currently being created. This value is used when inputing to 
-  /*              and extracting from into the database.
-  /* @output      $text -> A string of the information for an entry.
-  /***************************************************************************/
+    /**************************************************************************
+    /* @function    get_text
+    /* @author      Atticus Wright
+    /* @description This segment of code will retreive the contents of the 
+    /*              values of the prerequisite database entries.
+    /* @input       $schedule_id -> the identification number of the schedule
+    /*              currently being created. This value is used when inputing
+    /*            to and extracting from into the database.
+    /* @output      $text -> A string of the information for an entry.
+    /*************************************************************************/
     public static function get_text($schedule_id)
     {
 
-        $entries = Course_To_Schedule::where_schedule_id($schedule_id)->order_by("id", "asc")->get();
+        $entries = Course_To_Schedule::where_schedule_id($schedule_id)->
+                    order_by("id", "asc")->get();
         $text = "";
         $first_entry = true;
 
@@ -226,7 +227,7 @@ class Course_To_Schedule extends Eloquent {
 
         return $text;
     }
-  //***************************************************************************
-  //* End of get_text function
-  //***************************************************************************
+    //*************************************************************************
+    //* End of get_text function
+    //*************************************************************************
 }
