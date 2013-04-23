@@ -165,7 +165,7 @@ class Available_Room extends Eloquent {
     /*              values of the prerequisite database entries.
     /* @input       $schedule_id -> the identification number of the schedule
     /*              currently being created. This value is used when inputing
-    /*            to and extracting from into the database.
+    /*              to and extracting from the database.
     /* @output      $text -> A string of the information for an entry.
     /*************************************************************************/
     public static function get_text($schedule_id)
