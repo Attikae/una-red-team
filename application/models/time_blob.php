@@ -13,24 +13,5 @@ class Time_Blob {
   public $f;
   public $s;
 
-
-  public static get_time_blobs(){
-
-    get all class times from fbsql_database
-
-    $time_blobs;
-
-    for each class time(
-
-      
-    )
-
-
-
-
-  }
-
+  public $room_blobs;
 }
-
-
-$time_blobs = Time_Blob::get_time_blobs()
