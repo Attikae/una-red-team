@@ -14,16 +14,19 @@ class Scheduler {
     $time_string = date('m-d-Y H:i:s');
     $name = $schedule->name . " " . $schedule->year . " " . $time_string;
 
-    error_log( $name );
-    
-    $output_version = Output_Version::create(
-      array( "schedule_id" => $schedule_id,
+    $output_version = Output_Version::create( array( 
+             "schedule_id" => $schedule_id,
              "name" => $name ) );
 
     $course_list = Scheduler::get_course_list( $schedule_id );
     $faculty_list = Scheduler::get_faculty_list( $schedule_id, $course_list, 0 );
     $time_list = Scheduler::get_time_list( $schedule_id );
 
+    Scheduler::create_scheduled_courses( $schedule_id,
+                              $output_version->id,
+                              $course_list,
+                              $faculty_list,
+                              $time_list );
     
 
     $faculty_list = Scheduler::get_faculty_list( $schedule_id, $course_list, 1 );
@@ -46,7 +49,24 @@ class Scheduler {
                                                    $course->internet_sections );
       foreach( $section_list as $section )
       {
+        foreach( $faculty_list as $faculty )
+        {
+          // Make sure faculty has day sections specified
+          if( $section == 0 && $faculty->sections[0] )
+          {
 
+          }
+          // Make sure faculty has night sections specified
+          else if( $section == 1 && $faculty->sections[1] )
+          {
+            // Give section to faculty
+          }
+          // Make sure faculty has internet sections specified
+          else if( $section == 2 && $faculty->sections[2] )
+          {
+            // Give section to faculty
+          }
+        }
       }
     }
   }
@@ -221,7 +241,9 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  public static function get_section_list( $day_sections, $night_sections, $internet_sections )
+  public static function get_section_list( $day_sections,
+                                           $night_sections,
+                                           $internet_sections )
   {
     $course_sections;
 
