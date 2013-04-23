@@ -181,7 +181,9 @@ class Admin_Controller extends Base_Controller
   {
     $schedule_id = Input::get('schedule_id');
 
-    $time_list = Scheduler::get_time_list( $schedule_id, 0 );
+    Scheduler::schedule_driver($schedule_id);
+
+    $time_list = Scheduler::get_course_list( $schedule_id );
 
     ob_start();
     var_dump($time_list);

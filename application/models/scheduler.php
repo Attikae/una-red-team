@@ -9,14 +9,42 @@ class Scheduler {
     $time_string = date('m-d-Y H:i:s');
     $name = $schedule->name . " " . $schedule->year . " " . $time_string;
 
-    $output_version = Output_Version::create(array());
+    error_log( $name );
+    
+    $output_version = Output_Version::create(
+      array( "schedule_id" => $schedule_id,
+             "name" => $name ) );
+
+    $course_list = Scheduler::get_course_list( $schedule_id );
+    $faculty_list = Scheduler::get_faculty_list( $schedule_id, $course_list, 0 );
+    $time_list = Scheduler::get_time_list( $schedule_id );
+
+    
+
+    $faculty_list = Scheduler::get_faculty_list( $schedule_id, $course_list, 1 );
 
   }
 
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
-  
-  public static function get_faculty_list( $schedule_id, $priority_bool )
+
+  public static function create_scheduled_courses( $schedule_id, 
+                                                   $output_id, 
+                                                   $course_list, 
+                                                   $faculty_list, 
+                                                   $time_list )
+  {
+    foreach( $course_list as $course )
+    {
+      $sections = Scheduler::get_course_sections( $course->day_sections, 
+                                                  $course->night_sections, 
+                                                  $course->internet_sections );
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////////////////// 
+  //////////////////////////////////////////////////////////////////////////////// 
+  public static function get_faculty_list( $schedule_id, $course_list, $priority_bool )
   {
     // If priority_bool is 0, use seniority
     // If priority_bool is 1, use submission
@@ -43,15 +71,14 @@ class Scheduler {
       $faculty_list[$i]->faculty_id = $x->id;
       $faculty_list[$i]->hours = $x->hours;
 
-      $course_list = Scheduler::get_course_list( $schedule_id );
-
+      
       $j = 0;
 
       foreach( $course_list as $y )
       {
         $prefs = Faculty_Preference::where_faculty_id($x->id)
                      ->where_schedule_id($schedule_id)
-                     ->where_course_id($y[0]->id)->first();
+                     ->where_course_id($y->id)->first();
 
         if( $prefs  )
         {
@@ -109,7 +136,16 @@ class Scheduler {
 
     array_multisort( $sortCourse, SORT_DESC, $course_list );
 
-    return $course_list;
+    $min_course_list;
+
+    $i = 0;
+    foreach( $course_list as $x )
+    {
+      $min_course_list[$i] = $x[0];
+      $i++;
+    }
+
+    return $min_course_list;
   }
 
   ////////////////////////////////////////////////////////////////////////////////
