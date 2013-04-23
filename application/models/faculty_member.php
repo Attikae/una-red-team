@@ -25,11 +25,6 @@ class Faculty_Member extends Eloquent {
     /*              and description of the issue.
     **************************************************************************/
     public static function scan($schedule_id, $file_string){
-
-      // delete old records
-      //Faculty_Member::where_schedule_id($schedule_id)->delete();
-
-       // For testing purposes
   
         $file_stream = $file_string;
         $readSuccess = TRUE;
@@ -165,6 +160,10 @@ class Faculty_Member extends Eloquent {
         // Input all entries into the database if there are no errors found
         if($readSuccess == TRUE)
         {
+        	// delete old records
+            Faculty_Member::where_schedule_id($schedule_id)->delete();
+			// For testing purposes
+			
             for($count = 0; $count < count($wordArray); $count++)
             {
                 $new_faculty = new Faculty_Member;
@@ -189,10 +188,10 @@ class Faculty_Member extends Eloquent {
     /* @function    get_text
     /* @author      Atticus Wright
     /* @description This segment of code will retreive the contents of the 
-    /*              values of the prerequisite database entries.
+    /*              values of the faculty database entries.
     /* @input       $schedule_id -> the identification number of the schedule
     /*              currently being created. This value is used when inputing
-    /*            to and extracting from into the database.
+    /*              to and extracting from the database.
     /* @output      $text -> A string of the information for an entry.
     /*************************************************************************/
     public static function get_text($schedule_id)
@@ -210,8 +209,9 @@ class Faculty_Member extends Eloquent {
                 $text .= "\n";
             }
 
-            $text .= $entry->last_name . ", " . $entry->first_name . " " . $entry->years_of_service . " "
-               . $user->email . " " . $entry->hours . "\n";
+            $text .= $entry->last_name . ", " . $entry->first_name . " "
+            . $entry->years_of_service . " " . $user->email . " " . $entry->hours .
+            "\n";
 
             $first_entry = false;
         }
