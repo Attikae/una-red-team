@@ -39,7 +39,7 @@ class Available_Room extends Eloquent {
             // $i -> line number
             $wordArray[$i] = mb_split(" ", $lineArray[$i]);
             error_log("2");
-            if (count($wordArray[$i]) == 4)  
+            if(count($wordArray[$i]) == 4)
             {
             
                 //Correct classroom type is C, L, or B
@@ -51,7 +51,7 @@ class Available_Room extends Eloquent {
                     $success = false;
                     $result['status'] = "error";
                     $result['message'] = $result['message'] . 
-                    "\nIncorrect type of room on line " . ($i+1) . ". ";
+                    "Incorrect type of room on line " . ($i+1) . ".\n";
                 }
                 
                 //Size of room has to be between 1 and 100.
@@ -62,7 +62,7 @@ class Available_Room extends Eloquent {
                     $success = false;
                     $result['status'] = "error";
                     $result['message'] = $result['message'] . 
-                    "\nIncorrect size of room on line " . ($i+1) . ". ";
+                    "Incorrect size of room on line " . ($i+1) . ".\n";
                 }
                 
                 //Building name must contain all alphabetic characters
@@ -75,7 +75,7 @@ class Available_Room extends Eloquent {
                     $success = false;
                     $result['status'] = "error";
                     $result['message'] = $result['message'] . 
-                    "\nIncorrect building name on line " . ($i+1) . '. '; 
+                    "Incorrect building name on line " . ($i+1) . ".\n"; 
                 }
 
                 //Room number can be 1 to 3 digits
@@ -88,55 +88,94 @@ class Available_Room extends Eloquent {
                     $success = false;
                     $result['status'] = "error";
                     $result['message'] = $result['message'] . 
-                    "\nIncorrect room number on line " . ($i+1) . '. ';
+                    "Incorrect room number on line " . ($i+1) . ".\n";
                 }
                 
             }
             else
             {
+                error_log("11");
                 $success = false;
                 $result['status'] = "error";
                 $result['message'] = $result['message'] . 
-                "\nIncorrect amount of arguments on line " . ($i+1) . '. ';
+                "Incorrect amount of arguments on line " . ($i+1) . ".\n";
+                error_log("12");
+                
+                //break;
             }
         
      
         }
+        error_log("13");
   
         // Checks for duplicates within the entries
         // $i -> line number
         // $j -> word number
+        /*
         for($i = 0; $i < count($wordArray); $i++)
         {
             $temp = $wordArray[$i];
-                   
-            for ($j = 0; $j < count($wordArray); $j++)
+            if (count ($temp) == 4)
             {
-                    
-                if ( $j != $i)
+
+                for ($j = 0; $j < count($wordArray); $j++)
                 {
-                
-                    if ($temp[2] == $wordArray[$j][2] && 
-                        $temp[3] == $wordArray[$j][3])
-                    { 
-                        $success = false;
-                        $result['status'] = "error";
-                        $result['message'] =  $result['message'] . 
-                        "\nDuplicate entries on line " . ($i+1) . " and " . 
-                        ($j+1) . '. ';
+                        
+                    if ($j != $i )
+                    {
+                        error_log("14");
+                        if ($temp[2] == $wordArray[$j][2] && 
+                            $temp[3] == $wordArray[$j][3])
+                        { 
+                            $success = false;
+                            $result['status'] = "error";
+                            $result['message'] =  $result['message'] . 
+                            "Duplicate entries on line " . ($i+1) . " and " . 
+                            ($j+1) . ".\n";
+                        }
+                        
                     }
-                    
+                
                 }
-            
+            }
+            else{
+                error_log("blank line"); 
             }
             
+        }*/
+
+        for($lCount = 0; $lCount < count($wordArray); $lCount++)
+        {
+            error_log("14");
+            if(count($wordArray[$lCount]) == 4)
+            {
+                error_log("14.5");
+                $temp1 = $wordArray[$lCount][2];
+                $temp2 = $wordArray[$lCount][3];
+                for($wCount = $lCount + 1; $wCount < count($wordArray); $wCount++)
+                {
+                    if(count($wordArray[$wCount]) == 4)
+                    {
+                        if($temp1 == $wordArray[$wCount][2] && $temp2 == $wordArray[$wCount][3])
+                        {
+                            error_log("14.7");
+                            $success = FALSE;
+                            $result["status"] = "error";
+                            $result["message"] = $result["message"] . 
+                            "Duplicate entry found on line: " . ($wCount + 1) . "\n";
+                        }
+                    }
+                }
+            }
         }
         
+        
+        error_log("15");
         // Input all entries into the database if there are no errors found
         if ($success == true)
         {
             $result['status'] = "success";
-
+            
             // Delete old records
             Available_Room::where_schedule_id($schedule_id)->delete();
             
@@ -152,7 +191,7 @@ class Available_Room extends Eloquent {
             } 
             
         }
-
+        error_log("16");
         return $result;
     }
     //*************************************************************************
@@ -171,7 +210,6 @@ class Available_Room extends Eloquent {
     /*************************************************************************/
     public static function get_text($schedule_id)
     {
-
         $entries = Available_Room::where_schedule_id($schedule_id)->
                     order_by("id", "asc")->get();
         $text = "";

@@ -15,6 +15,7 @@ class Conflict_Time extends Eloquent {
        and description of the issue */
 
         $correct = true;
+        $emptyLine = false;
         $lineArray = mb_split("\n", $file_string);      //will hold an array of strings separted by newlines
         $store = array();                               //will be used to store database entries
         $result = array("status" => "", "message" => "");
@@ -282,10 +283,12 @@ class Conflict_Time extends Eloquent {
                 $result["status"] = "error";
                 $result["message"] = $result["message"] . "\nPlease delete empty line on line number " . ($i+1) . '.';
                 $correct = false;
-                break;
+                $emptyLine = true;
+                //break;
             }
-            
-            $storeCount++;
+            error_log("before store count"); 
+            if($emptyLine == false)
+                $storeCount++;
         }
     
         $duplicate = false;
