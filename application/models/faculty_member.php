@@ -64,9 +64,23 @@ class Faculty_Member extends Eloquent {
 	                $readSuccess = FALSE;
 		            $result["status"] = "error";
 		            $result["message"] = $result["message"] .
-		            "Incorrect entry for last name or missing comma on line: " . ($count + 1) .
-		            "\n";
+		            "Incorrect entry for last name or missing comma on line: " .
+		            ($count + 1) . "\n";
 	            }
+				
+				else
+				{
+					$lastName = " ";
+					$tempArray = array();
+					$tempArray = $wordArray[$count][0];
+					$store[$count] = 0;
+				    for($i = 0; $i < (strlen($wordArray[$count][0]) - 1); $i++)
+					{
+					    $lastName[$i] = $tempArray[$i];
+					}
+					
+					$store[$count] = $lastName;
+				}
 	  
 	            // Check for correct first name
 	            if(!ctype_alpha($wordArray[$count][1]))
@@ -81,7 +95,7 @@ class Faculty_Member extends Eloquent {
 	            // Checking the total number of characters for the name
 	            // See section A.6 Constraints for more details
 	            if((strlen($wordArray[$count][0]) + strlen($wordArray[$count][1])) > 24
-	  		        || strlen($wordArray[$count][0]) < 1 || strlen($wordArray[$count][1]) < 1)
+	  		     || strlen($wordArray[$count][0]) < 1 || strlen($wordArray[$count][1]) < 1)
 	            {
 	                $readSuccess = FALSE;
 		            $result["status"] = "error";
@@ -157,11 +171,27 @@ class Faculty_Member extends Eloquent {
             }
         }
 
+        // Check for duplicates within the entries
+        for($lCount = 0; $lCount < count($wordArray); $lCount++)
+        {
+            $temp = $wordArray[$lCount][3];
+            for($wCount = $lCount + 1; $wCount < count($wordArray); $wCount++)
+            {
+                if($temp == $wordArray[$wCount][3])
+                {
+                    $readSuccess = FALSE;
+                    $result["status"] = "error";
+                    $result["message"] = $result["message"] . 
+                    "Duplicate email found on line: " . ($wCount + 1) . "\n";
+                }
+            }
+        }
+
         // Input all entries into the database if there are no errors found
         if($readSuccess == TRUE)
         {
 
-        	  // delete old records
+        	// delete old records
             Faculty_Member::where_schedule_id($schedule_id)->delete();
 
             for($count = 0; $count < count($wordArray); $count++)
@@ -173,21 +203,23 @@ class Faculty_Member extends Eloquent {
                 $user = User::where_email($email)->first();
 
 
-                if(is_null($user)) // If user doesn't exist create one
+                if(is_null($user))
                 {
-                  $new_user = User::create(array('email' => $email,
+                	// If user doesn't exist , then create the user
+                    $new_user = User::create(array('email' => $email,
                                                  'password' => 'test',
                                                  'user_type' => 2));
 
-                  $new_faculty->user_id = $new_user->id;
+                    $new_faculty->user_id = $new_user->id;
                 }
-                else // If user does exist, use their id
+                else
                 {
-                  $new_faculty->user_id = $user->id;
+                    // If user does exist, use their id
+                    $new_faculty->user_id = $user->id;
                 }
                 
                 $new_faculty->schedule_id = $schedule_id;
-                $new_faculty->last_name = $wordArray[$count][0];
+                $new_faculty->last_name = $store[$count];
                 $new_faculty->first_name = $wordArray[$count][1];
                 $new_faculty->years_of_service = $wordArray[$count][2];
                 $new_faculty->hours = $wordArray[$count][4];
