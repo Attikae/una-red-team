@@ -202,9 +202,7 @@ class Admin_Controller extends Base_Controller
 
     $schedule_id = Input::get('schedule_id');
 
-    Faculty_Preference::fill_prefs($schedule_id);
-
-    $result = array("message" => "Fill prefs called!");
+    $result = Faculty_Preference::fill_prefs($schedule_id);
 
     echo json_encode($result);
 
