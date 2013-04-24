@@ -259,7 +259,7 @@ class Faculty_Member extends Eloquent {
                 $text .= "\n";
             }
 
-            $text .= $entry->last_name . " " . $entry->first_name . " "
+            $text .= $entry->last_name . ", " . $entry->first_name . " "
             . $entry->years_of_service . " " . $user->email . " " . $entry->hours;
 
             $first_entry = false;
