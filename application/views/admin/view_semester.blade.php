@@ -301,6 +301,33 @@
     </div>
   </div>
 
+  <div id="schedule-output-container">
+    <div id="button-container">
+      <div id="top-buttons-container">
+        <button id="show-seniorty">By Seniorty</button>
+        <button id="show-sumbission">By Order of Submission</button>
+        <button id="hide-schedule-output">Hide Schedule</button>
+      </div>
+      </br>
+      <div id="bottom-buttons-container">
+        <button id="show-by-room">By Room</button>
+        <button id="show-by-class-name">By Class Name</button>
+        <button id="show-by-faculty">By Faculty</button>
+        <button id="show-by-time">By Time</button>
+        <button id="show-not-scheduled">Not Scheduled</button>
+      </div>
+    </div>
+    <div id="schedule-inner-container">
+      <div id="seniorty-container" class="output-container">
+        Seniority
+      </div>
+      <div id="submission-container" class="output-container">
+        Sumbissions
+      </div>
+    </div>
+    
+  </div>
+
     
 </body>
 

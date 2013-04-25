@@ -57,7 +57,7 @@ class Faculty_Preference extends Eloquent {
 
                     if($course->internet_sections > 0)
                     {
-                        $new_pref->internet_sections = rand (0,$course->internet_sections); 
+                        $new_pref->internet_sections = rand(0,$course->internet_sections); 
                     }
 
                     $new_pref->save();

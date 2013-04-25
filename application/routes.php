@@ -8,6 +8,7 @@ Route::any('admin/file_upload', 'admin@file_upload');
 Route::any('admin/scan', 'admin@scan');
 Route::any('admin/scheduler', 'admin@scheduler');
 Route::any('admin/fill_prefs', 'admin@fill_prefs');
+Route::any('admin/display_output', 'admin@display_output');
 Route::any('faculty/submit_prefs', 'faculty@submit_prefs');
 
 /*

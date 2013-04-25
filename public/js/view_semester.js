@@ -17,11 +17,6 @@ $(document).ready(function(){
   $(".file-btn").on("click",toggleFileDiv);
 
 
-  $(".version-lnk").on("click",function(){
-    return false;
-  });
-
-
   $(".delete-version-lnk").on("click",function(){
     return false;
   });
@@ -41,8 +36,58 @@ $(document).ready(function(){
     ajaxFillPrefs();
   });
 
-  
+
+  $(document).on('click', '.version-lnk', function(){
+
+    $("#schedule-output-container").show();
+    ajaxDisplayOutput($(this));
+  });
+
+  $("#show-seniorty").on('click', function(){
+    $("#submission-container").hide();
+    $("#seniorty-container").show();
+  })
+
+  $("#show-sumbission").on('click', function(){
+    $("#seniorty-container").hide();
+    $("#submission-container").show();
+  })
+
+  $("#hide-schedule-output").on('click', function(){
+    $("#schedule-output-container").hide();
+  })
+
+  $("#bottom-buttons-container button").on('click', function(){
+    var id = $(this).attr('id');
+
+    console.log("id is: " + id);
+    var container = $(".output-container:visible");
+
+    switch(id)
+    {
+      case "show-by-room":
+        $(container).children().hide();
+        $(container).children('.by-room').show();
+        break;
+      case "show-by-class-name":
+        $(container).children(":visible").hide();
+        $(container).children('.by-class-name').show();
+        break;
+      case "show-by-faculty":
+        $(container).children(":visible").hide();
+        $(container).children('.by-faculty').show();
+        break;
+      case "show-by-time":
+        $(container).children(":visible").hide();
+        $(container).children('.by-time').show();
+        break;
+    }
+
+  })
+
 });
+
+
 
 
 
@@ -239,6 +284,34 @@ function ajaxFillPrefs(){
     }
 
   }); 
+}
+
+
+function ajaxDisplayOutput(span){
+
+  var scheduleId = $('#schedule_id').val();
+  var outputVersionId = span.attr('id');
+
+  $.ajax({
+    url: "display_output",
+    dataType: "json",
+    type: "POST",
+    data: {
+        schedule_id : scheduleId,
+        output_version_id : outputVersionId
+    },
+    success: function(data) {
+
+      //console.log("Made it to success");
+
+      $("#seniorty-container").html(data.seniority);
+      $("#submission-container").html(data.submission);
+      //alert("It worked!");
+      
+    }
+  });
+
+  //alert("Schedule Id is: " + scheduleId + " and outputVersionId is: " + outputVersionId);
 
 }
 

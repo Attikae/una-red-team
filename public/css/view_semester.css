@@ -189,6 +189,7 @@ input[type=file]
 .version-lnk
 {
   color: white;
+  cursor: pointer;
 }
 
 .version-lnk:hover
@@ -281,3 +282,98 @@ input[type=checkbox]
   top: 20px;
   left: 20px;
 }
+
+#schedule-output-container
+{
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  height: 600px;
+  width: 1200px;
+  background-color: darkGrey;
+  display: none;
+}
+
+#schedule-inner-container
+{
+  position: absolute;
+  top: 55px;
+  left: 5px;
+  height: 540px;
+  width: 1190px;
+  background-color: lightGrey;
+  overflow-y: scroll;
+
+}
+
+#seniorty-container
+{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: none;
+}
+
+#submission-container
+{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: none;
+}
+
+#button-container
+{
+  position: relative;
+  /* width: 80%; */
+  left: 0px;
+  text-align: center;
+}
+
+#top-buttons-container
+{
+  display: inline-block;
+}
+
+#botton-buttons-container
+{
+  display: inline-block;
+}
+
+.by-room
+{
+
+}
+
+.by-class-name
+{
+  display: none;
+}
+
+.class-name-table
+{
+  border-collapse: collapse;
+}
+
+.class-name-table th
+{
+  border: 1px solid black;
+}
+
+.class-name-table td
+{
+  border: 1px solid black;
+}
+
+.by-faculty
+{
+  display: none;
+}
+
+.by-time
+{
+  display: none;
+}
+
+
+
