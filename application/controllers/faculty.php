@@ -65,7 +65,7 @@ class Faculty_Controller extends Base_Controller
 
       $pref = new Faculty_Preference;
       $pref->schedule_id = $schedule_id;
-      $pref->faculty_id = $faculty_id;
+      $pref->user_id = $faculty_id;
       $pref->course_id = $prefs_data[$i][0];
       $pref->early_morning = $prefs_data[$i][1];
       $pref->mid_day = $prefs_data[$i][2];

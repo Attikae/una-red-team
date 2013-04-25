@@ -24,7 +24,7 @@ class Faculty_Preference extends Eloquent {
                     
                     $new_pref = new Faculty_Preference;          
                     $new_pref->schedule_id = $schedule_id;
-                    $new_pref->faculty_id = $faculty_member->user_id;
+                    $new_pref->user_id = $faculty_member->user_id;
                     $new_pref->course_id = $course->id;
 
                     if ($course->day_sections > 0)
