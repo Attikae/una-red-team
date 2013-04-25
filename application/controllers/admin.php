@@ -183,7 +183,7 @@ class Admin_Controller extends Base_Controller
 
     Scheduler::schedule_driver($schedule_id);
 /*
-    $time_list = Scheduler::get_section_list( 4, 3, 5 );
+    $time_list = Scheduler::get_time_list($schedule_id);
 
     ob_start();
     var_dump($time_list);
@@ -191,7 +191,7 @@ class Admin_Controller extends Base_Controller
     ob_end_clean();
 
     error_log( $contents );
- */
+ */ 
     $result = array("status" => "error", "message" => "It works!");
 
     echo json_encode($result);

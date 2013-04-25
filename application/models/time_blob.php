@@ -13,5 +13,8 @@ class Time_Blob {
   public $f;
   public $s;
 
-  public $room_blobs;
+  public $room_id;
+  public $room_type;
+  public $room_size;
+  public $is_taken;
 }

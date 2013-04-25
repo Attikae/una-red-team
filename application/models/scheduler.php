@@ -15,8 +15,8 @@ class Scheduler {
     $name = $schedule->name . " " . $schedule->year . " " . $time_string;
 
     $output_version = Output_Version::create( array( 
-             "schedule_id" => $schedule_id,
-             "name" => $name ) );
+                            "schedule_id" => $schedule_id,
+                            "name" => $name ) );
 
     $course_list = Scheduler::get_course_list( $schedule_id );
     $faculty_list = Scheduler::get_faculty_list( $schedule_id, $course_list, 0 );
@@ -28,8 +28,7 @@ class Scheduler {
                                          $faculty_list,
                                          0,
                                          $time_list );
-    
-
+/*
     $faculty_list = Scheduler::get_faculty_list( $schedule_id, $course_list, 1 );
 
     Scheduler::create_scheduled_courses( $schedule_id,
@@ -38,7 +37,7 @@ class Scheduler {
                                          $faculty_list,
                                          1,
                                          $time_list );
-
+ */
   }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +50,8 @@ class Scheduler {
                                                    $faculty_priority,
                                                    $time_list )
   {
+    $course_index = 0;
+
     foreach( $course_list as $course )
     {
       $section_list = Scheduler::get_section_list( $course->day_sections, 
@@ -58,43 +59,64 @@ class Scheduler {
                                                    $course->internet_sections );
       foreach( $section_list as $section )
       {
+        $scheduled = false;
+
         foreach( $faculty_list as $faculty )
         {
-          // Make sure faculty has day sections specified
-          if( $section == 0 && $faculty->sections[0] )
+          // If faculty has enough hours to teach course
+          if( $faculty->hours >= $course->credit_hours )
           {
+            // Make sure faculty has day sections specified
+            if( $section == 0 && $faculty->sections[$course_index][0] )
+            {
+            }
+            // Make sure faculty has night sections specified
+            else if( $section == 1 && $faculty->sections[$course_index][1] )
+            {
+              // Find best time/room combo
+              // Give section to faculty
+              
 
-          }
-          // Make sure faculty has night sections specified
-          else if( $section == 1 && $faculty->sections[1] )
-          {
-            // Give section to faculty
-          }
-          // Make sure faculty has internet sections specified
-          else if( $section == 2 && $faculty->sections[2] )
-          {
-            // Give internet section to faculty
-            // Decrement faculty hours
-            
-            $user_id = Faculty_Member::where_id( $faculty->faculty_id )->user_id;
-            $last_name = Faculty_Member::where_id( $faculty->faculty_id )
-                                         ->last_name;
-            $first_name = Faculty_Member::where_id( $faculty->faculty_id )
-                                          ->first_name;
-            $faculty_name = $last_name . ", " . $first_name;
-            error_log( $faculty_name );
+            }
+            // Make sure faculty has internet sections specified
+            else if( $section == 2 && $faculty->sections[$course_index][2] )
+            {
+              // Give internet section to faculty
+              // Decrement faculty hours
+              $tmp_faculty = Faculty_Member::where_id( $faculty->faculty_id )->first();
+              $user_id = $tmp_faculty->user_id;
+              $last_name = $tmp_faculty->last_name;
+              $first_name = $tmp_faculty->first_name;
+              $faculty_name = $last_name . ", " . $first_name;
 
-            Scheduled_Course::create( array(
+              Scheduled_Course::create( array(
                   "output_version_id" => $output_id,
                   "priority_flag"     => $faculty_priority,
                   "user_id"           => $user_id,
                   "faculty_name"      => $faculty_name,
                   "course"            => $course->course,
                   "course_type"       => $course->room_type,
-                ) );
+              ) );
+              
+              // Decrement hours and sections
+              $faculty->hours -= $course->credit_hours;
+              $faculty->sections[$course_index][2] -= 1;
+
+              // Make more elegant later
+              // Break out of section loop if it has already been scheduled
+              $scheduled = true;
+              break;
+            }
           }
         }
+        // If failed to schedule course section
+        if( $scheduled == false )
+        {
+          error_log( "FAILED TO SCHEDULE COURSE " . $course->course );
+        }
       }
+
+      $course_index++;
     }
   }
 
@@ -126,17 +148,16 @@ class Scheduler {
 
       $faculty_list[$i]->faculty_id = $x->id;
       $faculty_list[$i]->hours = $x->hours;
-
       
       $j = 0;
 
       foreach( $course_list as $y )
       {
-        $prefs = Faculty_Preference::where_faculty_id($x->id)
+        $prefs = Faculty_Preference::where_user_id($x->user_id)
                      ->where_schedule_id($schedule_id)
                      ->where_course_id($y->id)->first();
-
-        if( $prefs  )
+        
+        if( !is_null( $prefs )  )
         {
           $faculty_list[$i]->sections[$j][0] = $prefs->day_sections;
           $faculty_list[$i]->sections[$j][1] = $prefs->evening_sections;
@@ -218,14 +239,6 @@ class Scheduler {
 
     foreach( $class_times as $x )
     {
-      $time_list[$i] = new Time_Blob;
-      $time_list[$i]->class_time_id = $x->id;
-      $time_list[$i]->m = $x->monday;
-      $time_list[$i]->t = $x->tuesday;
-      $time_list[$i]->w = $x->wednesday;
-      $time_list[$i]->r = $x->thursday;
-      $time_list[$i]->f = $x->friday;
-      $time_list[$i]->s = $x->saturday;
 
       // calculate start_offset, end_offset, and credit_hours
 
@@ -234,34 +247,42 @@ class Scheduler {
       $hour = date( "H", $start_time );
       $minute = date( "i", $start_time );
 
-      $time_list[$i]->start_offset = ($hour-7)*60 + $minute;
-      $time_list[$i]->end_offset = $time_list[$i]->start_offset + $x->duration;
+      $start_offset = ($hour-7)*60 + $minute;
+      $end_offset = $start_offset + $x->duration;
 
-      $num_days = $time_list[$i]->m +
-                  $time_list[$i]->t +
-                  $time_list[$i]->w +
-                  $time_list[$i]->r +
-                  $time_list[$i]->f +
-                  $time_list[$i]->s;
+      $num_days = $x->monday +
+                  $x->tuesday +
+                  $x->wednesday +
+                  $x->thursday +
+                  $x->friday +
+                  $x->saturday;
 
-      $time_list[$i]->credit_hours = intval(($x->duration*$num_days)/50);
-
-      $j = 0;
+      $credit_hours = intval(($x->duration*$num_days)/50);
 
       foreach( $avail_rooms as $y )
       {
-        $time_list[$i]->room_blobs[$j] = new Room_Blob;
-        $time_list[$i]->room_blobs[$j]->id = $y->id;
-        $time_list[$i]->room_blobs[$j]->type = $y->type;
-        $time_list[$i]->room_blobs[$j]->size = $y->size;
-        $time_list[$i]->room_blobs[$j]->is_taken = false;
+        $time_list[$i] = new Time_Blob;
 
-        $j++;
+        $time_list[$i]->class_time_id = $x->id;
+        $time_list[$i]->m = $x->monday;
+        $time_list[$i]->t = $x->tuesday;
+        $time_list[$i]->w = $x->wednesday;
+        $time_list[$i]->r = $x->thursday;
+        $time_list[$i]->f = $x->friday;
+        $time_list[$i]->s = $x->saturday;
+
+        $time_list[$i]->start_offset = $start_offset;
+        $time_list[$i]->end_offset = $end_offset;
+        $time_list[$i]->credit_hours = $credit_hours;
+
+        $time_list[$i]->room_id = $y->id;
+        $time_list[$i]->room_type = $y->type;
+        $time_list[$i]->room_size = $y->size;
+        $time_list[$i]->is_taken = false;
+
+        $i++;
       }
-
-      $i++;
     }
-
     return $time_list;
   }
 
@@ -296,7 +317,7 @@ class Scheduler {
 
     // Shuffle the array so that the sections we
     // try to schedule will be spread out
-    shuffle( $course_sections );
+    shuffle( $course_sections ); // CHANGE TO EQUAL DISTRIBUTION
 
     return $course_sections;
   }
