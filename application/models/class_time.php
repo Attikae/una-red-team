@@ -26,7 +26,7 @@ class Class_Time extends Eloquent {
     **************************************************************************/	 
     public static function scan($schedule_id, $file_string){
   	
-        /**************************************************************************
+        /***********************************************************************
         /* @function    is_correct_time
         /* @author      Jason Smith
         /* @description This segment of code will make sure that the given time
@@ -36,7 +36,7 @@ class Class_Time extends Eloquent {
 	    /*              in the file.
         /* @output      Returns a boolean called $succes indicating whether the
 	    /*              time was correct or not.
-        **************************************************************************/
+        ***********************************************************************/
         function is_correct_time($time)
         {
     	    $success = TRUE;
@@ -110,50 +110,50 @@ class Class_Time extends Eloquent {
 	  
 	        return $success;
         }
-        //*************************************************************************
+        //**********************************************************************
         //* End of is_correct_time function
-        //*************************************************************************
+        //**********************************************************************
 
   
         $file_stream = $file_string;
-        $readSuccess = TRUE;
+        $read_success = TRUE;
 
         mb_regex_encoding('UTF-8');
         mb_internal_encoding('UTF-8');
 
-        $lineArray = array();
-        $wordArray = array();
+        $line_array = array();
+        $word_array = array();
         $result = array("status" => "", "message" => "");
 		
         $store = array();
-	    $timeArray = array();
+	    $time_array = array();
 
         // Separate each line of the file into an array
-        $lineArray = mb_split('\n', $file_stream);
+        $line_array = mb_split('\n', $file_stream);
   
-        for($count = 0; $count < count($lineArray); $count++)
+        for($count = 0; $count < count($line_array); $count++)
         {
             // Separate each word of a line into a multi-dimensional array
             // $count -> line number
-            $wordArray[$count] = mb_split(" ", $lineArray[$count]);
+            $word_array[$count] = mb_split(" ", $line_array[$count]);
 
             // Check for correct number of arguments for each line (>1)
-            if(count($wordArray[$count]) < 2)
+            if(count($word_array[$count]) < 2)
             {
-                $readSuccess = FALSE;
+                $read_success = FALSE;
                 $result["status"] = "error";
-                $result["message"] = $result["message"] . "Incorrect amount of field arguments on line: " . ($count + 1) . "\n";
-			
-			    //break;
+                $result["message"] = $result["message"] . 
+                "Incorrect amount of field arguments on line: " . 
+                ($count + 1) . "\n";
             }
 
 			else 
 	        {
 	        	
 	            // Check for correct number of minutes
-                if($wordArray[$count][0] < 50 || $wordArray[$count][0] > 300)
+                if($word_array[$count][0] < 50 || $word_array[$count][0] > 300)
 	            {
-	                $readSuccess = FALSE;
+	                $read_success = FALSE;
 	                $result["status"] = "error";
 	                $result["message"] = $result["message"] .
 	                "Incorrect entry for duration on line: " . ($count + 1) .
@@ -162,37 +162,39 @@ class Class_Time extends Eloquent {
 
 	            $days = " ";
 	            $time = " ";
-	            $tempWord = array();
-	            $tempWord = $wordArray[$count][1];
-	            $tempCount = 0;
-	            $tempCount2 = 0;
+	            $temp_word = array();
+	            $temp_word = $word_array[$count][1];
+	            $temp_count = 0;
+	            $temp_count_2 = 0;
 	  
 	            // Separating days and times & checking for a '/' 
-	            while($tempCount < strlen($tempWord) && $tempWord[$tempCount] != "/")
+	            while($temp_count < strlen($temp_word) && 
+                        $temp_word[$temp_count] != "/")
 	            {
-	                $days[$tempCount] = $tempWord[$tempCount];
-		            $tempCount++;
+	                $days[$temp_count] = $temp_word[$temp_count];
+		            $temp_count++;
 	            }
 
-	            if($tempCount == strlen($tempWord))
+	            if($temp_count == strlen($temp_word))
 	            {
-	                $readSuccess = FALSE;
+	                $read_success = FALSE;
 		            $result["status"] = "error";
 		            $result["message"] = $result["message"] .
 		            "Missing a '/' on line: " . ($count + 1) .
 		            "\n";
 	            }
 	  
-	            $tempCount++;
+	            $temp_count++;
 	  
-	            while($tempCount < strlen($tempWord))
+	            while($temp_count < strlen($temp_word))
 	            {
-	                $time[$tempCount2] = $tempWord[$tempCount];
-		            $tempCount++;
-		            $tempCount2++;
+	                $time[$temp_count_2] = $temp_word[$temp_count];
+		            $temp_count++;
+		            $temp_count_2++;
 	            }  
 
-                // Initializing $store[$count], letter indicators & $timeArray[$count]
+                // Initializing $store[$count], letter indicators & 
+                // $time_array[$count]
 	            for($j = 0; $j < 8; $j++)
 	            {
 	                $store[$count][$j] = 0;
@@ -205,12 +207,12 @@ class Class_Time extends Eloquent {
                 $f = 0;
                 $s = 0;
 		
-		        $timeArray[$count] = "";
+		        $time_array[$count] = "";
 	  
 	            // Checking for correct days 
 	            if(!ctype_alpha($days))
 	            {
-	                $readSuccess = FALSE;
+	                $read_success = FALSE;
 			        $result["status"] = "error";
 			        $result["message"] = $result["message"] .
 			        "Incorrect day entry on line: " . ($count + 1) .
@@ -219,15 +221,15 @@ class Class_Time extends Eloquent {
 		
 		        else
 		        {
-	                for($dayCount = 0; $dayCount < strlen($days) && strlen($days)
-	                    <= 6; $dayCount++)
+	                for($day_count = 0; $day_count < strlen($days) && 
+                        strlen($days) <= 6; $day_count++)
 	                {
 		  
-	                    if($days[$dayCount] == "M")
+	                    if($days[$day_count] == "M")
 		                {
 		  	                if($m == 1)
 		  	                {
-		  	                    $readSuccess = FALSE;
+		  	                    $read_success = FALSE;
 				                $result["status"] = "error";
 				                $result["message"] = $result["message"] .
 				                "Incorrect day entry on line: " . ($count + 1) .
@@ -241,11 +243,11 @@ class Class_Time extends Eloquent {
 			                }
 		                }
 		  
-		                else if($days[$dayCount] == "T")
+		                else if($days[$day_count] == "T")
 		                {
 		                    if($t == 1)
 		                    {
-		                        $readSuccess = FALSE;
+		                        $read_success = FALSE;
 				                $result["status"] = "error";
 				                $result["message"] = $result["message"] .
 				                "Incorrect day entry on line: " . ($count + 1) .
@@ -259,11 +261,11 @@ class Class_Time extends Eloquent {
 			                }
 		                }
 		  
-		                else if($days[$dayCount] == "W")
+		                else if($days[$day_count] == "W")
 		                {
 		                    if($w == 1)
 		                    {
-		                        $readSuccess = FALSE;
+		                        $read_success = FALSE;
 				                $result["status"] = "error";
 				                $result["message"] = $result["message"] .
 				                "Incorrect day entry on line: " . ($count + 1) .
@@ -277,11 +279,11 @@ class Class_Time extends Eloquent {
 			                }
 		                }
 		  
-		                else if($days[$dayCount] == "R")
+		                else if($days[$day_count] == "R")
 		                {
 		                    if($r == 1)
 		                    {
-		                        $readSuccess = FALSE;
+		                        $read_success = FALSE;
 				                $result["status"] = "error";
 				                $result["message"] = $result["message"] .
 				                "Incorrect day entry on line: " . ($count + 1) .
@@ -295,11 +297,11 @@ class Class_Time extends Eloquent {
 			                }
 		                }
 		  
-		                else if($days[$dayCount] == "F")
+		                else if($days[$day_count] == "F")
 		                {
 		                    if($f == 1)
 		                    {
-		                        $readSuccess = FALSE;
+		                        $read_success = FALSE;
 				                $result["status"] = "error";
 				                $result["message"] = $result["message"] .
 				                "Incorrect day entry on line: " . ($count + 1) .
@@ -313,11 +315,11 @@ class Class_Time extends Eloquent {
 			                }
 		                }
 		  
-		                else if($days[$dayCount] == "S")
+		                else if($days[$day_count] == "S")
 		                {
 		                    if($s == 1)
 		                    {
-		                        $readSuccess = FALSE;
+		                        $read_success = FALSE;
 				                $result["status"] = "error";
 				                $result["message"] = $result["message"] .
 				                "Incorrect day entry on line: " . ($count + 1) .
@@ -333,7 +335,7 @@ class Class_Time extends Eloquent {
 		  
                         else
                         {
-                            $readSuccess = FALSE;
+                            $read_success = FALSE;
 			                $result["status"] = "error";
 			                $result["message"] = $result["message"] .
 			                "Incorrect day entry on line: " . ($count + 1) .
@@ -348,7 +350,7 @@ class Class_Time extends Eloquent {
 	  
 	            if($success == FALSE)
 	            {
-	    	        $readSuccess = FALSE;
+	    	        $read_success = FALSE;
 	                $result["status"] = "error";
 		            $result["message"] = $result["message"] .
 		            "Incorrect time entry on line: " . ($count + 1) .
@@ -357,18 +359,18 @@ class Class_Time extends Eloquent {
 		
 		        else 
 		        {
-	                $timeArray[$count] = $time;
+	                $time_array[$count] = $time;
 		        }
 	  
 	            // Checking for correct times
 	            // These times were by themselves
-	            for($i = 2; $i < count($wordArray[$count]); $i++)
+	            for($i = 2; $i < count($word_array[$count]); $i++)
 	            {
-	                $success = is_correct_time($wordArray[$count][$i]);
+	                $success = is_correct_time($word_array[$count][$i]);
 
 		            if($success == FALSE)
 		            {
-		    	        $readSuccess = FALSE;
+		    	        $read_success = FALSE;
 		                $result["status"] = "error";
 			            $result["message"] = $result["message"] .
 			            "Incorrect time entry on line: " . ($count + 1) .
@@ -379,23 +381,24 @@ class Class_Time extends Eloquent {
         }
 
         // Input all entries into the database if there are no errors found
-        if($readSuccess == TRUE)
+        if($read_success == TRUE)
         {
         	// delete old records
             Class_Time::where_schedule_id($schedule_id)->delete();
 			// For testing purposes
 			
-            for($count = 0; $count < count($lineArray); $count++)
+            for($count = 0; $count < count($line_array); $count++)
             {
-                for($wordCount = 1; $wordCount < count($wordArray[$count]); $wordCount++)
+                for($wordCount = 1; $wordCount < count($word_array[$count]); 
+                    $wordCount++)
                 {
                     $new_time = new Class_Time;
                     $new_time->schedule_id = $schedule_id;
-                    $new_time->duration = $wordArray[$count][0];
+                    $new_time->duration = $word_array[$count][0];
                 
 				    if($wordCount == 1)
 				    {
-				        $new_time->starting_time = $timeArray[$count];
+				        $new_time->starting_time = $time_array[$count];
                         $new_time->monday = $store[$count][0];
                         $new_time->tuesday = $store[$count][1];
                         $new_time->wednesday = $store[$count][2];
@@ -406,7 +409,7 @@ class Class_Time extends Eloquent {
                 
 				    else
 				    {
-                        $new_time->starting_time = $wordArray[$count][$wordCount];
+                        $new_time->starting_time = $word_array[$count][$wordCount];
                         $new_time->monday = $store[$count][0];
                         $new_time->tuesday = $store[$count][1];
                         $new_time->wednesday = $store[$count][2];
@@ -441,7 +444,8 @@ class Class_Time extends Eloquent {
     public static function get_text($schedule_id)
     {
 
-        $entries = Class_Time::where_schedule_id($schedule_id)->order_by("id", "asc")->get();
+        $entries = Class_Time::where_schedule_id($schedule_id)->order_by("id", 
+                                "asc")->get();
         $text = "";
         $prev_days_string = "";
 
@@ -459,7 +463,8 @@ class Class_Time extends Eloquent {
                     $text .= "\n";
                 }
 
-                $text .= $entry->duration . " " . $cur_days_string . "/" . substr($entry->starting_time, 0, 5);
+                $text .= $entry->duration . " " . $cur_days_string . "/" . 
+                substr($entry->starting_time, 0, 5);
 
                 $prev_days_string = $cur_days_string;
             }
@@ -480,7 +485,8 @@ class Class_Time extends Eloquent {
     /* @input       $entry ->
     /* @output      $result ->
     /*************************************************************************/
-    public static function get_days_string($entry){
+    public static function get_days_string($entry)
+    {
 
         $result = "";
 

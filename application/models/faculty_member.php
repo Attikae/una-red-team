@@ -165,8 +165,8 @@ class Faculty_Member extends Eloquent {
 	                $readSuccess = FALSE;
 		            $result["status"] = "error";
 		            $result["message"] = $result["message"] .
-		            "Incorrect input for number of hours to teach on line: " . ($count + 1) .
-		            "\n";
+		            "Incorrect input for number of hours to teach on line: " . 
+                    ($count + 1) . "\n";
 	            }
             }
         }
