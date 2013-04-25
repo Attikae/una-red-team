@@ -47,9 +47,6 @@ class Output_Version extends Eloquent {
 
     $html .= "</tbody></table></div>";
 
-    error_log("Html is: ");
-    error_log($html);
-
     return $html;
 
   }

@@ -302,9 +302,10 @@
   </div>
 
   <div id="schedule-output-container">
+    <span id="active-container-label">Viewing: By Seniority</span>
     <div id="button-container">
       <div id="top-buttons-container">
-        <button id="show-seniorty">By Seniorty</button>
+        <button id="show-seniority">By Seniority</button>
         <button id="show-sumbission">By Order of Submission</button>
         <button id="hide-schedule-output">Hide Schedule</button>
       </div>
@@ -318,7 +319,7 @@
       </div>
     </div>
     <div id="schedule-inner-container">
-      <div id="seniorty-container" class="output-container">
+      <div id="seniority-container" class="output-container">
         Seniority
       </div>
       <div id="submission-container" class="output-container">

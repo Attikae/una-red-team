@@ -306,12 +306,12 @@ input[type=checkbox]
 
 }
 
-#seniorty-container
+#seniority-container
 {
   position: absolute;
   top: 20px;
   left: 20px;
-  display: none;
+  /* display: none; */
 }
 
 #submission-container
@@ -373,6 +373,15 @@ input[type=checkbox]
 .by-time
 {
   display: none;
+}
+
+#active-container-label
+{
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  color: #4f2e7f;
+  font-size: 22px;
 }
 
 

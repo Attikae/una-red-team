@@ -38,19 +38,28 @@ $(document).ready(function(){
 
 
   $(document).on('click', '.version-lnk', function(){
-
-    $("#schedule-output-container").show();
     ajaxDisplayOutput($(this));
   });
 
-  $("#show-seniorty").on('click', function(){
+  $("#show-seniority").on('click', function(){
+    var className = $(".output-container:visible").children(":visible").attr('class');
+    console.log("Click show seniority classname is: " + className);
     $("#submission-container").hide();
-    $("#seniorty-container").show();
+    $("#seniority-container").show();
+    $("#active-container-label").text("Viewing: By Seniority");
+    $("#seniority-container").children(":visible").hide();
+    $("#seniority-container").children("." + className).show();
+
   })
 
   $("#show-sumbission").on('click', function(){
-    $("#seniorty-container").hide();
+    var className = $(".output-container:visible").children(":visible").attr('class');
+    console.log("Click show submission classname is: " + className);
+    $("#seniority-container").hide();
     $("#submission-container").show();
+    $("#active-container-label").text("Viewing: By Preference Submissions");
+    $("#submission-container").children(":visible").hide();
+    $("#submission-container").children("." + className).show();
   })
 
   $("#hide-schedule-output").on('click', function(){
@@ -66,7 +75,7 @@ $(document).ready(function(){
     switch(id)
     {
       case "show-by-room":
-        $(container).children().hide();
+        $(container).children(":visible").hide();
         $(container).children('.by-room').show();
         break;
       case "show-by-class-name":
@@ -304,8 +313,13 @@ function ajaxDisplayOutput(span){
 
       //console.log("Made it to success");
 
-      $("#seniorty-container").html(data.seniority);
+      $("#seniority-container").html(data.seniority);
       $("#submission-container").html(data.submission);
+
+      $("#schedule-output-container").show();
+      $("#sumbission-container").hide();
+      $("#seniority-container").show();
+      $("#active-container-label").text("Viewing: By Seniority");
       //alert("It worked!");
       
     }

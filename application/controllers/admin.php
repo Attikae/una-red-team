@@ -211,24 +211,16 @@ class Admin_Controller extends Base_Controller
   public function post_display_output()
   {
 
-    error_log("in post_display_output");
 
     // for priority flag 0 is by seniority and 1 is by pref submission
     $schedule_id = Input::get('schedule_id');
     $output_version_id = Input::get('output_version_id');
 
-    error_log("Schedule id is: " . $schedule_id);
-    error_log("output id is: " . $output_version_id);
-
-    error_log("before sql call");
-
     $courses_0 = Scheduled_Course::where_output_version_id($output_version_id)
                                         ->where_priority_flag('0')->get();
-    error_log("in between sql calls");
     $courses_1 = Scheduled_Course::where_output_version_id($output_version_id)
                                         ->where_priority_flag('1')->get();
 
-    error_log("After sql calls");
 
     $class_name_html_0 = Output_Version::create_classes_by_class_name($courses_0);
     $room_html_0 = Output_Version::create_classes_by_room($courses_0);
@@ -242,7 +234,6 @@ class Admin_Controller extends Base_Controller
     $time_html_1 = Output_Version::create_classes_by_time($courses_1);
     $submission = $class_name_html_1 . $room_html_1 . $faculty_html_1 . $time_html_1;
 
-    error_log("Before echoing");
 
     echo json_encode(array("seniority" => $seniority, "submission" => $submission));
 
