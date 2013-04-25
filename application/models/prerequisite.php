@@ -98,7 +98,7 @@ class Prerequisite extends Eloquent
                 
             for($lineCount = 0; $lineCount < count($lineArray); $lineCount++)
             {
-                for($wordCount = 0; $wordCount < count($lineArray[$lineCount]); 
+                for($wordCount = 1; $wordCount < count($lineArray[$lineCount]); 
                         $wordCount++)
                 {
                     $new_prereq = new Prerequisite;
