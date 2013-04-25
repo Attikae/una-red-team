@@ -96,11 +96,12 @@ class Prerequisite extends Eloquent
             // Delete old records
             Prerequisite::where_schedule_id($schedule_id)->delete();
                 
-            for($lineCount = 0; $lineCount < count($lineArray); $lineCount++)
+            for($lineCount = 0; $lineCount < count($wordArray); $lineCount++)
             {
-                for($wordCount = 1; $wordCount < count($lineArray[$lineCount]); 
+                for($wordCount = 1; $wordCount < count($wordArray[$lineCount]); 
                         $wordCount++)
                 {
+                    error_log("Inner Loop");
                     $new_prereq = new Prerequisite;
                     $new_prereq->schedule_id = $schedule_id;
                     
@@ -109,9 +110,9 @@ class Prerequisite extends Eloquent
                     $new_prereq->prereq = $wordArray[$lineCount][$wordCount];
                     
                     $new_prereq->save();
-                }
-                
+                }                
             }
+            
             $result["status"] = "success";
         }
 
