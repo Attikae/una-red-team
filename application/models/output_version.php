@@ -53,21 +53,21 @@ class Output_Version extends Eloquent {
 
   public static function create_classes_by_room($courses){
     $html = "";
-    $html .= "<div class='by-room'>By Room</div>";
+    $html .= "<div class='by-room'>By Room: Under Construction</div>";
 
     return $html;
   }
 
   public static function create_classes_by_faculty($courses){
     $html = "";
-    $html .= "<div class='by-faculty'>By Faculty</div>";
+    $html .= "<div class='by-faculty'>By Faculty: Under Construction</div>";
 
     return $html;
   }
 
   public static function create_classes_by_time($courses){
     $html = "";
-    $html .= "<div class='by-time'>By Time</div>";
+    $html .= "<div class='by-time'>By Time: Under Construction</div>";
 
     return $html;
   }

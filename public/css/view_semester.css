@@ -174,8 +174,8 @@ input[type=file]
 #versions-list
 {
   position:       absolute;
-  width:          60px;
-  margin-left:    184px;
+  width:          400px;
+  margin-left:    90px;
   border-spacing: 10px 5px;
 }
 
@@ -201,6 +201,8 @@ input[type=file]
 {
   position: relative;
   color:    #eeb311;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .delete-version-lnk:hover

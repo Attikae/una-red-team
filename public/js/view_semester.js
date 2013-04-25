@@ -18,7 +18,10 @@ $(document).ready(function(){
 
 
   $(".delete-version-lnk").on("click",function(){
-    return false;
+    var deleteId = $(this).parents('tr').find('.version-lnk').attr('id');
+
+    ajaxDeleteVersion(deleteId);
+    
   });
 
   $("#file-submit-iframe").load( ajaxFileUpload );
@@ -326,6 +329,26 @@ function ajaxDisplayOutput(span){
   });
 
   //alert("Schedule Id is: " + scheduleId + " and outputVersionId is: " + outputVersionId);
+
+}
+
+function ajaxDeleteVersion(deleteId){
+
+  $.ajax({
+    url: "delete_version",
+    type: "POST",
+    data: {
+        version_id : deleteId
+    },
+    success: function(data) {
+
+      $("#" + deleteId).parents('tr').remove();
+      
+    }
+
+  }); 
+
+
 
 }
 

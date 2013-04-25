@@ -79,7 +79,7 @@
             {
               echo "<tr><td><span id='". $version->id ."' class='version-lnk'>"
                    . $version->name
-                   . "</span></td><td><a class='delete-version-lnk' href=''>delete</a></td></tr>";
+                   . "</span></td><td><span class='delete-version-lnk'>delete</span></td></tr>";
             }
           }
 
@@ -199,7 +199,7 @@
 
     <h1 id="pref-title">course preferences</h1>
 
-      <div class="course-div">
+      <!-- <div class="course-div">
         <div class="course-txt">
           CS 155
         </div>
@@ -292,7 +292,7 @@
           </div>
             
         </div>
-      </div>
+      </div> -->
 
       <div id="pref-btn-div">
         <button id="pref-submit-btn">submit</button>

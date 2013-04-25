@@ -239,4 +239,14 @@ class Admin_Controller extends Base_Controller
 
   }
 
+
+  public function post_delete_version()
+  {
+
+    $version_id = Input::get('version_id');
+
+    Output_Version::find($version_id)->delete();
+
+  }
+
 }
