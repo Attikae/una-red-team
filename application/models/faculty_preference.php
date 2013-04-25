@@ -50,7 +50,7 @@ class Faculty_Preference extends Eloquent {
                         $new_pref->day_sections = 0; 
                     }
 
-                    if($course->evening_sections > 0)
+                    if($course->night_sections > 0)
                     {
                         $new_pref->evening_sections = rand(0,$course->night_sections);  
                     }
