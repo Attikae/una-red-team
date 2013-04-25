@@ -69,18 +69,34 @@ class Scheduler {
             // Make sure faculty has day sections specified
             if( $section == 0 && $faculty->sections[$course_index][0] )
             {
+              error_log( "day section" );
             }
             // Make sure faculty has night sections specified
             else if( $section == 1 && $faculty->sections[$course_index][1] )
             {
               // Find best time/room combo
               // Give section to faculty
-              
+              error_log( "night section" );
+              foreach( $time_list as $time )
+              {
+                if( $course->credit_hours == $time->credit_hours )
+                {
+                  if( ( $course->room_type == $time->room_type ) || $time->room_type == 'B' )
+                  {
+                    if( !$time->is_taken )
+                    {
+                      error_log( "found suitable room!" );
+                    }
+                  }
+                }
+              }
 
             }
             // Make sure faculty has internet sections specified
             else if( $section == 2 && $faculty->sections[$course_index][2] )
             {
+
+              error_log( "hit interenet section" );
               // Give internet section to faculty
               // Decrement faculty hours
               $tmp_faculty = Faculty_Member::where_id( $faculty->faculty_id )->first();
@@ -112,7 +128,7 @@ class Scheduler {
         // If failed to schedule course section
         if( $scheduled == false )
         {
-          error_log( "FAILED TO SCHEDULE COURSE " . $course->course );
+          //error_log( "FAILED TO SCHEDULE COURSE " . $course->course );
         }
       }
 
@@ -315,10 +331,15 @@ class Scheduler {
       $i++;
     }
 
+
     // Shuffle the array so that the sections we
     // try to schedule will be spread out
     shuffle( $course_sections ); // CHANGE TO EQUAL DISTRIBUTION
 
+    foreach( $course_sections as $section )
+    {
+      error_log( $section );
+    }
     return $course_sections;
   }
 
