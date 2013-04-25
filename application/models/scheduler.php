@@ -21,13 +21,15 @@ class Scheduler {
     $course_list = Scheduler::get_course_list( $schedule_id );
     $faculty_list = Scheduler::get_faculty_list( $schedule_id, $course_list, 0 );
     $time_list = Scheduler::get_time_list( $schedule_id );
+    $conflict_list = Scheduler::get_conflict_list( $schedule_id );
 
     Scheduler::create_scheduled_courses( $schedule_id,
                                          $output_version->id,
                                          $course_list,
                                          $faculty_list,
                                          0,
-                                         $time_list );
+                                         $time_list,
+                                         $conflict_list );
 /*
     $faculty_list = Scheduler::get_faculty_list( $schedule_id, $course_list, 1 );
 
@@ -48,7 +50,8 @@ class Scheduler {
                                                    $course_list,
                                                    $faculty_list,
                                                    $faculty_priority,
-                                                   $time_list )
+                                                   $time_list,
+                                                   $conflict_list )
   {
     $course_index = 0;
 
@@ -101,7 +104,67 @@ class Scheduler {
               $room_id;
               $min_time = 100;
 
+
+              $i = 0;
+              $tmp_conflict_list;
+              foreach( $conflict_list as $conflict )
+              {
+                if( $conflict->course_id == $course->id )
+                {
+                  $tmp_conflict_list[$i] = clone $conflict;
+                  $i++;
+                }
+              }
+/*
+              foreach( $tmp_conflict_list as $conflict )
+              {
+                error_log( $course->course . " " . $conflict->start_offset . " " . $conflict->end_offset );
+                error_log( $conflict->days );
+              }
+ */
+              $new_time_list;
+              $i = 0;
               foreach( $time_list as $time )
+              {
+                foreach( $tmp_conflict_list as $conflict )
+                {
+                  $intersect = ($conflict->days & $time->days);
+                  if( strpos( $intersect, '1' ) ===  false )
+                  {
+                    $new_time_list[$i] = $time;
+                    $i++;
+                  }
+                  else
+                  {
+                    // Overlap! Continue checking
+                    // If the offset times intersect, toggle is_taken for time
+                    if( ( $conflict->start_offset >= $time->start_offset &&
+                          $conflict->start_offset <= $time->end_offset ) ||
+                        ( $conflict->end_offset >= $time->start_offset &&
+                          $conflict->end_offset <= $time->end_offset ) )
+                    {
+                      // Do nothing, removed conflict time
+                      error_log( "Removed conflict with " . $course->course );
+                    }
+                    else
+                    {
+                      $new_time_list[$i] = $time;
+                      $i++;
+                    }
+                  }
+                }
+              }
+
+              
+
+
+
+
+
+
+
+
+              foreach( $new_time_list as $time )
               {
                 if( $time->start_offset >= 660 ) // 660 is the beginning offset for 6:00pm
                 {
@@ -138,14 +201,8 @@ class Scheduler {
                 }
               }
 
-
-              //error_log( $course->course );
               if( $time_id )
               {
-                //error_log( "suitable time id = " . $time_id );
-
-                //error_log( ( "101101" & "010010" ) == true );
-
                 $tmp_faculty = Faculty_Member::where_id( $faculty->faculty_id )->first();
                 $user_id = $tmp_faculty->user_id;
                 $last_name = $tmp_faculty->last_name;
@@ -162,6 +219,7 @@ class Scheduler {
                   {
                     $tmp_time_blob = $time;
                     $time->is_taken = true;
+                    $time->course_id = $course->id;
                     break;
                   }
                 }
@@ -206,7 +264,8 @@ class Scheduler {
 
                 $daynight_section_num++;
 
-                error_log( $tmp_time_blob->starting_time . " " . 
+                error_log( $course->course . " " .
+                           $tmp_time_blob->starting_time . " " . 
                            $tmp_time_blob->duration . " " . 
                            $tmp_time_blob->building . " " . 
                            $tmp_time_blob->room_number . 
@@ -430,13 +489,14 @@ class Scheduler {
 
       // calculate start_offset, end_offset, and credit_hours
 
-      $start_time = strtotime( $x->starting_time );
-      
-      $hour = date( "H", $start_time );
-      $minute = date( "i", $start_time );
+      $start_offset;
+      $end_offset;
 
-      $start_offset = ($hour-7)*60 + $minute;
-      $end_offset = $start_offset + $x->duration;
+      Scheduler::get_start_end_offsets( $x->starting_time, 
+                                        $x->duration, 
+                                        $start_offset, 
+                                        $end_offset );
+
 
       $num_days = $x->monday +
                   $x->tuesday +
@@ -470,6 +530,8 @@ class Scheduler {
         $time_list[$i]->is_taken = false;
         $time_list[$i]->building = $y->building;
         $time_list[$i]->room_number = $y->room_number;
+
+        $time_list[$i]->course_id = NULL;
 
         $i++;
       }
@@ -514,4 +576,71 @@ class Scheduler {
     return $course_sections;
   }
 
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
+  public static function get_conflict_list( $schedule_id )
+  {
+    $conflict_times = Conflict_Time::where_schedule_id( $schedule_id )->get();
+
+    $conflict_list;
+
+    $i = 0;
+
+    foreach( $conflict_times as $conflict )
+    {
+      $tmp_course = Course_To_Schedule::where_course( $conflict->course )->first();
+      if( $tmp_course != NULL )
+      {
+        $conflict_list[$i] = new Conflict_Blob;
+        $conflict_list[$i]->course_id = $tmp_course->id;
+
+        $tmp_start_offset;
+        $tmp_end_offset;
+
+        // FIGURE OUT HOW TO FIND DURATION!!!!!!!!!!!!!!!!!!
+        $num_days = $conflict->monday +
+                    $conflict->tuesday +
+                    $conflict->wednesday +
+                    $conflict->thursday +
+                    $conflict->friday +
+                    $conflict->saturday;
+        $duration = intval((50*$tmp_course->credit_hours)/$num_days);
+        Scheduler::get_start_end_offsets( $conflict->start_time,
+                                          $duration,
+                                          $tmp_start_offset,
+                                          $tmp_end_offset );
+        $conflict_list[$i]->start_offset = $tmp_start_offset;
+        $conflict_list[$i]->end_offset = $tmp_end_offset;
+        $conflict_list[$i]->days = $conflict->monday . 
+                                   $conflict->tuesday .
+                                   $conflict->wednesday .
+                                   $conflict->thursday .
+                                   $conflict->friday .
+                                   $conflict->saturday;
+        $i++;
+      }
+    }
+
+    return $conflict_list;
+  }
+
+
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
+  public static function get_start_end_offsets( $start_time, 
+                                                $duration, 
+                                                &$start_offset, 
+                                                &$end_offset )
+  {
+    $tmp_start_time = strtotime( $start_time );
+      
+    $hour = date( "H", $tmp_start_time );
+    $minute = date( "i", $tmp_start_time );
+
+    $start_offset = ($hour-7)*60 + $minute;
+    $end_offset = $start_offset + $duration;
+        error_log( $start_offset . " " . $end_offset );
+  }
 }

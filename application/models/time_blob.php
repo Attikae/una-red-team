@@ -20,4 +20,8 @@ class Time_Blob {
 
   public $building;
   public $room_number;
+
+  //////////////////////////////////
+  //
+  public $course_id;
 }
