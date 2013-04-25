@@ -181,7 +181,45 @@ class Admin_Controller extends Base_Controller
   {
     $schedule_id = Input::get('schedule_id');
 
-    Scheduler::schedule_driver($schedule_id);
+    $schedule = Schedule::find($schedule_id)->first();
+
+    if( $schedule->has_available_rooms && $schedule->has_class_times &&
+        $schedule->has_courses_to_schedule && $schedule->has_faculty_members)
+    {
+      Scheduler::schedule_driver($schedule_id);
+
+      $result = array("status" => "success",
+                      "message" => "Scheduler called!");
+    }
+    else
+    {
+      $message = "Error!\n";
+
+      if (! $schedule->has_available_rooms)
+      {
+        $message .= "Missing Available Rooms Input\n";
+      }
+
+      if (! $schedule->has_class_times)
+      {
+        $message .= "Missing Class Times Input\n";
+      }
+
+      if(! $schedule->has_courses_to_schedule)
+      {
+        $message .= "Missing Courses To Schedule Input\n";
+      }
+
+      if(! $schedule->has_faculty_members)
+      {
+        $message .= "Missing Faculty Members Input\n";
+      }
+
+      $result = array("status" => "success",
+                      "message" => $message);
+    }
+
+    
 /*
     $time_list = Scheduler::get_time_list($schedule_id);
 
@@ -192,7 +230,7 @@ class Admin_Controller extends Base_Controller
 
     error_log( $contents );
  */ 
-    $result = array("status" => "error", "message" => "It works!");
+    //$result = array("status" => "error", "message" => "It works!");
 
     echo json_encode($result);
   }

@@ -185,6 +185,10 @@ class Course_To_Schedule extends Eloquent {
                 $new_course->save();
             }
             $result["status"] = "success";
+
+            $schedule = Schedule::find($schedule_id);
+            $schedule->has_courses_to_schedule = 1;
+            $schedule->save();
         }
 
         return $result;

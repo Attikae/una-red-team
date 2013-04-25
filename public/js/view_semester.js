@@ -265,7 +265,7 @@ function ajaxCallScheduler(element){
 
       if ( data.status == "success" )
       {
-        alert("Call to run scheduling algorithm worked!");
+        alert(data.message);
       }
       else if ( data.status == "error")
       {

@@ -421,6 +421,11 @@ class Class_Time extends Eloquent {
 				    $new_time->save();
                 }
             } 
+
+            $schedule = Schedule::find($schedule_id);
+            $schedule->has_class_times = 1;
+            $schedule->save();
+
             $result["status"] = "success";
         }
 

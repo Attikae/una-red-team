@@ -226,6 +226,10 @@ class Faculty_Member extends Eloquent {
                 $new_faculty->save();
             } 
             $result["status"] = "success";
+
+            $schedule = Schedule::find($schedule_id);
+            $schedule->has_faculty_members = 1;
+            $schedule->save();
         }
 
     return $result;	   

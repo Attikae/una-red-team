@@ -361,6 +361,10 @@ class Conflict_Time extends Eloquent {
                                 "saturday" => $store[$count][7]);
                 Conflict_Time::insert($fields);
             }
+
+            $schedule = Schedule::find($schedule_id);
+            $schedule->has_conflict_times = 1;
+            $schedule->save();
         }
         return $result;  
     }

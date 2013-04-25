@@ -114,6 +114,10 @@ class Prerequisite extends Eloquent
             }
             
             $result["status"] = "success";
+
+            $schedule = Schedule::find($schedule_id);
+            $schedule->has_prerequisites = 1;
+            $schedule->save();
         }
 
         return $result;

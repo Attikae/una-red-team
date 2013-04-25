@@ -139,6 +139,10 @@ class Available_Room extends Eloquent {
                 $new_room->room_number = $word_array[$count][3];
                 $new_room->save();
             } 
+
+            $schedule = Schedule::find($schedule_id);
+            $schedule->has_available_rooms = 1;
+            $schedule->save();
             
         }
 
