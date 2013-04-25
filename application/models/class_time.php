@@ -459,7 +459,7 @@ class Class_Time extends Eloquent {
                     $text .= "\n";
                 }
 
-                $text .= $entry->duration . " " . $cur_days_string . "/ " . substr($entry->starting_time, 0, 5);
+                $text .= $entry->duration . " " . $cur_days_string . "/" . substr($entry->starting_time, 0, 5);
 
                 $prev_days_string = $cur_days_string;
             }
