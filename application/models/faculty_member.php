@@ -172,20 +172,23 @@ class Faculty_Member extends Eloquent {
         }
 
         // Check for duplicates within the entries
-        for($lCount = 0; $lCount < count($wordArray); $lCount++)
-        {
-            $temp = $wordArray[$lCount][3];
-            for($wCount = $lCount + 1; $wCount < count($wordArray); $wCount++)
+        if($readSuccess == TRUE)
+		{
+            for($lCount = 0; $lCount < count($wordArray); $lCount++)
             {
-                if($temp == $wordArray[$wCount][3])
+                $temp = $wordArray[$lCount][3];
+                for($wCount = $lCount + 1; $wCount < count($wordArray); $wCount++)
                 {
-                    $readSuccess = FALSE;
-                    $result["status"] = "error";
-                    $result["message"] = $result["message"] . 
-                    "Duplicate email found on line: " . ($wCount + 1) . "\n";
+                    if($temp == $wordArray[$wCount][3])
+                    {
+                        $readSuccess = FALSE;
+                        $result["status"] = "error";
+                        $result["message"] = $result["message"] . 
+                        "Duplicate email found on line: " . ($wCount + 1) . "\n";
+                    }
                 }
             }
-        }
+		}
 
         // Input all entries into the database if there are no errors found
         if($readSuccess == TRUE)
