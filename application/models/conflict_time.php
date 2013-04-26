@@ -227,37 +227,37 @@ class Conflict_Time extends Eloquent {
                                 for ( $day_count = 0; $day_count < count($days) &&
                                     count($days) <= 6 ; $day_count++)
                                 {
-                                    if ($days[$$day_count] == 'M' || $days[$$day_count] == "T" ||
-                                        $days[$$day_count] == "W" || $days[$$day_count] == "R" ||
-                                        $days[$$day_count]== "F" || $days[$$day_count] == "S")
+                                    if ($days[$day_count] == 'M' || $days[$day_count] == "T" ||
+                                        $days[$day_count] == "W" || $days[$day_count] == "R" ||
+                                        $days[$day_count]== "F" || $days[$day_count] == "S")
                                     {
 
-                                        if ($days[$$day_count] == "M")
+                                        if ($days[$day_count] == "M")
                                         {
                                             $store[$store_count][2] = 1;
                                         }
                                         
-                                        elseif ($days[$$day_count] == "T")
+                                        elseif ($days[$day_count] == "T")
                                         {
                                             $store[$store_count][3] = 1;
                                         }
                                         
-                                        elseif ($days[$$day_count] == "W")
+                                        elseif ($days[$day_count] == "W")
                                         {
                                             $store[$store_count][4] = 1;
                                         }
                                         
-                                        elseif ($days[$$day_count] == "R")
+                                        elseif ($days[$day_count] == "R")
                                         {
                                             $store[$store_count][5] = 1;
                                         }
                                         
-                                        elseif ($days[$$day_count] == "F")
+                                        elseif ($days[$day_count] == "F")
                                         {
                                             $store[$store_count][6] = 1;
                                         }
                                         
-                                        elseif ($days[$$day_count] == "S")
+                                        elseif ($days[$day_count] == "S")
                                         {
                                             $store[$store_count][7] = 1;
                                         }
@@ -304,6 +304,8 @@ class Conflict_Time extends Eloquent {
             if($empty_line == false)
                 $store_count++;
         }
+
+        error_log("Pass conflict scanne first for");
     
         $duplicate = false;
         
