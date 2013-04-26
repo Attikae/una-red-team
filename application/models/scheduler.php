@@ -39,7 +39,10 @@ class Scheduler {
                                          $faculty_list,
                                          1,
                                          $time_list );
+
  */
+
+    return $output_version->id;
   }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -104,9 +107,9 @@ class Scheduler {
               $room_id;
               $min_time = 100;
 
-
+              error_log("Before declearing tmp conflict list");
               $i = 0;
-              $tmp_conflict_list;
+              $tmp_conflict_list = array();
               foreach( $conflict_list as $conflict )
               {
                 if( $conflict->course_id == $course->id )
@@ -115,15 +118,21 @@ class Scheduler {
                   $i++;
                 }
               }
-/*
+
+              error_log("After creating tmp conflict list to courses");
+/*      
               foreach( $tmp_conflict_list as $conflict )
               {
                 error_log( $course->course . " " . $conflict->start_offset . " " . $conflict->end_offset );
                 error_log( $conflict->days );
               }
- */
-              $new_time_list;
+ */           error_log("Tmp conflict list count is: " . count($tmp_conflict_list));
+              $new_time_list = array();
               $i = 0;
+
+              // Our issue here is that if there were no conflicts. the new time list doesn't get made at all
+              // Looked into the php array functions. I think we might could use the unset() function to remove
+              // a conflicting element from the array
               foreach( $time_list as $time )
               {
                 foreach( $tmp_conflict_list as $conflict )
@@ -160,7 +169,7 @@ class Scheduler {
 
 
 
-
+            error_log("After checking for conflicts");
 
 
 

@@ -17,7 +17,7 @@ $(document).ready(function(){
   $(".file-btn").on("click",toggleFileDiv);
 
 
-  $(".delete-version-lnk").on("click",function(){
+  $(document).on("click", ".delete-version-lnk", function(){
     var deleteId = $(this).parents('tr').find('.version-lnk').attr('id');
 
     ajaxDeleteVersion(deleteId);
@@ -265,7 +265,9 @@ function ajaxCallScheduler(element){
 
       if ( data.status == "success" )
       {
+        $("#versions-list").append(data.html);
         alert(data.message);
+
       }
       else if ( data.status == "error")
       {

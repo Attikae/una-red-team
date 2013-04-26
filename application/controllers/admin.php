@@ -186,10 +186,17 @@ class Admin_Controller extends Base_Controller
     if( $schedule->has_available_rooms && $schedule->has_class_times &&
         $schedule->has_courses_to_schedule && $schedule->has_faculty_members)
     {
-      Scheduler::schedule_driver($schedule_id);
+      $version_id = Scheduler::schedule_driver($schedule_id);
+
+      $version = Output_Version::find($version_id);
+
+      $html = "<tr><td><span id='". $version->id ."' class='version-lnk'>"
+      . $version->name
+      . "</span></td><td><span class='delete-version-lnk'>delete</span></td></tr>";
 
       $result = array("status" => "success",
-                      "message" => "Scheduler called!");
+                      "message" => "Scheduler called!",
+                      "html" => $html);
     }
     else
     {
