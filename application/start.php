@@ -74,8 +74,6 @@ Autoloader::map(array(
   'Scheduled_Course' => path('app').'models/scheduled_course.php',
   'Time_Blob' => path('app').'models/time_blob.php',
   'Conflict_Blob' => path('app').'models/conflict_blob.php',
-
-
 ));
 
 /*
