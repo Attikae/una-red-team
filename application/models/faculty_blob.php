@@ -6,6 +6,4 @@ class Faculty_Blob {
   public $sections;
   public $day_prefs;
   public $hours;
-
-
 }

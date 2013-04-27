@@ -12,7 +12,7 @@ class Time_Blob {
   public $duration;
 
   ///////////////////////////////////
-  //
+  
   public $room_id;
   public $room_type;
   public $room_size;
@@ -22,6 +22,8 @@ class Time_Blob {
   public $room_number;
 
   //////////////////////////////////
-  //
+  
   public $course_id;
+  public $course_name;
+  public $faculty_id;
 }

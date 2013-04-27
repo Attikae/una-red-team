@@ -21,16 +21,16 @@ class Scheduler {
     $course_list = Scheduler::get_course_list( $schedule_id );
     $faculty_list = Scheduler::get_faculty_list( $schedule_id, $course_list, 0 );
     $time_list = Scheduler::get_time_list( $schedule_id );
-    $conflict_list = Scheduler::get_conflict_list( $schedule_id );
 
+    error_log( "before scheduler" );
     Scheduler::create_scheduled_courses( $schedule_id,
                                          $output_version->id,
                                          $course_list,
                                          $faculty_list,
                                          0,
-                                         $time_list,
-                                         $conflict_list );
-/*
+                                         $time_list );
+    error_log( "after scheduler" );
+
     $faculty_list = Scheduler::get_faculty_list( $schedule_id, $course_list, 1 );
 
     Scheduler::create_scheduled_courses( $schedule_id,
@@ -38,10 +38,8 @@ class Scheduler {
                                          $course_list,
                                          $faculty_list,
                                          1,
-                                         $time_list );
-
- */
-
+                                         $time_list,
+                                         $conflict_list );
     return $output_version->id;
   }
 
@@ -53,8 +51,7 @@ class Scheduler {
                                                    $course_list,
                                                    $faculty_list,
                                                    $faculty_priority,
-                                                   $time_list,
-                                                   $conflict_list )
+                                                   $time_list )
   {
     $course_index = 0;
 
@@ -66,11 +63,16 @@ class Scheduler {
       $daynight_section_num = 1;
       $internet_section_num = 1;
 
+      $conflict_list = Scheduler::get_conflict_list( $schedule_id, $course );
+      $prereq_list = Scheduler::get_prereq_list( $schedule_id, $course );
+
+      error_log( "COURSE = " . $course->course . " --------------------------" );
+
       foreach( $section_list as $section )
       {
         $scheduled = false;
 
-        foreach( $faculty_list as $faculty )
+        foreach( $faculty_list as $key => $faculty )
         {
           // If faculty has enough hours to teach course
           if( $faculty->hours >= $course->credit_hours )
@@ -79,134 +81,51 @@ class Scheduler {
             if( $section == 0 && $faculty->sections[$course_index][0] )
             {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
-            // Make sure faculty has night sections specified
             else if( $section == 1 && $faculty->sections[$course_index][1] )
             {
               // Find best time/room combo
               // Give section to faculty
-              
+
+              $tmp_time_list = Scheduler::get_valid_time_list( $schedule_id,
+                                                               $time_list,
+                                                               $conflict_list,
+                                                               $prereq_list,
+                                                               $section,
+                                                               $course );
+            //error_log("After checking for conflicts");
+
+
+
               $time_id = 0;
               $room_id;
               $min_time = 100;
 
-              error_log("Before declearing tmp conflict list");
-              $i = 0;
-              $tmp_conflict_list = array();
-              foreach( $conflict_list as $conflict )
+              foreach( $tmp_time_list as $time )
               {
-                if( $conflict->course_id == $course->id )
+                if( ( $course->room_type == $time->room_type ) || $time->room_type == 'B' )
                 {
-                  $tmp_conflict_list[$i] = clone $conflict;
-                  $i++;
-                }
-              }
-
-              error_log("After creating tmp conflict list to courses");
-/*      
-              foreach( $tmp_conflict_list as $conflict )
-              {
-                error_log( $course->course . " " . $conflict->start_offset . " " . $conflict->end_offset );
-                error_log( $conflict->days );
-              }
- */           error_log("Tmp conflict list count is: " . count($tmp_conflict_list));
-              $new_time_list = array();
-              $i = 0;
-
-              // Our issue here is that if there were no conflicts. the new time list doesn't get made at all
-              // Looked into the php array functions. I think we might could use the unset() function to remove
-              // a conflicting element from the array
-              foreach( $time_list as $time )
-              {
-                foreach( $tmp_conflict_list as $conflict )
-                {
-                  $intersect = ($conflict->days & $time->days);
-                  if( strpos( $intersect, '1' ) ===  false )
+                  if( $course->credit_hours == $time->credit_hours )
                   {
-                    $new_time_list[$i] = $time;
-                    $i++;
+                    $time_id = $time->class_time_id;
+                    $room_id = $time->room_id;
+                    break;          
                   }
-                  else
+                  else if( $course->credit_hours <= $time->credit_hours )
                   {
-                    // Overlap! Continue checking
-                    // If the offset times intersect, toggle is_taken for time
-                    if( ( $conflict->start_offset >= $time->start_offset &&
-                          $conflict->start_offset <= $time->end_offset ) ||
-                        ( $conflict->end_offset >= $time->start_offset &&
-                          $conflict->end_offset <= $time->end_offset ) )
+                    if( $time->credit_hours < $min_time )
                     {
-                      // Do nothing, removed conflict time
-                      error_log( "Removed conflict with " . $course->course );
-                    }
-                    else
-                    {
-                      $new_time_list[$i] = $time;
-                      $i++;
-                    }
-                  }
-                }
-              }
-
-              
-
-
-
-
-            error_log("After checking for conflicts");
-
-
-
-              foreach( $new_time_list as $time )
-              {
-                if( $time->start_offset >= 660 ) // 660 is the beginning offset for 6:00pm
-                {
-                  if( !$time->is_taken )
-                  {
-                    if( ( $course->room_type == $time->room_type ) || $time->room_type == 'B' )
-                    {
-                      if( $course->credit_hours == $time->credit_hours )
-                      {
-                        $time_id = $time->class_time_id;
-                        $room_id = $time->room_id;
-                        break;          
-                      }
-                      else if( $course->credit_hours <= $time->credit_hours )
-                      {
-                        if( $time->credit_hours < $min_time )
-                        {
-                          $min_time = $time->credit_hours;
-                          $time_id = $time->class_time_id;
-                          $room_id = $time->room_id;
-                        }           
-                      }
-                      else
-                      {
-                      }
-                    } 
-                    else
-                    {
-                    }
+                      $min_time = $time->credit_hours;
+                      $time_id = $time->class_time_id;
+                      $room_id = $time->room_id;
+                    }           
                   }
                   else
                   {
                   }
+                } 
+                else
+                {
                 }
               }
 
@@ -222,13 +141,14 @@ class Scheduler {
                 
                 $tmp_time_blob = new Time_Blob;
 
-                foreach( $time_list as $time )
+                foreach( $time_list as $key2 => $time )
                 {
                   if( $time->class_time_id == $time_id && $time->room_id == $room_id )
                   {
                     $tmp_time_blob = $time;
-                    $time->is_taken = true;
-                    $time->course_id = $course->id;
+                    $time_list[$key2]->is_taken = true;
+                    $time_list[$key2]->course_id = $course->id;
+                    $time_list[$key2]->course_name = $course->course;
                     break;
                   }
                 }
@@ -283,7 +203,7 @@ class Scheduler {
                 error_log( $tmp_time_blob->days );
                 error_log( "//////////////" );
 
-            
+         
                 Scheduled_Course::Create( array(
                   "output_version_id" => $output_id,
                   "priority_flag"     => $faculty_priority,
@@ -292,6 +212,7 @@ class Scheduler {
                   "course"            => $course->course,
                   "section_number"    => $section_number, 
                   "course_type"       => $course->room_type,
+                  "credit_hours"      => $course->credit_hours,
                   "start_time"        => $tmp_time_blob->starting_time,
                   "duration"          => $tmp_time_blob->duration,
                   "building"          => $tmp_time_blob->building,
@@ -305,8 +226,8 @@ class Scheduler {
                 ) );
 
                 // Decrement hours and sections
-                $faculty->hours -= $course->credit_hours;
-                $faculty->sections[$course_index][1] -= 1;
+                $faculty_list[$key]->hours -= $course->credit_hours;
+                $faculty_list[$key]->sections[$course_index][1] -= 1;
 
                 $scheduled = true;
                 break;
@@ -451,7 +372,7 @@ class Scheduler {
   {
     $courses = Course_To_Schedule::where_schedule_id($schedule_id)->get();
 
-    $course_list;
+    $course_list = array();
     $i = 0;
     foreach( $courses as $x )
     {
@@ -489,7 +410,7 @@ class Scheduler {
     $class_times = Class_Time::where_schedule_id($schedule_id)->get();
     $avail_rooms = Available_Room::where_schedule_id($schedule_id)->get();
 
-    $time_list;
+    $time_list = array();
 
     $i = 0;
 
@@ -497,7 +418,7 @@ class Scheduler {
     {
 
       // calculate start_offset, end_offset, and credit_hours
-
+      // get string representing days of week
       $start_offset;
       $end_offset;
 
@@ -505,8 +426,6 @@ class Scheduler {
                                         $x->duration, 
                                         $start_offset, 
                                         $end_offset );
-
-
       $num_days = $x->monday +
                   $x->tuesday +
                   $x->wednesday +
@@ -516,17 +435,21 @@ class Scheduler {
 
       $credit_hours = intval(($x->duration*$num_days)/50);
 
+      $days = $x->monday .
+              $x->tuesday .
+              $x->wednesday .
+              $x->thursday .
+              $x->friday .
+              $x->saturday;
+
       foreach( $avail_rooms as $y )
       {
+        // Fill Time_Blob object with info
         $time_list[$i] = new Time_Blob;
 
         $time_list[$i]->class_time_id = $x->id;
-        $time_list[$i]->days = $x->monday .
-                               $x->tuesday .
-                               $x->wednesday .
-                               $x->thursday .
-                               $x->friday .
-                               $x->saturday;
+        $time_list[$i]->days = $days;
+
         $time_list[$i]->starting_time = $x->starting_time;
         $time_list[$i]->duration = $x->duration;
         $time_list[$i]->start_offset = $start_offset;
@@ -545,6 +468,9 @@ class Scheduler {
         $i++;
       }
     }
+
+    shuffle( $time_list );
+
     return $time_list;
   }
 
@@ -577,7 +503,6 @@ class Scheduler {
       $i++;
     }
 
-
     // Shuffle the array so that the sections we
     // try to schedule will be spread out
     shuffle( $course_sections ); // CHANGE TO EQUAL DISTRIBUTION
@@ -588,21 +513,19 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  public static function get_conflict_list( $schedule_id )
+  public static function get_conflict_list( $schedule_id, $course )
   {
-    $conflict_times = Conflict_Time::where_schedule_id( $schedule_id )->get();
-
-    $conflict_list;
+    $conflict_times = Conflict_Time::where_schedule_id( $schedule_id )
+                                     ->where_course( $course->course )->get();
+    $conflict_list = array();
 
     $i = 0;
 
-    foreach( $conflict_times as $conflict )
+    if( !empty($conflict_times) )
     {
-      $tmp_course = Course_To_Schedule::where_course( $conflict->course )->first();
-      if( $tmp_course != NULL )
+      foreach( $conflict_times as $conflict )
       {
         $conflict_list[$i] = new Conflict_Blob;
-        $conflict_list[$i]->course_id = $tmp_course->id;
 
         $tmp_start_offset;
         $tmp_end_offset;
@@ -614,13 +537,17 @@ class Scheduler {
                     $conflict->thursday +
                     $conflict->friday +
                     $conflict->saturday;
-        $duration = intval((50*$tmp_course->credit_hours)/$num_days);
+
+        $duration = intval((50*$course->credit_hours)/$num_days);
+
         Scheduler::get_start_end_offsets( $conflict->start_time,
                                           $duration,
                                           $tmp_start_offset,
                                           $tmp_end_offset );
+
         $conflict_list[$i]->start_offset = $tmp_start_offset;
         $conflict_list[$i]->end_offset = $tmp_end_offset;
+
         $conflict_list[$i]->days = $conflict->monday . 
                                    $conflict->tuesday .
                                    $conflict->wednesday .
@@ -631,7 +558,30 @@ class Scheduler {
       }
     }
 
-    return $conflict_list;
+    return $conflict_list; // CAN BE EMPTY!!
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
+  public static function get_prereq_list( $schedule_id, $course )
+  {
+    $prereqs = Prerequisite::where_schedule_id( $schedule_id )
+                            ->where_course( $course->course )->get();
+
+    $prereq_list = array();
+
+    if( !empty($prereqs) )
+    {
+      $i = 0;
+      foreach( $prereqs as $pre )
+      {
+        $prereq_list[$i] = $pre->prereq;
+        $i++;
+      }
+    }
+
+    return $prereq_list;
   }
 
 
@@ -650,6 +600,119 @@ class Scheduler {
 
     $start_offset = ($hour-7)*60 + $minute;
     $end_offset = $start_offset + $duration;
-        error_log( $start_offset . " " . $end_offset );
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
+  public static function get_valid_time_list( $schedule_id,
+                                              $time_list,
+                                              $conflict_list,
+                                              $prereq_list,
+                                              $section,
+                                              $course )
+  {
+    // Remove times that aren't pre reqs that are already scheduled
+
+    if( filter_var( $course->course, FILTER_SANITIZE_NUMBER_INT) >= 300 )
+    {
+      foreach( $time_list as $key => $time )
+      {
+        if( $time->is_taken &&
+            filter_var( $time->course_name, FILTER_SANITIZE_NUMBER_INT ) >= 300 )
+        {
+          if( !empty( $prereq_list ) )
+          {
+            if( !in_array( $time->course_name, $prereq_list ) )
+            {
+              unset( $time_list[$key] );
+            }
+          }
+          else
+          {
+            unset( $time_list[$key] );
+          }
+        }
+      }
+    }
+
+    array_values( $time_list );
+
+    // Remove times already taken
+    // Remove times not in the time range of section
+
+    foreach( $time_list as $key => $time )
+    {
+      if( $time->is_taken == 1 )
+      {
+        unset( $time_list[$key] );
+      }
+      else if( $section == 0 )
+      {
+        if( $time->start_offset >= 660 )
+        {
+          unset( $time_list[$key] );
+        }
+      }
+      else if( $section == 1 )
+      {
+        if( $time->start_offset < 660 )
+        {
+          unset( $time_list[$key] );
+        }
+      }
+    }
+
+    array_values( $time_list );
+
+    // Remove conflict times
+
+    if( !empty( $conflict_list ) )
+    {
+      foreach( $time_list as $key => $time )
+      {
+        foreach( $conflict_list as $conflict )
+        {
+          if( Scheduler::is_intersected( $conflict->days,
+                                         $time->days,
+                                         $conflict->start_offset,
+                                         $conflict->end_offset,
+                                         $time->start_offset,
+                                         $time->end_offset ) )
+          {
+            unset( $time_list[$key] );
+            break;
+          }
+        }
+      } 
+    }
+
+    array_values( $time_list );
+
+
+    return $time_list; // CAN BE EMPTY
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
+  public static function is_intersected( $days1, $days2, 
+                                         $start1, $end1, 
+                                         $start2, $end2 )
+  {
+    $intersect = false;
+    $day_str = ( $days1 & $days2 );
+    if( strpos( $day_str, '1' ) !== false )
+    {
+      if( ( $start1 >= $start2 &&
+            $start1 <= $end2 ) ||
+          ( $end1 >= $start2 &&
+            $end1 <= $end2 ) )
+      {
+        $intersect = true;
+      }
+    }
+
+    return $intersect;
   }
 }
