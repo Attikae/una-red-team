@@ -292,6 +292,8 @@ class Admin_Controller extends Base_Controller
 
     Output_Version::find($version_id)->delete();
 
+    Scheduled_Course::where_output_version_id($version_id)->delete();
+
   }
 
 }

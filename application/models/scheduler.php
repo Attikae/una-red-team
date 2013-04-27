@@ -39,6 +39,9 @@ class Scheduler {
                                          $faculty_list,
                                          1,
                                          $time_list );
+
+    Scheduler::copyUsedInput($schedule_id, $output_version->id);
+
     return $output_version->id;
   }
 
@@ -828,5 +831,40 @@ error_log( "5" );
     }
 
     return $intersect;
+  }
+
+  public static function copyUsedInput($schedule_id, $output_version_id)
+  {
+
+    error_log("In copy used input");
+    $rooms = Available_Room::where_schedule_id($schedule_id)->get();
+    $faculty_members = Faculty_Member::where_schedule_id($schedule_id)->get();
+
+    foreach($rooms as $room)
+    {
+      $new_room = new Available_Room;
+      $new_room->output_version_id = $output_version_id;
+      $new_room->type = $room->type;
+      $new_room->size = $room->size;
+      $new_room->building = $room->building;
+      $new_room->room_number = $room->room_number;
+      $new_room->save();
+    }
+
+    error_log("before faculty members copy");
+    foreach($faculty_members as $faculty) {
+      error_log("in for");
+      $new_faculty = new Faculty_Member;
+      $new_faculty->user_id = $faculty->user_id;
+      $new_faculty->schedule_id = 0;
+      $new_faculty->output_version_id = $output_version_id;
+      $new_faculty->first_name = $faculty->first_name;
+      $new_faculty->last_name = $faculty->last_name;
+      $new_faculty->years_of_service = $faculty->years_of_service;
+      $new_faculty->hours = $faculty->hours;
+      error_log("before save");
+      $new_faculty->save();
+      error_log('afeter');
+    }
   }
 }

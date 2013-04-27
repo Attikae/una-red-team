@@ -45,7 +45,10 @@ class Output_Version extends Eloquent {
 
   public static function create_classes_by_room($courses){
     $html = "";
-    $html .= "<div class='by-room'>By Room: Under Construction</div>";
+    $html .= "<div class='by-room'>";
+
+
+    $html .= "</div>";
 
     return $html;
   }
