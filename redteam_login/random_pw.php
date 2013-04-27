@@ -24,7 +24,7 @@ function generatePassword($length=9, $strength=0) {
 		$consonants .= '23456789';
 	}
 	if ($strength & 8) {
-		$consonants .= '@#$%';
+		$consonants .= ',?!_';
 	}
  
 	$password = '';
