@@ -214,6 +214,13 @@ class Conflict_Time extends Eloquent {
                                 $correct = false;
                             }
                             
+							$m = 0;
+							$t = 0;
+							$w = 0;
+							$r = 0;
+							$f = 0;
+							$s = 0;
+							
                             // Setting the tables value days to 0.
                             $store[$store_count][2] = 0; 
                             $store[$store_count][3] = 0;
@@ -232,36 +239,50 @@ class Conflict_Time extends Eloquent {
                                         $days[$day_count]== "F" || $days[$day_count] == "S")
                                     {
 
-                                        if ($days[$day_count] == "M")
+                                        if ($days[$day_count] == "M"  && $m == 0)
                                         {
                                             $store[$store_count][2] = 1;
+											$m = 1;
                                         }
                                         
-                                        elseif ($days[$day_count] == "T")
+                                        elseif ($days[$day_count] == "T"  && $t == 0)
                                         {
                                             $store[$store_count][3] = 1;
+											$t = 1;
                                         }
                                         
-                                        elseif ($days[$day_count] == "W")
+                                        elseif ($days[$day_count] == "W"  && $w == 0)
                                         {
                                             $store[$store_count][4] = 1;
+											$w = 1;
                                         }
                                         
-                                        elseif ($days[$day_count] == "R")
+                                        elseif ($days[$day_count] == "R"  && $r == 0)
                                         {
                                             $store[$store_count][5] = 1;
+											$r = 1;
                                         }
                                         
-                                        elseif ($days[$day_count] == "F")
+                                        elseif ($days[$day_count] == "F"  && $f == 0)
                                         {
                                             $store[$store_count][6] = 1;
+											$f = 1;
                                         }
                                         
-                                        elseif ($days[$day_count] == "S")
+                                        elseif ($days[$day_count] == "S"  && $s == 0)
                                         {
                                             $store[$store_count][7] = 1;
+											$s = 1;
                                         }
-                                        
+										
+										else 
+										{
+										    $result["status"] = "error";
+											$result["message"] = $result["message"] .
+											"\nDuplicate day entries have been inputted on line " .
+											($i + 1) . '.';
+											$correct = false;
+										}
                                     }
                                     
                                     // Not a correct day
