@@ -365,6 +365,24 @@ input[type=checkbox]
 .class-name-table td
 {
   border: 1px solid black;
+  text-align: center;
+}
+
+.faculty-table
+{
+  /* border-collapse: collapse; */
+}
+
+.faculty-table th
+{
+  /* border: 1px solid black; */
+    padding: 20px;
+} 
+
+.faculty-table td
+{
+  /* border: 1px solid black; */
+  text-align: center;
 }
 
 .by-faculty
