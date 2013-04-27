@@ -63,8 +63,14 @@ class Faculty_Preference extends Eloquent {
                     $new_pref->save();
                 
                 } // end foreach course
+
+                Faculty_Member::where_id($faculty_member->id)
+                             ->update(array('updated_prefs_at' => DB::raw('NOW()')));
+                            
+
             } // end foreach faculty member
             return array("message" => "Facutly prefs filled!");
+
         } // end if
         else
         {
