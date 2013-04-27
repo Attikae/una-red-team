@@ -2,7 +2,9 @@
 
 class Faculty_Blob {
 
-  public $faculty_id;
+  public $id;
+  public $user_id;
+  public $name;
   public $sections;
   public $day_prefs;
   public $hours;
