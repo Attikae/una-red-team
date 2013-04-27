@@ -60,6 +60,14 @@ class Available_Room extends Eloquent {
                     "Incorrect size of room on line " . ($i+1) . ".\n";
                 }
                 
+                if(!mb_ereg_match('^\d{1,3}$', $word_array[$i][1]))
+                {
+                    $success = false;
+                    $result['status'] = "error";
+                    $result['message'] = $result['message'] . 
+                    "Incorrect size of room on line " . ($i+1) . ".\n";
+                }
+                
                 //Building name must contain all alphabetic characters
                 if((!mb_ereg_match('^[A-Z]+$', $word_array[$i][2])) || 
                    (strlen($word_array[$i][2]) > 6) || 
