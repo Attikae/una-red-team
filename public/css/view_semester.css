@@ -404,5 +404,12 @@ input[type=checkbox]
   font-size: 22px;
 }
 
+.time-row
+{
+  width: 900px;
+  height: 70px;
+  background-color: white;
+}
+
 
 

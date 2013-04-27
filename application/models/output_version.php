@@ -43,15 +43,53 @@ class Output_Version extends Eloquent {
 
   }
 
-  public static function create_classes_by_room($courses){
+
+
+
+
+
+  public static function create_classes_by_room($courses, $output_version_id){
     $html = "";
     $html .= "<div class='by-room'>";
 
+    $html_array = array();
+
+    $rooms = Available_Room::where_output_version_id($output_version_id)->get();
+
+
+
+    for($i = 0; $i < count($rooms); $i++)
+    {
+
+      $room_text = $rooms[$i]->building . " " . $rooms[$i]->room_number;
+      $room_vertical_text = Output_Version::createVerticalHtml($room_text);
+
+      $html_array[$i] = "<table class='room-table'>" .
+                        "<tr><td>Times</td></tr>" .
+                        "<tr><td rowspan='8'>" . $room_vertical_text . "</td></tr>" .
+                        "<tr><td>Monday</td><td><div class='time-row'></div></td></tr>" .
+                        "<tr><td>Tuesday</td><td><div class='time-row'></div></td></tr>" .
+                        "<tr><td>Wednesday</td><td><div class='time-row'></div></td></tr>" .
+                        "<tr><td>Thursday</td><td><div class='time-row'></div></td></tr>" .
+                        "<tr><td>Friday</td><td><div class='time-row'></div></td></tr>" .
+                        "<tr><td>Saturday</td><td><div class='time-row'></div></td></tr>" .
+                        "</table>";
+    }
+
+    for($i = 0; $i < count($html_array); $i++)
+    {
+      $html .= $html_array[$i];
+    }
 
     $html .= "</div>";
 
     return $html;
   }
+
+
+
+
+
 
   public static function create_classes_by_faculty($courses){
 
@@ -309,9 +347,16 @@ class Output_Version extends Eloquent {
       $timestamp += ($duration * 60);
       $end_formatted = date('g:i a', $timestamp);     
     }
+  }
 
+  public static function createVerticalHtml($room_text)
+  {
+    $vertical_text = "";
+    for($i = 0; $i < strlen($room_text); $i++)
+    {
+      $vertical_text .= $room_text[$i] . "</br>"; 
+    }
 
-
-
+    return $vertical_text;
   }
 }

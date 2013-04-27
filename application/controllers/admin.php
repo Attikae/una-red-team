@@ -268,13 +268,13 @@ class Admin_Controller extends Base_Controller
 
 
     $class_name_html_0 = Output_Version::create_classes_by_class_name($courses_0);
-    $room_html_0 = Output_Version::create_classes_by_room($courses_0);
+    $room_html_0 = Output_Version::create_classes_by_room($courses_0, $output_version_id);
     $faculty_html_0 = Output_Version::create_classes_by_faculty($courses_0);
     $time_html_0 = Output_Version::create_classes_by_time($courses_0);
     $seniority = $class_name_html_0 . $room_html_0 . $faculty_html_0 . $time_html_0;
 
     $class_name_html_1 = Output_Version::create_classes_by_class_name($courses_1);
-    $room_html_1 = Output_Version::create_classes_by_room($courses_1);
+    $room_html_1 = Output_Version::create_classes_by_room($courses_1, $output_version_id);
     $faculty_html_1 = Output_Version::create_classes_by_faculty($courses_1);
     $time_html_1 = Output_Version::create_classes_by_time($courses_1);
     $submission = $class_name_html_1 . $room_html_1 . $faculty_html_1 . $time_html_1;
