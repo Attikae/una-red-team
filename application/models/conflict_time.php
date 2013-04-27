@@ -78,11 +78,14 @@ class Conflict_Time extends Eloquent {
                         
                         
                         // If the combination has a slash it will enter into this loop
-                        if (!mb_ereg_match('^[^:]*$', $temp_word[0]))
+                        if (!mb_ereg_match('^[^:]*$', $temp_word[0]) && !mb_ereg_match('^[^/]*$', $temp_word[0])  )
                         {
+                            
+							error_log("in the slash loop");	
                                                                   
                             while ($temp_word[0][$temp_count] != "/" && $temp_count < strlen($temp_word[0]) )
                             {
+                            	error_log("in while");
                                 // Gather all the days
                                 $days[$temp_count] = $temp_word[0][$temp_count];    
                                 $temp_count++; 
@@ -127,6 +130,14 @@ class Conflict_Time extends Eloquent {
                                             }
                                             
                                         }
+										else
+										{
+											$result["status"] = "error";
+                                            $result["message"] = $result["message"] .
+                                            "\nError with time on line " . ($i+1) . '.';
+                                            $correct = false;
+                                        }	
+										
                                         
                                     }
                                                      
@@ -146,25 +157,14 @@ class Conflict_Time extends Eloquent {
                                     if ( $time[1] >= 0 && $time[1] <= 8)
                                     {
                                     
-                                        if (($time[3] + $time[4]) == 0 || 
-                                            ($time[3] + $time[4]) == 3 )
+                                        if (($time[3] + $time[4]) != 0 )
                                         {
                                         
-                                            if ($time[4] == 3 )
-                                            {
                                                 $result["status"] = "error";
                                                 $result["message"] = $result["message"] .
                                                 "\nError with time on line " . ($i+1) . '.';
                                                 $correct = false;
-                                            }
-
-                                            elseif ( $time[1] == 8 && $time[3] == 3)
-                                            {
-                                                $result["status"] = "error";
-                                                $result["message"] = $result["message"] .
-                                                "\nError with time on line " . ($i+1) . '.';
-                                                $correct = false;
-                                            }
+                                          
                                             
                                         }
                                         
@@ -283,8 +283,9 @@ class Conflict_Time extends Eloquent {
                             
                             $result["status"] = "error";
                             $result["message"] = $result["message"] .
-                            "\nMissing slash on line " . ($i+1) . '.';
+                            "\nMissing slash or colon on line " . ($i+1) . '.';
                             $correct = false;
+							error_log("no slash");
                             break; 
                         }
                     }                
@@ -344,7 +345,7 @@ class Conflict_Time extends Eloquent {
         {
         
             $result['status'] = "success";
-
+			error_log("correct");
             // delete old records
             Conflict_Time::where_schedule_id($schedule_id)->delete();
 
