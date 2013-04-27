@@ -135,7 +135,7 @@ class Faculty_Member extends Eloquent {
 	                $readSuccess = FALSE;
 	                $result["status"] = "error";
 		            $result["message"] = $result["message"] .
-		            "Incorrect email entry on line: " . ($count + 1) .
+		            "Missing '@' sign in email: " . ($count + 1) .
 		            "\n";
 	            }
 	  

@@ -309,11 +309,11 @@ class Conflict_Time extends Eloquent {
     
         $duplicate = false;
         
-        for($i = 0; $i < count($store) && $duplicate == false; $i++)
+        for($i = 0; $i < count($store) && $duplicate == false && count($store[$i]) == 8; $i++)
         {
             $temp = $store[$i];
                    
-            for ($j = 0; $j < count($store) && $duplicate == false; $j++)
+            for ($j = 0; $j < count($store) && $duplicate == false && count($temp) == 8; $j++)
             {
             
                 if ( $j != $i)
