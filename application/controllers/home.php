@@ -179,7 +179,8 @@ class Home_Controller extends Base_Controller {
                 
                 for($loop = 0; $loop < strlen($new_pw); $loop++)
                 {
-                    if(!(ctype_alpha($new_pw[$loop])) && (!(is_numeric($new_pw[$loop]))) && ($new_pw[$loop] != '.') && ($new_pw[$loop] != '!') && ($new_pw[$loop] != '/') && ($new_pw[$loop] != ','))
+					//check for special characters	
+                    if(($new_pw[$loop] != '.') && ($new_pw[$loop] != '!') && ($new_pw[$loop] != '/') && ($new_pw[$loop] != ','))
                         $symbolBool = 0; //stores 0 if no special valid char is found
                     else 
 	                    $symbolBool = 1; //stores 1 if valid char is found
