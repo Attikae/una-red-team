@@ -38,8 +38,7 @@ class Scheduler {
                                          $course_list,
                                          $faculty_list,
                                          1,
-                                         $time_list,
-                                         $conflict_list );
+                                         $time_list );
     return $output_version->id;
   }
 
