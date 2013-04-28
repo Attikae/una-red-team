@@ -69,12 +69,23 @@ class Scheduler {
       $conflict_list = Scheduler::get_conflict_list( $schedule_id, $course );
       $prereq_list = Scheduler::get_prereq_list( $schedule_id, $course );
 
-     // error_log( "COURSE = " . $course->course . " --------------------------" );
+      //error_log( "COURSE = " . $course->course . " --------------------------" );
 
       foreach( $section_list as $section )
       {
         $scheduled = false;
 
+        $tmp_times = array();
+        foreach( $time_list as $x => $time )
+        {
+          $tmp_times[$x] = clone $time;
+        }
+
+        $tmp_time_list = Scheduler::get_valid_time_list( $tmp_times,
+                                                         $conflict_list,
+                                                         $prereq_list,
+                                                         $section,
+                                                         $course );
         foreach( $faculty_list as $key => $faculty )
         {
           // If faculty has enough hours to teach course
@@ -83,48 +94,35 @@ class Scheduler {
             // Make sure faculty has day sections specified
             if( $section == 0 && $faculty->sections[$course_index][0] )
             {
-              // Find best time/room combo for day
-/*              $tmp_times = array();
-              foreach( $time_list as $x => $time )
+              $tmp_valid_list = array();
+              foreach( $tmp_time_list as $x => $time )
               {
-                $tmp_times[$x] = clone $time;
+                $tmp_valid_list[$x] = clone $time;
               }
 
-              $tmp_time_list = Scheduler::get_valid_time_list( $schedule_id,
-                                                               $tmp_times,
-                                                               $conflict_list,
-                                                               $prereq_list,
-                                                               $section,
-                                                               $course,
-                                                               $faculty );*/
+              $final_time_list = Scheduler::filter_faculty_times( $tmp_valid_list,
+                                                                  $faculty );
             }
             else if( $section == 1 && $faculty->sections[$course_index][1] )
             {
               // Find best time/room combo
               // Give section to faculty
- 
-              $tmp_times = array();
-              foreach( $time_list as $x => $time )
+
+              $tmp_valid_list = array();
+              foreach( $tmp_time_list as $x => $time )
               {
-                $tmp_times[$x] = clone $time;
+                $tmp_valid_list[$x] = clone $time;
               }
-              $tmp_time_list = Scheduler::get_valid_time_list( $schedule_id,
-                                                               $tmp_times,
-                                                               $conflict_list,
-                                                               $prereq_list,
-                                                               $section,
-                                                               $course,
-                                                               $faculty );
-              if( !empty( $tmp_time_list ) )
+
+              $final_time_list = Scheduler::filter_faculty_times( $tmp_valid_list,
+                                                                  $faculty );
+              if( !empty( $final_time_list ) )
               {
-                $final_time = Scheduler::choose_final_time( $course, $tmp_time_list );
+                $final_time = Scheduler::choose_final_time( $course, $final_time_list );
 
                 if( !is_null( $final_time ) )
                 {
-                 // error_log( "SCHEDULED " . $course->course );
-                  
                   Scheduler::update_time_list( $time_list, $course, $faculty, $final_time );
-
 
                   // Calculate current section number
                   $section_number;
@@ -167,6 +165,7 @@ class Scheduler {
                   $faculty_list[$key]->sections[$course_index][1] -= 1;
 
                   $scheduled = true;
+                  error_log( "SCHEDULED " . $course->course );
                   break;
                 }
                 else
@@ -178,19 +177,10 @@ class Scheduler {
               {
                 //error_log( "NO VALID TIMES AVAILABLE" );
               }
-
-
-
-
-
-
-
-
             }
             // Make sure faculty has internet sections specified
             else if( $section == 2 && $faculty->sections[$course_index][2] )
             {
-
               // Give internet section to faculty
               // Decrement faculty hours
               $tmp_faculty = Faculty_Member::where_id( $faculty->id )->first();
@@ -229,6 +219,7 @@ class Scheduler {
               // Make more elegant later
               // Break out of section loop if it has already been scheduled
               $scheduled = true;
+              error_log( "SCHEDULED " . $course->course );
               break;
             }
           }
@@ -352,6 +343,7 @@ class Scheduler {
       $i++;
     }
 
+    //shuffle( $min_course_list ); // Randomize for better variety?
     return $min_course_list;
   }
 
@@ -416,8 +408,6 @@ class Scheduler {
         $time_list[$i]->building = $y->building;
         $time_list[$i]->room_number = $y->room_number;
 
-        $time_list[$i]->course_id = NULL;
-
         $i++;
       }
     }
@@ -450,6 +440,7 @@ class Scheduler {
       $i++;
     }
 
+    
     for( $j = 0; $j < $internet_sections; $j++ )
     {
       $course_sections[$i] = 2;
@@ -558,13 +549,11 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  public static function get_valid_time_list( $schedule_id,
-                                              $time_list,
+  public static function get_valid_time_list( $time_list,
                                               $conflict_list,
                                               $prereq_list,
                                               $section,
-                                              $course,
-                                              $faculty )
+                                              $course )
   {
     // Remove times that aren't pre reqs that are already scheduled
 
@@ -640,49 +629,6 @@ class Scheduler {
     else
     {
       //error_log( "EMPTY 1" );
-    }
-
-    if( !empty( $tmp_times ) )
-    {
-      foreach( $tmp_times as $tmp )
-      {
-        foreach( $time_list as $key => $time )
-        {
-          if( Scheduler::is_intersected( $tmp->days,
-                                         $time->days,
-                                         $tmp->start_offset,
-                                         $tmp->end_offset,
-                                         $time->start_offset,
-                                         $time->end_offset ) )
-          {
-            unset( $time_list[$key] );
-          }
-        }
-      }
-    }
-
-    // Remove any place where the faculty could teach the same time/day
-
-    $tmp_times = array();
-    $i = 0;
-
-    if( !empty( $time_list ) )
-    {
-      foreach( $time_list as $time )
-      {
-        if( $time->is_taken == 1 )
-        {
-          if( $time->faculty_id == $faculty->id )
-          {
-            $tmp_times[$i] = $time;
-            $i++;
-          }
-        }
-      }
-    }
-    else
-    {
-      //error_log( "EMPTY 2" );
     }
 
     if( !empty( $tmp_times ) )
@@ -820,8 +766,63 @@ class Scheduler {
 
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
+
+  public static function filter_faculty_times( $time_list,
+                                               $faculty )
+  {
+    // Remove any place where the faculty could teach the same time/day
+
+    $tmp_times = array();
+    $i = 0;
+
+    if( !empty( $time_list ) )
+    {
+      foreach( $time_list as $time )
+      {
+        if( $time->is_taken == 1 )
+        {
+          if( $time->faculty_id == $faculty->id )
+          {
+            $tmp_times[$i] = $time;
+            $i++;
+          }
+        }
+      }
+    }
+    else
+    {
+      //error_log( "EMPTY 2" );
+    }
+
+    if( !empty( $tmp_times ) )
+    {
+      foreach( $tmp_times as $tmp )
+      {
+        foreach( $time_list as $key => $time )
+        {
+          if( Scheduler::is_intersected( $tmp->days,
+                                         $time->days,
+                                         $tmp->start_offset,
+                                         $tmp->end_offset,
+                                         $time->start_offset,
+                                         $time->end_offset ) )
+          {
+            unset( $time_list[$key] );
+          }
+        }
+      }
+    }
+
+    array_values( $time_list );
+
+    return $time_list;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
   
-  public static function choose_final_time( $course, $time_list )
+  public static function choose_final_time( $course, 
+                                            $time_list )
   {
     $final_time = NULL;
 
@@ -890,11 +891,15 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  public static function update_time_list( &$time_list, $course, $faculty, $final_time )
+  public static function update_time_list( &$time_list, 
+                                           $course, 
+                                           $faculty, 
+                                           $final_time )
   {
     foreach( $time_list as $key => $time )
     {
-      if( $final_time->class_time_id == $time->class_time_id && $final_time->room_id == $time->room_id )
+      if( $final_time->class_time_id == $time->class_time_id && 
+          $final_time->room_id == $time->room_id )
       {
         $time_list[$key]->is_taken = 1;
         $time_list[$key]->course_id = $course->id;
@@ -923,9 +928,12 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  public static function is_intersected( $days1, $days2, 
-                                         $start1, $end1, 
-                                         $start2, $end2 )
+  public static function is_intersected( $days1, 
+                                         $days2, 
+                                         $start1,
+                                         $end1, 
+                                         $start2, 
+                                         $end2 )
   {
     $intersect = false;
     $day_str = ( $days1 & $days2 );
@@ -942,6 +950,9 @@ class Scheduler {
 
     return $intersect;
   }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////
 
   public static function copyUsedInput($schedule_id, $output_version_id)
   {
