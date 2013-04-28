@@ -305,86 +305,86 @@ class Output_Version extends Eloquent {
       Scheduler::get_start_end_offsets($course->start_time, $course->duration,
                                         $start_offset, $end_offset);
 
+      if( ($start_offset >= 0 && $start_offset < 60) || 
+          ($end_offset >= 0 && $end_offset < 60) ||
+          (0 > $start_offset && 0 < $end_offset) )
+      {
+        $html_array[7] .= "" . Output_Version::generateRow($course);
+      }
+
       if( ($start_offset >= 60 && $start_offset < 120) || 
           ($end_offset >= 60 && $end_offset < 120) ||
           (60 > $start_offset && 60 < $end_offset) )
       {
-        $html_array[7] .= "" . Output_Version::generateRow($course);
+        $html_array[8] .= "" . Output_Version::generateRow($course);
       }
 
       if( ($start_offset >= 120 && $start_offset < 180) || 
           ($end_offset >= 120 && $end_offset < 180) ||
           (120 > $start_offset && 120 < $end_offset) )
       {
-        $html_array[8] .= "" . Output_Version::generateRow($course);
+        $html_array[9] .= "" . Output_Version::generateRow($course);
       }
 
       if( ($start_offset >= 180 && $start_offset < 240) || 
           ($end_offset >= 180 && $end_offset < 240) ||
           (180 > $start_offset && 180 < $end_offset) )
       {
-        $html_array[9] .= "" . Output_Version::generateRow($course);
+        $html_array[10] .= "" . Output_Version::generateRow($course);
       }
 
       if( ($start_offset >= 240 && $start_offset < 300) || 
           ($end_offset >= 240 && $end_offset < 300) ||
           (240 > $start_offset && 240 < $end_offset) )
       {
-        $html_array[10] .= "" . Output_Version::generateRow($course);
+        $html_array[11] .= "" . Output_Version::generateRow($course);
       }
 
       if( ($start_offset >= 300 && $start_offset < 360) || 
           ($end_offset >= 300 && $end_offset < 360) ||
           (300 > $start_offset && 300 < $end_offset) )
       {
-        $html_array[11] .= "" . Output_Version::generateRow($course);
+        $html_array[12] .= "" . Output_Version::generateRow($course);
       }
 
       if( ($start_offset >= 360 && $start_offset < 420) || 
           ($end_offset >= 360 && $end_offset < 420) ||
           (360 > $start_offset && 360 < $end_offset) )
       {
-        $html_array[12] .= "" . Output_Version::generateRow($course);
+        $html_array[13] .= "" . Output_Version::generateRow($course);
       }
 
       if( ($start_offset >= 420 && $start_offset < 480) || 
           ($end_offset >= 420 && $end_offset < 480) ||
           (420 > $start_offset && 420 < $end_offset) )
       {
-        $html_array[13] .= "" . Output_Version::generateRow($course);
+        $html_array[14] .= "" . Output_Version::generateRow($course);
       }
 
       if( ($start_offset >= 480 && $start_offset < 540) || 
           ($end_offset >= 480 && $end_offset < 540) ||
           (480 > $start_offset && 480 < $end_offset) )
       {
-        $html_array[14] .= "" . Output_Version::generateRow($course);
+        $html_array[15] .= "" . Output_Version::generateRow($course);
       }
 
       if( ($start_offset >= 540 && $start_offset < 600) || 
           ($end_offset >= 540 && $end_offset < 600) ||
           (540 > $start_offset && 540 < $end_offset) )
       {
-        $html_array[15] .= "" . Output_Version::generateRow($course);
+        $html_array[16] .= "" . Output_Version::generateRow($course);
       }
 
       if( ($start_offset >= 600 && $start_offset < 660) || 
           ($end_offset >= 600 && $end_offset < 660) ||
           (600 > $start_offset && 600 < $end_offset) )
       {
-        $html_array[16] .= "" . Output_Version::generateRow($course);
+        $html_array[17] .= "" . Output_Version::generateRow($course);
       }
 
       if( ($start_offset >= 660 && $start_offset < 720) || 
           ($end_offset >= 660 && $end_offset < 720) ||
           (660 > $start_offset && 660 < $end_offset) )
-      {
-        $html_array[17] .= "" . Output_Version::generateRow($course);
-      }
-
-      if( ($start_offset >= 720 && $start_offset < 800) || 
-          ($end_offset >= 720 && $end_offset < 800) ||
-          (720 > $start_offset && 720 < $end_offset) )
       {
         $html_array[18] .= "" . Output_Version::generateRow($course);
       }
