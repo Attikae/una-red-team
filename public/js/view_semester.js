@@ -324,16 +324,16 @@ function ajaxDisplayOutput(span){
       var blocks0 = data.classBlocks0;
       var blocks1 = data.classBlocks1;
 
-      console.log(blocks0);
+      //console.log(blocks0);
 
-      appendDivs(blocks0, 0);
       appendDivs(blocks1, 1);
-
+      appendDivs(blocks0, 0);
+      
+      
       $("#schedule-output-container").show();
-      $("#sumbission-container").hide();
+      $("#submission-container").hide();
       $("#seniority-container").show();
       $("#active-container-label").text("Viewing: By Seniority");
-      //alert("It worked!");
       
     }
   });
@@ -355,13 +355,6 @@ function appendDivs(blocks, priority){
   }
 
   for (var i = 0; i < blocks.length; i++) {
-
-    /* var div = document.createElement('div');
-    div.className = "class-block"
-    div.style.width = blocks[i].width + "px";
-    div.style.left = blocks[i].left + "px";
-    div.innerHTML = blocks[i].course + "</br>" + blocks[i].timeFormatted + 
-                    "</br>" + blocks[i].facultyName; */
 
     var table = container.find(blocks[i].tableId)
 
