@@ -8,7 +8,7 @@ class Available_Room extends Eloquent {
     
     /**************************************************************************
     /* @function    scan
-    /* @author      CJ Stokes
+    /* @author      Jordan Shook
     /* @description This segment of code will scan an incoming file(the format
     /*              of which can be found in section A.2 of the specification
     /*              document) to ensure the correct format is found.
