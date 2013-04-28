@@ -356,49 +356,60 @@ function appendDivs(blocks, priority){
 
   for (var i = 0; i < blocks.length; i++) {
 
-    var div = document.createElement('div');
+    /* var div = document.createElement('div');
     div.className = "class-block"
     div.style.width = blocks[i].width + "px";
     div.style.left = blocks[i].left + "px";
     div.innerHTML = blocks[i].course + "</br>" + blocks[i].timeFormatted + 
-                    "</br>" + blocks[i].facultyName;
+                    "</br>" + blocks[i].facultyName; */
 
     var table = container.find(blocks[i].tableId)
 
     if(blocks[i].monday == "1")
     {
-      table.find('.monday-row').append(div);
+      table.find('.monday-row').append(createClassDiv(blocks[i]));
     }
 
     if(blocks[i].tuesday == "1")
     {
-      table.find('.tuesday-row').append(div);
+      table.find('.tuesday-row').append(createClassDiv(blocks[i]));
     }
 
     if(blocks[i].wednesday == "1")
     {
-      table.find('.wednesday-row').append(div);
+      table.find('.wednesday-row').append(createClassDiv(blocks[i]));
     }
 
     if(blocks[i].thursday == "1")
     {
-      table.find('.thursday-row').append(div);
+      table.find('.thursday-row').append(createClassDiv(blocks[i]));
     }
 
     if(blocks[i].friday == "1")
     {
-      table.find('.friday-row').append(div);
+      table.find('.friday-row').append(createClassDiv(blocks[i]));
     }
 
     if(blocks[i].saturday == "1")
     {
-      table.find('.saturday-row').append(div);
+      table.find('.saturday-row').append(createClassDiv(blocks[i]));
     }
 
 
   };
 
 
+}
+
+function createClassDiv(block){
+
+  var div = document.createElement('div');
+  div.className = "class-block"
+  div.style.width = block.width + "px";
+  div.style.left = block.left + "px";
+  div.innerHTML = block.course + "</br>" + block.timeFormatted + 
+                  "</br>" + block.facultyName;
+  return div;
 }
 
 function ajaxDeleteVersion(deleteId){
