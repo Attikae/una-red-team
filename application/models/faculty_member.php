@@ -52,7 +52,7 @@ class Faculty_Member extends Eloquent {
 		        $readSuccess = FALSE;
 	            $result["status"] = "error";
 		        $result["message"] = $result["message"] .
-		        "Incorrect amount of field arguments on line: " . ($count + 1) . 
+		        "Incorrect amount of field arguments on line: " . ($count + 1). 
 		        "\n";
 	        }
 			
@@ -88,43 +88,51 @@ class Faculty_Member extends Eloquent {
 	                $readSuccess = FALSE;
 		            $result["status"] = "error";
 		            $result["message"] = $result["message"] .
-		            "Incorrect entry for the first name on line: " . ($count + 1) .
-		            "\n";
+		            "Incorrect entry for the first name on line: " .
+		            ($count + 1) .   "\n";
 	            }
 	  
 	            // Checking the total number of characters for the name
 	            // See section A.6 Constraints for more details
-	            if((strlen($wordArray[$count][0]) + strlen($wordArray[$count][1])) > 24
-	  		     || strlen($wordArray[$count][0]) < 1 || strlen($wordArray[$count][1]) < 1)
+	            if((strlen($wordArray[$count][0]) + 
+					strlen($wordArray[$count][1]))> 24
+	  		     || strlen($wordArray[$count][0]) < 1 
+	  		     || strlen($wordArray[$count][1]) < 1)
 	            {
 	                $readSuccess = FALSE;
 		            $result["status"] = "error";
 		            $result["message"] = $result["message"] .
-		            "Incorrect length for the name on line: " . ($count + 1) .
+		            "Incorrect length for the name on line: " .($count + 1).
 		            "\n";
 	            }
 	  
 	            // Check for Years of Service
-	            if(!is_numeric($wordArray[$count][2]) || $wordArray[$count][2] < 0
+	            if(!is_numeric($wordArray[$count][2]) 
+					|| $wordArray[$count][2] < 0
 	                || $wordArray[$count][2] > 60)
 	            {
 	                $readSuccess = FALSE;
 		            $result["status"] = "error";
 		            $result["message"] = $result["message"] .
-		            "Incorrect entry for years of service on line: " . ($count + 1) .
-		            "\n";
+		            "Incorrect entry for years of service on line: ".
+		            ($count + 1) . "\n";
 	            }
 	  
-	  
-	            $emailArray = array();					//temporary storage
-	            $emailArray = $wordArray[$count][3];	//will hold the entire email
-	            $part1 = " ";							//holds the beginning of the email
-	            $part2 = " ";							//holds the end of the email (una.edu)
-	            $tempCount1 = 0;
-	            $tempCount2 = 0;
+				//temporary storage
+					$emailArray = array();		
+	            //will hold the entire email			
+					$emailArray = $wordArray[$count][3];
+	            //holds the beginning of the email	
+					$part1 = " ";	
+	            //holds the end of the email (una.edu)						
+					$part2 = " ";
+				//counters							
+					$tempCount1 = 0;
+					$tempCount2 = 0;
 
                 // Separating the email into $part1 and $part2
-	            while($tempCount1 < strlen($emailArray) && $emailArray[$tempCount1] != '@')
+	            while($tempCount1 < strlen($emailArray) 
+					&& $emailArray[$tempCount1] != '@')
 	            {
 	                $part1[$tempCount1] = $emailArray[$tempCount1];
 		            $tempCount1++;
@@ -154,13 +162,15 @@ class Faculty_Member extends Eloquent {
 	                $readSuccess = FALSE;
 	                $result["status"] = "error";
 		            $result["message"] = $result["message"] .
-		            "Invalid university email entered on line: " . ($count + 1) .
-		            "\n";
+		            "Invalid university email entered on line: " . 
+		            ($count + 1) .  "\n";
 	            }
 
 	            // Check for Hours to Teach
-	            if(count($wordArray[$count]) < 5 || !is_numeric($wordArray[$count][4])
-	                || $wordArray[$count][4] < 0 || $wordArray[$count][4] > 18)
+	            if(count($wordArray[$count]) < 5 
+					|| !is_numeric($wordArray[$count][4])
+	                || $wordArray[$count][4] < 0 
+					|| $wordArray[$count][4] > 18)
 	            {
 	                $readSuccess = FALSE;
 		            $result["status"] = "error";
@@ -254,7 +264,8 @@ class Faculty_Member extends Eloquent {
     public static function get_text($schedule_id)
     {
 
-        $entries = Faculty_Member::where_schedule_id($schedule_id)->order_by("id", "asc")->get();
+        $entries = Faculty_Member::where_schedule_id($schedule_id)
+        ->order_by("id", "asc")->get();
         $text = "";
         $first_entry = true;
 

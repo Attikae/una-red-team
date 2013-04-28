@@ -121,35 +121,21 @@ class Conflict_Time extends Eloquent {
                                 if ($time[0] == 0 )
                                 {
                                 
-                                    if ( $time[1] >= 7 && $time[1] <= 9)
-                                    {
+                                   if ( $time[1] >= 7 && $time[1] <= 9)
+                                   {
                          
-                                        if (($time[3] + $time[4]) == 0 || 
-                                            ($time[3] + $time[4]) == 3 )
+                                        if (($time[3]!= 0 || $time[3]!=3) &&
+												$time[4] !=0 )
                                         {
-                                        
-                                            if ($time[4] == 3 && $time[1] == 8) 
-                                            {
-                                                $result["status"] = "error";
-                                                $result["message"] = 
-                                                $result["message"]
-                                                . "\nError with time on line " . 
-                                                 ($i+1) . '.';
-                                                $correct = false;
-                                            }
-                                            
-                                        }
-										else
-										{
 											$result["status"] = "error";
-                                            $result["message"] = $result["message"].
-                                            "\nError with time on line " . ($i+1) . 
-                                            '.';
+                                            $result["message"] = 
+                                            $result["message"]
+                                            . "\nError with time on line " . 
+                                            ($i+1) . '.';
                                             $correct = false;
-                                        }	
-										
+                                        }									
                                         
-                                    }
+									}
                                                      
                                     else
                                     {
@@ -158,6 +144,7 @@ class Conflict_Time extends Eloquent {
                                         "\nError with time on line " . ($i+1) . '.';
                                         $correct = false;
                                     } 
+                                    
                                 }
                                 
                                 // ex: 10:00
@@ -167,19 +154,17 @@ class Conflict_Time extends Eloquent {
                                     if ( $time[1] >= 0 && $time[1] <= 8)
                                     {
                                     
-                                        if (($time[3]!= 0 || $time[3]!=3) &&
-												$time[4] !=0 )
+                                        if (($time[3]!= 0 || $time[3]!=3) 
+	                                        && $time[4] !=0 || ($time[1] == 8 
+											&& $time[3] == 3))
                                         {
-                                        
-                                                $result["status"] = "error";
+											    $result["status"] = "error";
                                                 $result["message"] = 
                                                 $result["message"] .
                                                 "\nError with time on line " . 
                                                 ($i+1) . '.';
                                                 $correct = false;
-                                          
-                                            
-                                        }
+								        }
                                         
                                     }
                                   
