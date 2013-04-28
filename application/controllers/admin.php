@@ -226,19 +226,6 @@ class Admin_Controller extends Base_Controller
                       "message" => $message);
     }
 
-    
-/*
-    $time_list = Scheduler::get_time_list($schedule_id);
-
-    ob_start();
-    var_dump($time_list);
-    $contents = ob_get_contents();
-    ob_end_clean();
-
-    error_log( $contents );
- */ 
-    //$result = array("status" => "error", "message" => "It works!");
-
     echo json_encode($result);
   }
 
@@ -266,6 +253,12 @@ class Admin_Controller extends Base_Controller
     $courses_1 = Scheduled_Course::where_output_version_id($output_version_id)
                                         ->where_priority_flag('1')->get();
 
+    $faculty = Faculty_Member::where_schedule_id(0)
+                                ->where_output_version_id($output_version_id)->get();
+
+    $rooms = Available_Room::where_schedule_id(0)
+                                ->where_output_version_id($output_version_id)->get();
+
 
     $class_name_html_0 = Output_Version::create_classes_by_class_name($courses_0);
     $room_html_0 = Output_Version::create_classes_by_room_tables($output_version_id, 0);
@@ -282,10 +275,18 @@ class Admin_Controller extends Base_Controller
     $seniority_class_blocks = Output_Version::get_class_blocks_data($courses_0);
     $submission_class_blocks = Output_Version::get_class_blocks_data($courses_1);
 
+    error_log("Before new function calls");
+    $faculty_data = Output_Version::get_faculty_data($faculty);
+    error_log("In between new function calls");
+    $rooms_data = Output_Version::get_rooms_data($rooms);
+    error_log("Aftern new function calls");
+
     echo json_encode(array("seniority" => $seniority,
                            "submission" => $submission,
                            "classBlocks0" => $seniority_class_blocks,
-                           "classBlocks1" => $submission_class_blocks));
+                           "classBlocks1" => $submission_class_blocks,
+                           "faculty" => $faculty_data,
+                           "rooms" => $rooms_data));
 
   }
 

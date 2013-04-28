@@ -118,50 +118,17 @@ class Output_Version extends Eloquent {
 
       $course_type = substr($course->section_number, 0);
 
-      //error_log("Course type is: " . $course_type);
-
       if($course_type != 'I' && $course_type != "X")
       {
-        //error_log("in if");
         $start_formatted = "";
         $end_formatted = "";
 
         Output_Version::formatTimes($course->start_time, $course->duration,
                                     $start_formatted, $end_formatted);
 
-        //error_log("after formatTimes");
-
-        //error_log("before width calculation");
         $width = intval( ($course->duration / 60) * 68);
-        //error_log("after width");
         $left = Output_Version::getLeftOffset($course->start_time, $course->duration);
-        //error_log("after get left");
         
-        /* $html .= "<div class='class-block' " .
-                 "data-id='" . $course->id ."' " .
-                 "data-priority-flag='" . $course->priority_flag . "' " .
-                 "data-user-id='" . $course->user_id . "' " .
-                 "data-course='" . $course->course . "' " .
-                 "data-section-number='" . $course->section_number . "' " .
-                 "data-course-type='" . $course->course_type . "' " .
-                 "data-credit-hours='" . $course->credit_hours . "' " .
-                 "data-start-time='" . $course->start_time . "' " .
-                 "data-duration='" . $course->duration . "' " .
-                 "data-building='" . $course->buidling . "' " .
-                 "data-room-number='" . $course->room_number . "' " .
-                 "data-monday='" . $course->monday . "' " .
-                 "data-tuesday='" . $course->tuesday . "' " .
-                 "data-wednesday='" . $course->wednesday . "' " .
-                 "data-thursday='" . $course->thursday . "' " .
-                 "data-friday='" . $course->friday . "' " .
-                 "data-saturday='" . $course->saturday . "' " .
-                 "data-width='" . $width . "' " .
-                 "data-left='" . $left . "' " .
-                 ">" .
-                 $course->course . "</br>" .
-                 $start_formatted . "-" . $end_formatted . "</br>" .
-                 $course->faculty_name .
-                 "</div>"; */
 
         $data[$i]['id'] = $course->id;
         $data[$i]['priorityFlag'] = $course->priority_flag;
@@ -170,10 +137,12 @@ class Output_Version extends Eloquent {
         $data[$i]['sectionNumber'] = $course->section_number;
         $data[$i]['courseType'] = $course->course_type;
         $data[$i]['creditHours'] = $course->credit_hours;
-        $data[$i]['startTime'] = $course->start_time;
+        $data[$i]['startHour'] = substr($course->start_time, 0, 2);
+        $data[$i]['startMinute'] = substr($course->start_time, 3, 2);
         $data[$i]['duration'] = $course->duration;
         $data[$i]['building'] = $course->building;
         $data[$i]['roomNumber'] = $course->room_number;
+        $data[$i]['room'] = $course->building . " " . $course->room_number;
         $data[$i]['monday'] = $course->monday;
         $data[$i]['tuesday'] = $course->tuesday;
         $data[$i]['wednesday'] = $course->wednesday;
@@ -194,7 +163,40 @@ class Output_Version extends Eloquent {
   }
 
 
+  public static function get_faculty_data($faculty_members){
 
+    $data = array();
+    $i = 0;
+
+    foreach ($faculty_members as $faculty) {
+      $data[$i]['id'] = $faculty->id;
+      $data[$i]['userId'] = $faculty->user_id;
+      $data[$i]['facultyName'] = $faculty->last_name . ", " . $faculty->first_name;
+      $i++;
+    }
+
+    return $data;
+  }
+
+
+  public static function get_rooms_data($rooms){
+
+    $data = array();
+    $i = 0;
+
+    foreach ($rooms as $room) {
+      $data[$i]['id'] = $room->id;
+      $data[$i]['type'] = $room->type;
+      $data[$i]['size'] = $room->size;
+      $data[$i]['building'] = $room->building;
+      $data[$i]['roomNumber'] = $room->room_number;
+      $data[$i]['room'] = $room->building . " " . $room->room_number;
+      $i++;
+    }
+
+    return $data;
+
+  }
 
 
 

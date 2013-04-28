@@ -326,7 +326,88 @@
         Sumbissions
       </div>
     </div>
-    
+  </div>
+
+  <div id="schedule-container-overlay"></div>
+
+  <div id="schedule-edit-container">
+    <span id="course-label">CS TEST</span>
+    </br></br>
+    <table id="schedule-edit-table">
+        <td>
+          <div id="start-hour-label">Start Hour</div>
+        </td>
+        <td>
+          <select id="start-hour-select">
+            <?php
+              for ($i=7; $i < 19 ; $i++) { 
+                if($i < 10)
+                {
+                  echo "<option val='" . $i . "'>0" . $i . "</option>";
+                }
+                else
+                {
+                  echo "<option val='" . $i . "'>" . $i . "</option>";
+                } 
+              }
+            ?>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div id="start-minute-label">Start Minute</div>
+        </td>
+        <td>
+          <select id="start-minute-select">
+            <?php
+              for ($i=0; $i < 60 ; $i++) {
+                if($i < 10)
+                {
+                  echo "<option val='" . $i . "'>0" . $i . "</option>";
+                }
+                else
+                {
+                  echo "<option val='" . $i . "'>" . $i . "</option>";
+                } 
+              }
+            ?>
+          </select>
+        </td>
+      </tr>
+    </table>
+    </br>
+    <table "schedule-edit-days-table">
+      <caption>Days</caption>
+      <tr><td>M</td><td>T</td><td>W</td><td>R</td><td>F</td><td>S</td></tr>
+      <tr>
+        <td><input class="monday-checkbox day-checkbox" type="checkbox"/></td>
+        <td><input class="tuesday-checkbox day-checkbox" type="checkbox"/></td>
+        <td><input class="wednesday-checkbox day-checkbox" type="checkbox"/></td>
+        <td><input class="thursday-checkbox day-checkbox" type="checkbox"/></td>
+        <td><input class="friday-checkbox day-checkbox" type="checkbox"/></td>
+        <td><input class="saturday-checkbox day-checkbox" type="checkbox"/></td>
+      </tr>
+    </table>
+    </br>
+    <table>
+      <tr>
+        <td>Faculty</td>
+        <td>
+          <select id="faculty-select">
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Room</td>
+        <td>
+          <select id="room-select">
+          </select>
+        </td>
+      </tr>
+    </table>
+    <button id="edit-submit">Save</button>
+    <button id="edit-close">Cancel</button>
   </div>
 
     
