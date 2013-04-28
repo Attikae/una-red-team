@@ -61,7 +61,6 @@ class Output_Version extends Eloquent {
         return strcmp(($a->building . $a->room_number), ($b->building . $b->room_number));
     });
 
-
     for($i = 0; $i < count($rooms); $i++)
     {
 
@@ -72,7 +71,9 @@ class Output_Version extends Eloquent {
       $html_array[$i] = "<table id='" . $room_id . "' class='room-table'>" .
                         "<tr><td>Time</td><td></td><td><div class='time-row'>";
 
-      for($j = 7; $j < 22; $j++)
+      $html_array[$i] .= "<div class='time-label7'>7</div>";
+
+      for($j = 8; $j < 22; $j++)
       {
         if($j > 12)
         {
@@ -82,6 +83,7 @@ class Output_Version extends Eloquent {
         {
           $num = $j;
         }
+
         $html_array[$i] .= "<div class='time-label'>" . $num . "</div>";
       }
 

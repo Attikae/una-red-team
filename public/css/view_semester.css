@@ -406,7 +406,7 @@ input[type=checkbox]
 
 .day-row
 {
-  width: 986px;
+  width: 980px;
   height: 70px;
   background-color: white;
 }
@@ -434,6 +434,16 @@ input[type=checkbox]
   width: 70px;
   font-size: 14px;
   float: left;
+  text-align: left;
+}
+
+.time-label7
+{
+  position: relative;
+  width: 66px;
+  font-size: 14px;
+  float: left;
+  text-align: left;
 }
 
 
