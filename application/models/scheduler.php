@@ -86,6 +86,13 @@ class Scheduler {
                                                          $prereq_list,
                                                          $section,
                                                          $course );
+
+        $day_section_times = array();
+/*
+        if( $section == 0 )
+        {
+          $day_section_times = 
+        }*/
         foreach( $faculty_list as $key => $faculty )
         {
           // If faculty has enough hours to teach course
@@ -102,6 +109,67 @@ class Scheduler {
 
               $final_time_list = Scheduler::filter_faculty_times( $tmp_valid_list,
                                                                   $faculty );
+
+              if( !empty( $final_time_list ) )
+              {
+                $final_time = Scheduler::choose_final_time( $course, $final_time_list );
+
+                if( !is_null( $final_time ) )
+                {
+                  Scheduler::update_time_list( $time_list, $course, $faculty, $final_time );
+
+                  // Calculate current section number
+                  $section_number;
+
+                  if( $daynight_section_num < 10 )
+                  {
+                    $section_number = '0' . $daynight_section_num;
+                  }
+                  else
+                  {
+                    $section_number = $daynight_section_num;
+                  }
+
+                  $daynight_section_num++;
+
+                  Scheduled_Course::Create( array(
+                    "output_version_id" => $output_id,
+                    "priority_flag"     => $faculty_priority,
+                    "user_id"           => $faculty->user_id,
+                    "faculty_name"      => $faculty->name,
+                    "course"            => $course->course,
+                    "section_number"    => $section_number, 
+                    "course_type"       => $course->room_type,
+                    "credit_hours"      => $course->credit_hours,
+                    "start_time"        => $final_time->starting_time,
+                    "duration"          => $final_time->duration,
+                    "building"          => $final_time->building,
+                    "room_number"       => $final_time->room_number,
+                    "monday"            => $final_time->days[0],
+                    "tuesday"           => $final_time->days[1],
+                    "wednesday"         => $final_time->days[2],
+                    "thursday"          => $final_time->days[3],
+                    "friday"            => $final_time->days[4],
+                    "saturday"          => $final_time->days[5]
+                  ) );
+
+
+                  // Decrement hours and sections
+                  $faculty_list[$key]->hours -= $course->credit_hours;
+                  $faculty_list[$key]->sections[$course_index][0] -= 1;
+
+                  $scheduled = true;
+                  break;
+                }
+                else
+                {
+                  //error_log( "COULD NOT FIT COURSE HOURS" );
+                }
+              }
+              else
+              {
+                //error_log( "NO VALID TIMES AVAILABLE" );
+              }
             }
             else if( $section == 1 && $faculty->sections[$course_index][1] )
             {
@@ -165,7 +233,6 @@ class Scheduler {
                   $faculty_list[$key]->sections[$course_index][1] -= 1;
 
                   $scheduled = true;
-                  error_log( "SCHEDULED " . $course->course );
                   break;
                 }
                 else
@@ -219,7 +286,6 @@ class Scheduler {
               // Make more elegant later
               // Break out of section loop if it has already been scheduled
               $scheduled = true;
-              error_log( "SCHEDULED " . $course->course );
               break;
             }
           }
@@ -450,6 +516,13 @@ class Scheduler {
     // Shuffle the array so that the sections we
     // try to schedule will be spread out
     shuffle( $course_sections ); // CHANGE TO EQUAL DISTRIBUTION
+/*
+    $str = "";
+    foreach( $course_sections as $x )
+    {
+      $str = $str . $x;
+    }
+    error_log( $str );*/
 
     return $course_sections;
   }
