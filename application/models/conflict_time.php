@@ -69,21 +69,28 @@ class Conflict_Time extends Eloquent {
                     
                     else
                     {
-                        $time = " ";                        //will hold the time for storage into database
-                        $days = array();                    //will hold the days for storage into database
-                        $temp_word[0] = $word_array[$i][$j];  //will hold day(s)/time combinations
-                        $temp_count = 0;                     //counter
-                        $count = 0;                         //counter
+						//will hold the time for storage into database
+                        $time = " ";                        
+                        //will hold the days for storage into database
+                        $days = array();                    
+                        //will hold day(s)/time combinations
+                        $temp_word[0] = $word_array[$i][$j]; 
+                        //counters                         
+                        $temp_count = 0;                     
+                        $count = 0;                         
                         
                         
                         
-                        // If the combination has a slash it will enter into this loop
-                        if (!mb_ereg_match('^[^:]*$', $temp_word[0]) && !mb_ereg_match('^[^/]*$', $temp_word[0])  )
+                        // If the combination has a slash it will enter into this
+                        // loop
+                        if (!mb_ereg_match('^[^:]*$', $temp_word[0]) &&
+                         !mb_ereg_match('^[^/]*$', $temp_word[0])  )
                         {
                             
 							error_log("in the slash loop");	
                                                                   
-                            while ($temp_word[0][$temp_count] != "/" && $temp_count < strlen($temp_word[0]) )
+                            while ($temp_word[0][$temp_count] != "/" 
+                            && $temp_count < strlen($temp_word[0]) )
                             {
                             	error_log("in while");
                                 // Gather all the days
@@ -124,8 +131,10 @@ class Conflict_Time extends Eloquent {
                                             if ($time[4] == 3 && $time[1] == 8) 
                                             {
                                                 $result["status"] = "error";
-                                                $result["message"] = $result["message"] .
-                                                "\nError with time on line " . ($i+1) . '.';
+                                                $result["message"] = 
+                                                $result["message"]
+                                                . "\nError with time on line " . 
+                                                 ($i+1) . '.';
                                                 $correct = false;
                                             }
                                             
@@ -133,8 +142,9 @@ class Conflict_Time extends Eloquent {
 										else
 										{
 											$result["status"] = "error";
-                                            $result["message"] = $result["message"] .
-                                            "\nError with time on line " . ($i+1) . '.';
+                                            $result["message"] = $result["message"].
+                                            "\nError with time on line " . ($i+1) . 
+                                            '.';
                                             $correct = false;
                                         }	
 										
@@ -157,12 +167,15 @@ class Conflict_Time extends Eloquent {
                                     if ( $time[1] >= 0 && $time[1] <= 8)
                                     {
                                     
-                                        if (($time[3] + $time[4]) != 0 )
+                                        if (($time[3]!= 0 || $time[3]!=3) &&
+												$time[4] !=0 )
                                         {
                                         
                                                 $result["status"] = "error";
-                                                $result["message"] = $result["message"] .
-                                                "\nError with time on line " . ($i+1) . '.';
+                                                $result["message"] = 
+                                                $result["message"] .
+                                                "\nError with time on line " . 
+                                                ($i+1) . '.';
                                                 $correct = false;
                                           
                                             
@@ -180,7 +193,9 @@ class Conflict_Time extends Eloquent {
                                     
                                 }
 
-                                // False if the time does not fall between 10:00 and 18:00
+                                // False if the time does not fall between 10:00
+                                // and 18:00
+                                
                                 elseif($time[0] == 2)
                                 {
                                     $result["status"] = "error";
@@ -195,7 +210,8 @@ class Conflict_Time extends Eloquent {
                                 {
                                                                                            
                                     $store_count++; 
-                                    $store[$store_count][0] = $store[$store_count-1][0];
+                                    $store[$store_count][0] = 
+										$store[$store_count-1][0];
                                     $store[$store_count][1] = $time;
                                 }
                                 
@@ -234,9 +250,12 @@ class Conflict_Time extends Eloquent {
                                 for ( $day_count = 0; $day_count < count($days) &&
                                     count($days) <= 6 ; $day_count++)
                                 {
-                                    if ($days[$day_count] == 'M' || $days[$day_count] == "T" ||
-                                        $days[$day_count] == "W" || $days[$day_count] == "R" ||
-                                        $days[$day_count]== "F" || $days[$day_count] == "S")
+                                    if ($days[$day_count] == 'M' || 
+										$days[$day_count] == "T" ||
+                                        $days[$day_count] == "W" ||
+                                        $days[$day_count] == "R" ||
+                                        $days[$day_count]== "F" ||
+                                        $days[$day_count] == "S")
                                     {
 
                                         if ($days[$day_count] == "M"  && $m == 0)
@@ -279,7 +298,7 @@ class Conflict_Time extends Eloquent {
 										{
 										    $result["status"] = "error";
 											$result["message"] = $result["message"] .
-											"\nDuplicate day entries have been inputted on line " .
+											"\nDuplicate day entries on line " .
 											($i + 1) . '.';
 											$correct = false;
 										}
@@ -331,11 +350,13 @@ class Conflict_Time extends Eloquent {
     
         $duplicate = false;
         
-        for($i = 0; $i < count($store) && $duplicate == false && count($store[$i]) == 8; $i++)
+        for($i = 0; $i < count($store) && $duplicate == false 
+        && count($store[$i]) == 8; $i++)
         {
             $temp = $store[$i];
                    
-            for ($j = 0; $j < count($store) && $duplicate == false && count($temp) == 8; $j++)
+            for ($j = 0; $j < count($store) && $duplicate == false 
+            && count($temp) == 8; $j++)
             {
             
                 if ( $j != $i)
@@ -409,7 +430,8 @@ class Conflict_Time extends Eloquent {
     public static function get_text($schedule_id)
     {
 
-        $entries = Conflict_Time::where_schedule_id($schedule_id)->order_by("id", "asc")->get();
+        $entries = Conflict_Time::where_schedule_id($schedule_id)
+        ->order_by("id", "asc")->get();
         $text = "";
         $prev_course = "";
 
