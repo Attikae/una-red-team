@@ -321,6 +321,14 @@ function ajaxDisplayOutput(span){
       $("#seniority-container").html(data.seniority);
       $("#submission-container").html(data.submission);
 
+      var blocks0 = data.classBlocks0;
+      var blocks1 = data.classBlocks1;
+
+      console.log(blocks0);
+
+      appendDivs(blocks0, 0);
+      appendDivs(blocks1, 1);
+
       $("#schedule-output-container").show();
       $("#sumbission-container").hide();
       $("#seniority-container").show();
@@ -331,6 +339,65 @@ function ajaxDisplayOutput(span){
   });
 
   //alert("Schedule Id is: " + scheduleId + " and outputVersionId is: " + outputVersionId);
+
+}
+
+function appendDivs(blocks, priority){
+
+  var container;
+  if(priority == 0)
+  {
+    container = $("#seniority-container");
+  }
+  else if(priority == 1)
+  {
+    container = $("#submission-container");
+  }
+
+  for (var i = 0; i < blocks.length; i++) {
+
+    var div = document.createElement('div');
+    div.className = "class-block"
+    div.style.width = blocks[i].width + "px";
+    div.style.left = blocks[i].left + "px";
+    div.innerHTML = blocks[i].course + "</br>" + blocks[i].timeFormatted + 
+                    "</br>" + blocks[i].facultyName;
+
+    var table = container.find(blocks[i].tableId)
+
+    if(blocks[i].monday == "1")
+    {
+      table.find('.monday-row').append(div);
+    }
+
+    if(blocks[i].tuesday == "1")
+    {
+      table.find('.tuesday-row').append(div);
+    }
+
+    if(blocks[i].wednesday == "1")
+    {
+      table.find('.wednesday-row').append(div);
+    }
+
+    if(blocks[i].thursday == "1")
+    {
+      table.find('.thursday-row').append(div);
+    }
+
+    if(blocks[i].friday == "1")
+    {
+      table.find('.friday-row').append(div);
+    }
+
+    if(blocks[i].saturday == "1")
+    {
+      table.find('.saturday-row').append(div);
+    }
+
+
+  };
+
 
 }
 

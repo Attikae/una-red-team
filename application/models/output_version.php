@@ -48,7 +48,7 @@ class Output_Version extends Eloquent {
 
 
 
-  public static function create_classes_by_room($courses, $output_version_id){
+  public static function create_classes_by_room_tables($output_version_id, $priority){
     $html = "";
     $html .= "<div class='by-room'>";
 
@@ -56,6 +56,10 @@ class Output_Version extends Eloquent {
 
     $rooms = Available_Room::where_output_version_id($output_version_id)->get();
 
+    usort($rooms, function($a, $b)
+    {
+        return strcmp(($a->building . $a->room_number), ($b->building . $b->room_number));
+    });
 
 
     for($i = 0; $i < count($rooms); $i++)
@@ -63,17 +67,33 @@ class Output_Version extends Eloquent {
 
       $room_text = $rooms[$i]->building . " " . $rooms[$i]->room_number;
       $room_vertical_text = Output_Version::createVerticalHtml($room_text);
+      $room_id = $rooms[$i]->building . "-" . $rooms[$i]->room_number . "-" . $priority;
 
-      $html_array[$i] = "<table class='room-table'>" .
-                        "<tr><td>Times</td></tr>" .
+      $html_array[$i] = "<table id='" . $room_id . "' class='room-table'>" .
+                        "<tr><td>Time</td><td></td><td><div class='time-row'>";
+
+      for($j = 7; $j < 22; $j++)
+      {
+        if($j > 12)
+        {
+          $num = $j - 12;
+        }
+        else
+        {
+          $num = $j;
+        }
+        $html_array[$i] .= "<div class='time-label'>" . $num . "</div>";
+      }
+
+      $html_array[$i].= "</div></td></tr>" .
                         "<tr><td rowspan='8'>" . $room_vertical_text . "</td></tr>" .
-                        "<tr><td>Monday</td><td><div class='time-row'></div></td></tr>" .
-                        "<tr><td>Tuesday</td><td><div class='time-row'></div></td></tr>" .
-                        "<tr><td>Wednesday</td><td><div class='time-row'></div></td></tr>" .
-                        "<tr><td>Thursday</td><td><div class='time-row'></div></td></tr>" .
-                        "<tr><td>Friday</td><td><div class='time-row'></div></td></tr>" .
-                        "<tr><td>Saturday</td><td><div class='time-row'></div></td></tr>" .
-                        "</table>";
+                        "<tr><td>M</td><td><div class='monday-row day-row'></div></td></tr>" .
+                        "<tr><td>T</td><td><div class='tuesday-row day-row'></div></td></tr>" .
+                        "<tr><td>W</td><td><div class='wednesday-row day-row'></div></td></tr>" .
+                        "<tr><td>R</td><td><div class='thursday-row day-row'></div></td></tr>" .
+                        "<tr><td>F</td><td><div class='friday-row day-row'></div></td></tr>" .
+                        "<tr><td>S</td><td><div class='saturday-row day-row'></div></td></tr>" .
+                        "</table></br></br></br>";
     }
 
     for($i = 0; $i < count($html_array); $i++)
@@ -84,6 +104,91 @@ class Output_Version extends Eloquent {
     $html .= "</div>";
 
     return $html;
+  }
+
+
+  public static function get_class_blocks_data($courses){
+
+    $data = array();
+
+    $i = 0;
+    foreach ($courses as $course) {
+
+      $course_type = substr($course->section_number, 0);
+
+      //error_log("Course type is: " . $course_type);
+
+      if($course_type != 'I' && $course_type != "X")
+      {
+        //error_log("in if");
+        $start_formatted = "";
+        $end_formatted = "";
+
+        Output_Version::formatTimes($course->start_time, $course->duration,
+                                    $start_formatted, $end_formatted);
+
+        //error_log("after formatTimes");
+
+        //error_log("before width calculation");
+        $width = intval( ($course->duration / 60) * 68);
+        //error_log("after width");
+        $left = Output_Version::getLeftOffset($course->start_time, $course->duration);
+        //error_log("after get left");
+        
+        /* $html .= "<div class='class-block' " .
+                 "data-id='" . $course->id ."' " .
+                 "data-priority-flag='" . $course->priority_flag . "' " .
+                 "data-user-id='" . $course->user_id . "' " .
+                 "data-course='" . $course->course . "' " .
+                 "data-section-number='" . $course->section_number . "' " .
+                 "data-course-type='" . $course->course_type . "' " .
+                 "data-credit-hours='" . $course->credit_hours . "' " .
+                 "data-start-time='" . $course->start_time . "' " .
+                 "data-duration='" . $course->duration . "' " .
+                 "data-building='" . $course->buidling . "' " .
+                 "data-room-number='" . $course->room_number . "' " .
+                 "data-monday='" . $course->monday . "' " .
+                 "data-tuesday='" . $course->tuesday . "' " .
+                 "data-wednesday='" . $course->wednesday . "' " .
+                 "data-thursday='" . $course->thursday . "' " .
+                 "data-friday='" . $course->friday . "' " .
+                 "data-saturday='" . $course->saturday . "' " .
+                 "data-width='" . $width . "' " .
+                 "data-left='" . $left . "' " .
+                 ">" .
+                 $course->course . "</br>" .
+                 $start_formatted . "-" . $end_formatted . "</br>" .
+                 $course->faculty_name .
+                 "</div>"; */
+
+        $data[$i]['id'] = $course->id;
+        $data[$i]['priorityFlag'] = $course->priority_flag;
+        $data[$i]['userId'] = $course->user_id;
+        $data[$i]['course'] = $course->course;
+        $data[$i]['sectionNumber'] = $course->section_number;
+        $data[$i]['courseType'] = $course->course_type;
+        $data[$i]['creditHours'] = $course->credit_hours;
+        $data[$i]['startTime'] = $course->start_time;
+        $data[$i]['duration'] = $course->duration;
+        $data[$i]['building'] = $course->building;
+        $data[$i]['roomNumber'] = $course->room_number;
+        $data[$i]['monday'] = $course->monday;
+        $data[$i]['tuesday'] = $course->tuesday;
+        $data[$i]['wednesday'] = $course->wednesday;
+        $data[$i]['thursday'] = $course->thursday;
+        $data[$i]['friday'] = $course->friday;
+        $data[$i]['saturday'] = $course->saturday;
+        $data[$i]['width'] = $width;
+        $data[$i]['left'] = $left;
+        $data[$i]['timeFormatted'] = $start_formatted . "</br> - " . $end_formatted;
+        $data[$i]['facultyName'] = $course->faculty_name;
+        $data[$i]['tableId'] = "#" . $course->building . "-" . $course->room_number . "-" . $course->priority_flag;
+        $i++;
+
+        } // end if course type
+    }// end foreach course
+
+    return $data;
   }
 
 
@@ -144,8 +249,6 @@ class Output_Version extends Eloquent {
 
 
     $html .= "</tbody></table></div>";
-
-    error_log($html);
 
     return $html;
   }
@@ -293,11 +396,7 @@ class Output_Version extends Eloquent {
       $html .= "" . $html_array[$i] . "</tbody></table></br></br>";
     }
 
-
-
     $html .= "</div>";
-
-    //error_log($html);
 
     return $html;
   }
@@ -347,6 +446,14 @@ class Output_Version extends Eloquent {
       $timestamp += ($duration * 60);
       $end_formatted = date('g:i a', $timestamp);     
     }
+  }
+
+  public static function getLeftOffset($start_time, $duration)
+  {
+    $timestamp = strtotime($start_time);
+    $offset = ( (date('G', $timestamp) - 7) * 70 ) + 62;
+    $offset = $offset + ( ( date('i', $timestamp) / 60 ) * 68 );
+    return $offset;
   }
 
   public static function createVerticalHtml($room_text)
