@@ -29,8 +29,6 @@ class Scheduler {
                                          0,
                                          $time_list );
 
-    error_log( "/////////////////////////////////////////////////////////" );
-
     $faculty_list = Scheduler::get_faculty_list( $schedule_id, $course_list, 1 );
     $time_list = Scheduler::get_time_list( $schedule_id );
 
@@ -86,13 +84,6 @@ class Scheduler {
                                                          $prereq_list,
                                                          $section,
                                                          $course );
-
-        $day_section_times = array();
-/*
-        if( $section == 0 )
-        {
-          $day_section_times = 
-        }*/
         foreach( $faculty_list as $key => $faculty )
         {
           // If faculty has enough hours to teach course
