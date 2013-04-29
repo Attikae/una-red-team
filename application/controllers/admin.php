@@ -243,7 +243,6 @@ class Admin_Controller extends Base_Controller
   public function post_display_output()
   {
 
-
     // for priority flag 0 is by seniority and 1 is by pref submission
     $schedule_id = Input::get('schedule_id');
     $output_version_id = Input::get('output_version_id');
@@ -384,16 +383,6 @@ class Admin_Controller extends Base_Controller
                                            $course->duration,
                                            $start_offset, 
                                            $end_offset);
-          error_log('/////////////////////////');
-          error_log("before checking conflict");
-          error_log("Edit course days is: " . $edit_course_days);
-          error_log("Edit course start offset: " . $edit_start_offset);
-          error_log("Edit course end_offset: " . $edit_end_offset);
-          error_log("");
-          error_log("course days is: " . $days);
-          error_log("course start offset: " . $start_offset);
-          error_log("course end_offset: " . $end_offset);
-
 
           $is_conflict = Scheduler::is_intersected( $edit_course_days, 
                                                     $days, 
@@ -419,8 +408,6 @@ class Admin_Controller extends Base_Controller
     if($edit == true)
     {
 
-      error_log("in save change to database");
-
       $course_to_edit = Scheduled_Course::find($scheduled_course_id);
 
       $course_to_edit->user_id = $user_id;
@@ -441,14 +428,36 @@ class Admin_Controller extends Base_Controller
 
     }
 
-
-
-
-
-
     echo json_encode(array("status" => $status,
                            "message" => $message));
 
+  }
+
+
+  public function post_update_container()
+  {
+
+
+    $output_version_id = Input::get("output_version_id");
+    $priority_flag = Input::get("priority_flag");
+
+    $courses = Scheduled_Course::where_output_version_id($output_version_id)
+                                        ->where_priority_flag($priority_flag)->get();
+
+
+    $class_name_html = Output_Version::create_classes_by_class_name($courses);
+    $room_html = Output_Version::create_classes_by_room_tables($output_version_id,
+                                                               $priority_flag);
+    $faculty_html = Output_Version::create_classes_by_faculty($courses);
+    $time_html = Output_Version::create_classes_by_time($courses);
+    $html = $class_name_html . $room_html . $faculty_html . $time_html;
+
+
+    $class_blocks = Output_Version::get_class_blocks_data($courses);
+
+
+    echo json_encode(array("html" => $html,
+                           "classBlocks" => $class_blocks));
 
   }
 

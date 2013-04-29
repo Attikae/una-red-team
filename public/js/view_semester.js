@@ -44,7 +44,6 @@ $(document).ready(function(){
 
   $("#show-seniority").on('click', function(){
     var className = $(".output-container:visible").children(":visible").attr('class');
-    console.log("Click show seniority classname is: " + className);
     $("#submission-container").hide();
     $("#seniority-container").show();
     $("#active-container-label").text("Viewing: By Seniority");
@@ -55,7 +54,6 @@ $(document).ready(function(){
 
   $("#show-sumbission").on('click', function(){
     var className = $(".output-container:visible").children(":visible").attr('class');
-    console.log("Click show submission classname is: " + className);
     $("#seniority-container").hide();
     $("#submission-container").show();
     $("#active-container-label").text("Viewing: By Preference Submissions");
@@ -70,7 +68,6 @@ $(document).ready(function(){
   $("#bottom-buttons-container button").on('click', function(){
     var id = $(this).attr('id');
 
-    console.log("id is: " + id);
     var container = $(".output-container:visible");
 
     switch(id)
@@ -99,12 +96,7 @@ $(document).ready(function(){
     displayEditContainer($(this));
   })
 
-  $("#edit-close").on("click", function(){
-    $("#schedule-edit-container").hide();
-    $("#schedule-container-overlay").hide();
-    $(".day-checkbox").prop('checked', false);
-
-  });
+  $("#edit-close").on("click", closeEditPopup);
 
   $("#edit-submit").on('click', ajaxEditCourse);
 
@@ -112,7 +104,13 @@ $(document).ready(function(){
 
 
 
+function closeEditPopup(){
 
+  $("#schedule-edit-container").hide();
+  $("#schedule-container-overlay").hide();
+  $(".day-checkbox").prop('checked', false);
+
+}
 
 
 function showVersions(){
@@ -469,10 +467,6 @@ function displayEditContainer(div){
   $("#schedule-container-overlay").show()
   $("#schedule-edit-container").show();
 
-  console.log("Start hour is: " + divData.startHour);
-  console.log("Start hour is: " + div.data("startHour"));
-  console.log("Start minute is: " + divData.startMinute);
-
   $("#edit-course-id").val(divData.courseId);
   $("#edit-priority-flag").val(divData.priorityFlag);
   $("#edit-course-duration").val(divData.duration);
@@ -589,15 +583,17 @@ function ajaxEditCourse(){
     var s = 0;
   }
 
+  var outputVersionId = $("#edit-output-version-id").val();
+  var priority = $("#edit-priority-flag").val();
 
   $.ajax({
     url: "edit_course",
     dataType: "json",
     type: "POST",
     data: {
-        output_version_id : $("#edit-output-version-id").val(),
+        output_version_id : outputVersionId,
         duration : $("#edit-course-duration").val(),
-        priority : $("#edit-priority-flag").val(),
+        priority : priority,
         course_id : $("#edit-course-id").val(),
         class_size : $("#edit-class-size").val(),
         course_type : $("#edit-course-type").val(),
@@ -615,12 +611,51 @@ function ajaxEditCourse(){
     },
     success: function(data) {
 
-      alert(data.message);
+    
+      if(data.status == "success")
+      {
+        ajaxUpdateContainer(outputVersionId, priority);
+        alert(data.message);
+        closeEditPopup();
+      }
+      else if(data.status = "error")
+      {
+        alert(data.message);
+      }
       
     }
 
   }); 
 
+}
+
+
+function ajaxUpdateContainer(outputVersionId, priority){
+
+
+  $.ajax({
+    url: "update_container",
+    dataType: "json",
+    type: "POST",
+    data: {
+        output_version_id : outputVersionId,
+        priority_flag : priority
+    },
+    success: function(data) {
+
+      if(priority == 0)
+      {
+        $("#seniority-container").html(data.html);
+        appendDivs(data.classBlocks, 0);
+      }
+      else if(priority == 1)
+      {
+        $("#submission-container").html(data.html);
+        appendDivs(data.classBlocks, 1);
+      }
+            
+    }
+  });
 
 }
 
