@@ -30,7 +30,6 @@
 
   <div id="semester-title">
     <?php
-      // Can take the following out. Just playing around with passing data. 
       echo "Currently viewing " . Session::get('semester'); 
     ?>
   </div>

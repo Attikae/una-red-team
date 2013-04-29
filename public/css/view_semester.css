@@ -425,6 +425,11 @@ input[type=checkbox]
   display: none;
 }
 
+.not-scheduled
+{
+  display: none;
+}
+
 #active-container-label
 {
   position: absolute;

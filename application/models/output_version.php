@@ -406,6 +406,43 @@ class Output_Version extends Eloquent {
     return $html;
   }
 
+  public static function create_not_scheduled($courses)
+  {
+
+    error_log("in create not scheduled");
+    usort($courses, function($a, $b)
+    {
+        return strcmp($a->course, $b->course);
+    });
+
+    $html = "";
+    $html .= "<div class='not-scheduled'>
+                <table class='not-scheduled-table'>
+                  <thead>
+                    <tr>
+                      <th>Course Name</th>
+                      <th>Section #</th>
+                      <th>Course Type</th>
+                      <th>Credit Hours</th>
+                      <th>Schedule</th>
+                    </tr>
+                  </thead>
+                  <tbody>";
+                
+
+    foreach ($courses as $course) {
+
+      if($course->section_number == "X")
+        $html .= Output_Version::generateNotScheduledRow($course);
+      } 
+
+    $html .= "</tbody></table></div>";
+
+    return $html;
+
+
+  }
+
 
   public static function generateRow($course)
   {
@@ -434,6 +471,21 @@ class Output_Version extends Eloquent {
             "</tr>";
     return $html;
   }
+
+
+  public static function generateNotScheduledRow($course)
+  {
+    $html = "<tr>" .
+              "<td>" . $course->course . "</td>" .
+              "<td>" . $course->section_number . "</td>" .
+              "<td>" . $course->course_type . "</td>" .
+              "<td>" . $course->credit_hours . "</td>" .
+              "<button id='" . $course->id . "' class='schedule-btn'></button>" .
+            "</tr>";
+    return $html;
+
+  }
+
 
   public static function formatTimes($start_time, $duration,
                                      &$start_formatted, &$end_formatted)

@@ -88,6 +88,10 @@ $(document).ready(function(){
         $(container).children(":visible").hide();
         $(container).children('.by-time').show();
         break;
+      case "show-not-scheduled":
+        $(container).children(":visible").hide();
+        $(container).children('.not-scheduled').show();
+        break;
     }
 
   })

@@ -258,18 +258,22 @@ class Admin_Controller extends Base_Controller
     $rooms = Available_Room::where_schedule_id(0)
                                 ->where_output_version_id($output_version_id)->get();
 
-
+    error_log("In post display output");
     $class_name_html_0 = Output_Version::create_classes_by_class_name($courses_0);
     $room_html_0 = Output_Version::create_classes_by_room_tables($output_version_id, 0);
     $faculty_html_0 = Output_Version::create_classes_by_faculty($courses_0);
     $time_html_0 = Output_Version::create_classes_by_time($courses_0);
-    $seniority = $class_name_html_0 . $room_html_0 . $faculty_html_0 . $time_html_0;
+    $not_scheduled_html_0 = Output_Version::create_not_scheduled($courses_0);
+    $seniority = $class_name_html_0 . $room_html_0 . $faculty_html_0 . 
+                 $time_html_0 . $not_scheduled_html_0;
 
     $class_name_html_1 = Output_Version::create_classes_by_class_name($courses_1);
     $room_html_1 = Output_Version::create_classes_by_room_tables($output_version_id, 1);
     $faculty_html_1 = Output_Version::create_classes_by_faculty($courses_1);
     $time_html_1 = Output_Version::create_classes_by_time($courses_1);
-    $submission = $class_name_html_1 . $room_html_1 . $faculty_html_1 . $time_html_1;
+    $not_scheduled_html_1 = Output_Version::create_not_scheduled($courses_1);
+    $submission = $class_name_html_1 . $room_html_1 . $faculty_html_1 .
+                  $time_html_1 . $not_scheduled_html_1;
 
     $seniority_class_blocks = Output_Version::get_class_blocks_data($courses_0);
     $submission_class_blocks = Output_Version::get_class_blocks_data($courses_1);
@@ -325,7 +329,6 @@ class Admin_Controller extends Base_Controller
     $building = substr($building_and_room, 0, $space_pos);
     $room = substr($building_and_room, $space_pos+1);
     $edit_course_days = $m . $t . $w . $r . $f . $s;
-
     $edit_start_offset = 0;
     $edit_end_offset = 0;
 
@@ -393,7 +396,6 @@ class Admin_Controller extends Base_Controller
 
           if($is_conflict == true)
           {
-            error_log("in found course conflict");
             $edit = false;
             $status = "error";
             $message .= "Specified start time conflicts with " . $course->course .
@@ -450,7 +452,9 @@ class Admin_Controller extends Base_Controller
                                                                $priority_flag);
     $faculty_html = Output_Version::create_classes_by_faculty($courses);
     $time_html = Output_Version::create_classes_by_time($courses);
-    $html = $class_name_html . $room_html . $faculty_html . $time_html;
+    $not_scheduled_html = Output_Version::create_not_scheduled($courses);
+    $html = $class_name_html . $room_html . $faculty_html . $time_html .
+            $not_scheduled_html;
 
 
     $class_blocks = Output_Version::get_class_blocks_data($courses);

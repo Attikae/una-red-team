@@ -38,9 +38,9 @@
   <div id="main-div">
 
     <div id="menu-div">
-      <div class="menu-btn" id="versions-btn">
+      <!-- <div class="menu-btn" id="versions-btn">
         <div class="option-txt">schedule versions</div>
-      </div>
+      </div> -->
 
       <div class="menu-btn" id="pref-btn">
         <div class="option-txt">preferences</div>
