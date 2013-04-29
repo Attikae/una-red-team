@@ -306,7 +306,7 @@
       <div id="top-buttons-container">
         <button id="show-seniority">By Seniority</button>
         <button id="show-sumbission">By Order of Submission</button>
-        <button id="hide-schedule-output">Hide Schedule</button>
+        <!-- <button id="hide-schedule-output">Hide Schedule</button> -->
       </div>
       </br>
       <div id="bottom-buttons-container">
@@ -317,6 +317,8 @@
         <button id="show-not-scheduled">Not Scheduled</button>
       </div>
     </div>
+    <button id="publish-btn">Publish</button>
+    <button id="hide-schedule-output">Close</button>
     <div id="schedule-inner-container">
       <div id="seniority-container" class="output-container">
         Seniority
