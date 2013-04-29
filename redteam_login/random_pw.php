@@ -10,8 +10,17 @@ $randomPassword = generatePassword;
 //automated email send with subject 'New Login Password'
 mail($username->email, 'New Login Password', $randomPassword);
  
- //-->>>>>>got this on internet
-function generatePassword($length=9, $strength=0) {
+   /****************************************************************************
+  /* @function    generatePassowrd
+  /* @author      Ash Karki
+  /* @description This segment of code will scan an incoming file(the format of
+  /*              which can be found in section A.3 of the specification
+  /*              document) to ensure the correct format is found.
+  /* @input       N/A
+  /* @output      This function will pass back the random password of length 9
+  /*              and store it in the variable $randomPassword                    	 
+  ****************************************************************************/
+ function generatePassword($length=9, $strength=0) {
 	$vowels = 'aeuy';
 	$consonants = 'bdghjmnpqrstvz';
 	if ($strength & 1) {
