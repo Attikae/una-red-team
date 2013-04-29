@@ -335,6 +335,8 @@
     <input id="edit-output-version-id" type="hidden"/>
     <input id="edit-priority-flag" type="hidden"/>
     <input id="edit-course-duration" type="hidden"/>
+    <input id="edit-class-size" type="hidden"/>
+    <input id="edit-course-type" type="hidden"/>
     <span id="course-label">CS TEST</span>
     </br></br>
     <table id="schedule-edit-table">

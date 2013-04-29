@@ -275,11 +275,8 @@ class Admin_Controller extends Base_Controller
     $seniority_class_blocks = Output_Version::get_class_blocks_data($courses_0);
     $submission_class_blocks = Output_Version::get_class_blocks_data($courses_1);
 
-    error_log("Before new function calls");
     $faculty_data = Output_Version::get_faculty_data($faculty);
-    error_log("In between new function calls");
     $rooms_data = Output_Version::get_rooms_data($rooms);
-    error_log("Aftern new function calls");
 
     echo json_encode(array("seniority" => $seniority,
                            "submission" => $submission,
@@ -308,27 +305,149 @@ class Admin_Controller extends Base_Controller
     $output_version_id = Input::get("output_version_id");
     $priority = Input::get("priority");
     $scheduled_course_id = Input::get("course_id");
+    $class_size = Input::get("class_size");
+    $course_type = Input::get("course_type");
     $start_hour = Input::get("start_hour");
     $start_minute = Input::get("start_minute");
     $duration = Input::get("duration");
-    $monday = Input::get("monday");
-    $tuesday = Input::get("tuesday");
-    $wednesday = Input::get("wednesday");
-    $thursday = Input::get("thursday");
-    $friday = Input::get("friday");
-    $saturday = Input::get("saturday");
+    $m = Input::get("monday");
+    $t = Input::get("tuesday");
+    $w = Input::get("wednesday");
+    $r = Input::get("thursday");
+    $f = Input::get("friday");
+    $s = Input::get("saturday");
     $user_id = Input::get("user_id");
     $faculty_name = Input::get("faculty_name");
     $building_and_room = Input::get("room");
 
     $start_time = $start_hour . ":" . $start_minute . ":00";
 
-    $start_offset = 0;
-    $end_offset = 0;
+    $space_pos = strpos($building_and_room, " ");
+    $building = substr($building_and_room, 0, $space_pos);
+    $room = substr($building_and_room, $space_pos+1);
+    $edit_course_days = $m . $t . $w . $r . $f . $s;
+
+    $edit_start_offset = 0;
+    $edit_end_offset = 0;
 
     Scheduler::get_start_end_offsets($start_time, $duration,
-                                        $start_offset, $end_offset);
+                                        $edit_start_offset, $edit_end_offset);
 
+
+    $query_room = Available_Room::where_schedule_id(0)
+                            ->where_output_version_id($output_version_id)
+                            ->where_building($building)
+                            ->where_room_number($room)->first();
+
+
+    $message = "";
+    $status = "";
+    $edit = true;
+
+    //Calculate faculty hours and do faculty check.
+
+    if($query_room->type != "B" && $query_room->type != $course_type)
+    {
+      $edit = false;
+      $status = "error";
+      $message .= "Room type of " . $query_room->type . " does not match" .
+                  " course type of " . $course_type . "!\n";
+    }
+
+    if($class_size > $query_room->size)
+    {
+      $edit = false;
+      $status = "error";
+      $message .= "Room size of " . $query_room->size . " insufficient for" .
+                  " class size of " . $class_size . "!\n";
+    }
+
+    if($edit == true)
+    {
+
+      $courses = Scheduled_Course::where_output_version_id($output_version_id)
+                                  ->where_priority_flag($priority)
+                                  ->where_building($building)
+                                  ->where_room_number($room)->get();
+
+
+      if(! empty($courses))
+      {
+        foreach ($courses as $course) {
+          $days = $course->monday . $course->tuesday . $course->wednesday .
+                  $course->thursday . $course->friday . $course->saturday;
+
+          $start_offset = 0;
+          $end_offset = 0;
+
+          Scheduler::get_start_end_offsets($course->start_time,
+                                           $course->duration,
+                                           $start_offset, 
+                                           $end_offset);
+          error_log('/////////////////////////');
+          error_log("before checking conflict");
+          error_log("Edit course days is: " . $edit_course_days);
+          error_log("Edit course start offset: " . $edit_start_offset);
+          error_log("Edit course end_offset: " . $edit_end_offset);
+          error_log("");
+          error_log("course days is: " . $days);
+          error_log("course start offset: " . $start_offset);
+          error_log("course end_offset: " . $end_offset);
+
+
+          $is_conflict = Scheduler::is_intersected( $edit_course_days, 
+                                                    $days, 
+                                                    $edit_start_offset,
+                                                    $edit_end_offset, 
+                                                    $start_offset, 
+                                                    $end_offset);
+
+          if($is_conflict == true)
+          {
+            error_log("in found course conflict");
+            $edit = false;
+            $status = "error";
+            $message .= "Specified start time conflicts with " . $course->course .
+                         "-" . $course->section_number;
+            break;
+          }
+
+        }
+      }
+    }
+
+    if($edit == true)
+    {
+
+      error_log("in save change to database");
+
+      $course_to_edit = Scheduled_Course::find($scheduled_course_id);
+
+      $course_to_edit->user_id = $user_id;
+      $course_to_edit->faculty_name = $faculty_name;
+      $course_to_edit->start_time = $start_time;
+      $course_to_edit->building = $building;
+      $course_to_edit->room_number = $room;
+      $course_to_edit->monday = $m;
+      $course_to_edit->tuesday = $t;
+      $course_to_edit->wednesday = $w;
+      $course_to_edit->thursday = $r;
+      $course_to_edit->friday = $f;
+      $course_to_edit->saturday = $s;
+      $course_to_edit->save();
+
+      $status = "success";
+      $message = "Course successfully edited!";
+
+    }
+
+
+
+
+
+
+    echo json_encode(array("status" => $status,
+                           "message" => $message));
 
 
   }

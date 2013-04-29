@@ -135,6 +135,7 @@ class Output_Version extends Eloquent {
         $data[$i]['userId'] = $course->user_id;
         $data[$i]['course'] = $course->course;
         $data[$i]['sectionNumber'] = $course->section_number;
+        $data[$i]['classSize'] = $course->class_size;
         $data[$i]['courseType'] = $course->course_type;
         $data[$i]['creditHours'] = $course->credit_hours;
         $data[$i]['startHour'] = substr($course->start_time, 0, 2);

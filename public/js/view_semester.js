@@ -106,7 +106,7 @@ $(document).ready(function(){
 
   });
 
-  $("edit-submit").on('click', ajaxEditCourse);
+  $("#edit-submit").on('click', ajaxEditCourse);
 
 });
 
@@ -440,6 +440,8 @@ function setClassBlockData(block){
   domDiv.data("sectionNumber", block.sectionNumber);
   domDiv.data("priorityFlag", block.priorityFlag);
   domDiv.data("duration", block.duration);
+  domDiv.data("classSize", block.classSize);
+  domDiv.data("courseType", block.courseType);
 
 }
 
@@ -474,6 +476,8 @@ function displayEditContainer(div){
   $("#edit-course-id").val(divData.courseId);
   $("#edit-priority-flag").val(divData.priorityFlag);
   $("#edit-course-duration").val(divData.duration);
+  $("#edit-class-size").val(divData.classSize);
+  $("#edit-course-type").val(divData.courseType);
   $("#course-label").text(divData.course + "-" + divData.sectionNumber);
   $("#start-hour-select").val(divData.startHour);
   $("#start-minute-select").val(divData.startMinute);
@@ -592,9 +596,11 @@ function ajaxEditCourse(){
     type: "POST",
     data: {
         output_version_id : $("#edit-output-version-id").val(),
-        duration : $("edit-course-duration").val(),
+        duration : $("#edit-course-duration").val(),
         priority : $("#edit-priority-flag").val(),
         course_id : $("#edit-course-id").val(),
+        class_size : $("#edit-class-size").val(),
+        course_type : $("#edit-course-type").val(),
         start_hour : $("#start-hour-select").val(),
         start_minute : $("#start-minute-select").val(),
         monday : m,
@@ -609,7 +615,7 @@ function ajaxEditCourse(){
     },
     success: function(data) {
 
-      alert("Edit course success!");
+      alert(data.message);
       
     }
 
