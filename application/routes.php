@@ -9,10 +9,12 @@ Route::any('admin/scan', 'admin@scan');
 Route::any('admin/scheduler', 'admin@scheduler');
 Route::any('admin/fill_prefs', 'admin@fill_prefs');
 Route::any('admin/display_output', 'admin@display_output');
-Route::any('faculty/submit_prefs', 'faculty@submit_prefs');
 Route::any('admin/delete_version', 'admin@delete_version');
 Route::any('admin/edit_course', 'admin@edit_course');
 Route::any('admin/update_container', 'admin@update_container');
+
+Route::any('faculty/submit_prefs', 'faculty@submit_prefs');
+Route::any('faculty/retrieve_prefs', 'faculty@retrieve_prefs');
 
 /*
 |--------------------------------------------------------------------------

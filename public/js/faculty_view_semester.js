@@ -22,6 +22,12 @@ $(document).ready(function(){
     ajaxSubmitPrefs();
   });
 
+  $("#pref-reset-btn").on("click", resetPrefs);
+
+
+  ajaxRetrievePrefs();
+
+
 });
 
 function showVersions(){
@@ -110,10 +116,69 @@ function ajaxSubmitPrefs(){
     },
     success: function(data) {
 
-      alert("Ajax call to submit_prefs worked!");
+      alert("Preferences submitted!");
       
     }
 
   }); 
 
 }
+
+function ajaxRetrievePrefs(){
+
+  var scheduleId = $('#faculty_schedule_id').val();
+
+
+  $.ajax({
+    url: "retrieve_prefs",
+    type: "POST",
+    dataType: "json",
+    data: {
+        faculty_schedule_id : scheduleId,
+    },
+    success: function(data) {
+
+      prefs = data.prefsData;
+
+      for (var i = 0; i < prefs.length; i++) {
+
+        var row = $("#" + prefs[i].courseId);
+
+        if(prefs[i].earlyMorning == "1")
+        {
+          row.find(".morning").prop("checked", true);
+        }
+
+        if(prefs[i].midDay == "1")
+        {
+          row.find(".midday").prop("checked", true);
+        }
+
+        if(prefs[i].lateAfternoon == "1")
+        {
+          row.find(".late-aft").prop("checked", true);
+        }
+
+        row.find(".day-sections").val(prefs[i].daySections);
+        row.find(".night-sections").val(prefs[i].eveningSections);
+        row.find(".internet-sections").val(prefs[i].internetSections);
+
+      };
+      
+    }
+
+  }); 
+
+}
+
+function resetPrefs(){
+
+  $(".morning").prop("checked", false);
+  $(".midday").prop("checked", false);
+  $(".late-aft").prop("checked", false);
+  $(".day-sections").val(0);
+  $(".night-sections").val(0);
+  $(".internet-sections").val(0);
+
+}
+
