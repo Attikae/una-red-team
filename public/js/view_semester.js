@@ -19,9 +19,7 @@ $(document).ready(function(){
 
   $(document).on("click", ".delete-version-lnk", function(){
     var deleteId = $(this).parents('tr').find('.version-lnk').attr('id');
-
     ajaxDeleteVersion(deleteId);
-    
   });
 
   $("#file-submit-iframe").load( ajaxFileUpload );
@@ -107,6 +105,8 @@ $(document).ready(function(){
     $(".day-checkbox").prop('checked', false);
 
   });
+
+  $("edit-submit").on('click', ajaxEditCourse);
 
 });
 
@@ -329,6 +329,7 @@ function ajaxDisplayOutput(span){
 
       $("#seniority-container").html(data.seniority);
       $("#submission-container").html(data.submission);
+      $("#edit-output-version-id").val(data.outputVersionId);
 
       var blocks0 = data.classBlocks0;
       var blocks1 = data.classBlocks1;
@@ -424,6 +425,7 @@ function setClassBlockData(block){
 
   var domDiv = $("." + block.id);
 
+  domDiv.data("courseId", block.id);
   domDiv.data("monday", block.monday);
   domDiv.data("tuesday", block.tuesday);
   domDiv.data("wednesday", block.wednesday);
@@ -435,6 +437,9 @@ function setClassBlockData(block){
   domDiv.data("course", block.course);
   domDiv.data("room", block.room);
   domDiv.data("userId", block.userId);
+  domDiv.data("sectionNumber", block.sectionNumber);
+  domDiv.data("priorityFlag", block.priorityFlag);
+  domDiv.data("duration", block.duration);
 
 }
 
@@ -466,7 +471,10 @@ function displayEditContainer(div){
   console.log("Start hour is: " + div.data("startHour"));
   console.log("Start minute is: " + divData.startMinute);
 
-  $("#course-label").text(divData.course);
+  $("#edit-course-id").val(divData.courseId);
+  $("#edit-priority-flag").val(divData.priorityFlag);
+  $("#edit-course-duration").val(divData.duration);
+  $("#course-label").text(divData.course + "-" + divData.sectionNumber);
   $("#start-hour-select").val(divData.startHour);
   $("#start-minute-select").val(divData.startMinute);
   $("#faculty-select").val(divData.userId);
@@ -474,59 +482,139 @@ function displayEditContainer(div){
 
   if(divData.monday == 1)
   {
-    $(".monday-checkbox").prop('checked', true);
+    $("#monday-checkbox").prop('checked', true);
   }
 
   if(divData.tuesday == 1)
   {
-    $(".tuesday-checkbox").prop('checked', true);
+    $("#tuesday-checkbox").prop('checked', true);
   }
 
   if(divData.wednesday == 1)
   {
-    $(".wednesday-checkbox").prop('checked', true);
+    $("#wednesday-checkbox").prop('checked', true);
   }
 
   if(divData.thursday == 1)
   {
-    $(".thursday-checkbox").prop('checked', true);
+    $("#thursday-checkbox").prop('checked', true);
   }
 
   if(divData.friday == 1)
   {
-    $(".friday-checkbox").prop('checked', true);
+    $("#friday-checkbox").prop('checked', true);
   }
 
   if(divData.saturday == 1)
   {
-    $(".saturday-checkbox").prop('checked', true);
+    $("#saturday-checkbox").prop('checked', true);
   }
 
 }
 
 
 function createFacultyOptions(faculty){
-
-  console.log(faculty);
   var select = $("#faculty-select");
   select.empty();
   for (var i = 0; i < faculty.length; i++) {
     var option = "<option value='" + faculty[i].userId + "'>" + 
                   faculty[i].facultyName + "</option>";
     select.append(option);
-  };
+  }
 
 }
 
 function createRoomOptions(rooms){
-  console.log(rooms);
   var select = $("#room-select");
   select.empty();
   for (var i = 0; i < rooms.length; i++) {
     var option = "<option value='" + rooms[i].room + "'>" + 
                   rooms[i].room + "</option>";
     select.append(option);
-  };
+  }
+
+}
+
+function ajaxEditCourse(){
+
+  if( $("#monday-checkbox").is(":checked") ){
+    var m = 1;
+  }
+  else
+  {
+    var m = 0;
+  }
+
+  if( $("#tuesday-checkbox").is(":checked") ){
+    var t = 1;
+  }
+  else
+  {
+    var t = 0;
+  }
+
+  if( $("#wednesday-checkbox").is(":checked") ){
+    var w = 1;
+  }
+  else
+  {
+    var w = 0;
+  }
+
+  if( $("#thursday-checkbox").is(":checked") ){
+    var r = 1;
+  }
+  else
+  {
+    var r = 0;
+  }
+
+  if( $("#friday-checkbox").is(":checked") ){
+    var f = 1;
+  }
+  else
+  {
+    var f = 0;
+  }
+
+  if( $("#saturday-checkbox").is(":checked") ){
+    var s = 1;
+  }
+  else
+  {
+    var s = 0;
+  }
+
+
+  $.ajax({
+    url: "edit_course",
+    dataType: "json",
+    type: "POST",
+    data: {
+        output_version_id : $("#edit-output-version-id").val(),
+        duration : $("edit-course-duration").val(),
+        priority : $("#edit-priority-flag").val(),
+        course_id : $("#edit-course-id").val(),
+        start_hour : $("#start-hour-select").val(),
+        start_minute : $("#start-minute-select").val(),
+        monday : m,
+        tuesday : t,
+        wednesday : w,
+        thursday : r,
+        friday : f,
+        saturday : s,
+        user_id : $("#faculty-select").val(),
+        faculty_name : $("#faculty-select").find(":selected").text(),
+        room : $("#room-select").val()
+    },
+    success: function(data) {
+
+      alert("Edit course success!");
+      
+    }
+
+  }); 
+
 
 }
 

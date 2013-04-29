@@ -286,7 +286,8 @@ class Admin_Controller extends Base_Controller
                            "classBlocks0" => $seniority_class_blocks,
                            "classBlocks1" => $submission_class_blocks,
                            "faculty" => $faculty_data,
-                           "rooms" => $rooms_data));
+                           "rooms" => $rooms_data,
+                           "outputVersionId" => $output_version_id));
 
   }
 
@@ -299,6 +300,36 @@ class Admin_Controller extends Base_Controller
     Output_Version::find($version_id)->delete();
 
     Scheduled_Course::where_output_version_id($version_id)->delete();
+
+  }
+
+  public function post_edit_course()
+  {
+    $output_version_id = Input::get("output_version_id");
+    $priority = Input::get("priority");
+    $scheduled_course_id = Input::get("course_id");
+    $start_hour = Input::get("start_hour");
+    $start_minute = Input::get("start_minute");
+    $duration = Input::get("duration");
+    $monday = Input::get("monday");
+    $tuesday = Input::get("tuesday");
+    $wednesday = Input::get("wednesday");
+    $thursday = Input::get("thursday");
+    $friday = Input::get("friday");
+    $saturday = Input::get("saturday");
+    $user_id = Input::get("user_id");
+    $faculty_name = Input::get("faculty_name");
+    $building_and_room = Input::get("room");
+
+    $start_time = $start_hour . ":" . $start_minute . ":00";
+
+    $start_offset = 0;
+    $end_offset = 0;
+
+    Scheduler::get_start_end_offsets($start_time, $duration,
+                                        $start_offset, $end_offset);
+
+
 
   }
 

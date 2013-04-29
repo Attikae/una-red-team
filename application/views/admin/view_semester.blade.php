@@ -331,6 +331,10 @@
   <div id="schedule-container-overlay"></div>
 
   <div id="schedule-edit-container">
+    <input id="edit-course-id" type="hidden"/>
+    <input id="edit-output-version-id" type="hidden"/>
+    <input id="edit-priority-flag" type="hidden"/>
+    <input id="edit-course-duration" type="hidden"/>
     <span id="course-label">CS TEST</span>
     </br></br>
     <table id="schedule-edit-table">
@@ -381,12 +385,12 @@
       <caption>Days</caption>
       <tr><td>M</td><td>T</td><td>W</td><td>R</td><td>F</td><td>S</td></tr>
       <tr>
-        <td><input class="monday-checkbox day-checkbox" type="checkbox"/></td>
-        <td><input class="tuesday-checkbox day-checkbox" type="checkbox"/></td>
-        <td><input class="wednesday-checkbox day-checkbox" type="checkbox"/></td>
-        <td><input class="thursday-checkbox day-checkbox" type="checkbox"/></td>
-        <td><input class="friday-checkbox day-checkbox" type="checkbox"/></td>
-        <td><input class="saturday-checkbox day-checkbox" type="checkbox"/></td>
+        <td><input id="monday-checkbox" class="day-checkbox" type="checkbox"/></td>
+        <td><input id="tuesday-checkbox" class="day-checkbox" type="checkbox"/></td>
+        <td><input id="wednesday-checkbox" class="day-checkbox" type="checkbox"/></td>
+        <td><input id="thursday-checkbox" class="day-checkbox" type="checkbox"/></td>
+        <td><input id="friday-checkbox" class="day-checkbox" type="checkbox"/></td>
+        <td><input id="saturday-checkbox" class="day-checkbox" type="checkbox"/></td>
       </tr>
     </table>
     </br>
