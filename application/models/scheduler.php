@@ -1012,6 +1012,13 @@ class Scheduler {
       {
         $intersect = true;
       }
+      else if( ( $start2 >= $start1 &&
+                 $start2 <= $end1 ) ||
+               ( $end2 >= $start1 &&
+                 $end2 <= $end1 ) )
+      {
+        $intersect = true; 
+      }
     }
 
     return $intersect;
@@ -1022,8 +1029,6 @@ class Scheduler {
 
   public static function copyUsedInput($schedule_id, $output_version_id)
   {
-
-    error_log("In copy used input");
     $rooms = Available_Room::where_schedule_id($schedule_id)->get();
     $faculty_members = Faculty_Member::where_schedule_id($schedule_id)->get();
 
@@ -1038,9 +1043,7 @@ class Scheduler {
       $new_room->save();
     }
 
-    error_log("before faculty members copy");
     foreach($faculty_members as $faculty) {
-      error_log("in for");
       $new_faculty = new Faculty_Member;
       $new_faculty->user_id = $faculty->user_id;
       $new_faculty->schedule_id = 0;
@@ -1049,9 +1052,7 @@ class Scheduler {
       $new_faculty->last_name = $faculty->last_name;
       $new_faculty->years_of_service = $faculty->years_of_service;
       $new_faculty->hours = $faculty->hours;
-      error_log("before save");
       $new_faculty->save();
-      error_log('afeter');
     }
   }
 }
