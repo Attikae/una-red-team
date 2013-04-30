@@ -203,6 +203,7 @@ class Output_Version extends Eloquent {
 
   public static function create_classes_by_faculty($courses){
 
+
     usort($courses, function($a, $b)
     {
         return strcmp($a->user_id, $b->user_id);
@@ -212,44 +213,49 @@ class Output_Version extends Eloquent {
     $html .= "<div class='by-faculty'>";
 
     $prev_id = 0;
-    foreach ($courses as $course) {
 
-      if(isset($curr_id))
-      {
-        $prev_id = $curr_id;
-      }
-      $curr_id = $course->user_id;
+    if(! empty($courses))
+    {
+      foreach ($courses as $course) {
 
-      if($curr_id != $prev_id)
-      {
-
-        if($prev_id != 0)
+        if(isset($curr_id))
         {
-          $html .= "</tbody></table></br></br>";
+          $prev_id = $curr_id;
+        }
+        $curr_id = $course->user_id;
+
+        if($curr_id != $prev_id)
+        {
+
+          if($prev_id != 0)
+          {
+            $html .= "</tbody></table></br></br>";
+          }
+
+          $html .= "<table class='faculty-table'>
+                      <caption>" . $course->faculty_name . "</caption>" .
+                      "<thead>
+                        <tr>
+                          <th>Course Name</th>
+                          <th>Section #</th>
+                          <th>Course Type</th>
+                          <th>Days</th>
+                          <th>Start Time</th>
+                          <th>End Time</th>
+                          <th>Room</th>
+                          <th>Instructor</th>
+                          <th>Credit Hours</th>
+                        </tr>
+                      </thead>
+                      <tbody>";
         }
 
-        $html .= "<table class='faculty-table'>
-                    <caption>" . $course->faculty_name . "</caption>" .
-                    "<thead>
-                      <tr>
-                        <th>Course Name</th>
-                        <th>Section #</th>
-                        <th>Course Type</th>
-                        <th>Days</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                        <th>Room</th>
-                        <th>Instructor</th>
-                        <th>Credit Hours</th>
-                      </tr>
-                    </thead>
-                    <tbody>";
+        $html .= Output_Version::generateRow($course);
       }
-
-      $html .= Output_Version::generateRow($course);
-
-
-      
+    }
+    else
+    {
+      $html .= "No courses scheduled";
     }
 
 
@@ -479,7 +485,7 @@ class Output_Version extends Eloquent {
               "<td>" . $course->section_number . "</td>" .
               "<td>" . $course->course_type . "</td>" .
               "<td>" . $course->credit_hours . "</td>" .
-              "<button id='" . $course->id . "' class='schedule-btn'></button>" .
+              "<td><button id='" . $course->id . "' class='schedule-btn'>Schedule</button><td>" .
             "</tr>";
     return $html;
 

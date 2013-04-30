@@ -248,9 +248,22 @@ class Admin_Controller extends Base_Controller
     $output_version_id = Input::get('output_version_id');
 
     $courses_0 = Scheduled_Course::where_output_version_id($output_version_id)
-                                        ->where_priority_flag('0')->get();
+                                        ->where_priority_flag('0')
+                                        ->where('section_number', '!=', 'X')->get();
+
     $courses_1 = Scheduled_Course::where_output_version_id($output_version_id)
-                                        ->where_priority_flag('1')->get();
+                                        ->where_priority_flag('1')
+                                        ->where('section_number', '!=', 'X')->get();
+
+
+    $not_scheduled_0 = Scheduled_Course::where_output_version_id($output_version_id)
+                                        ->where_priority_flag('0')
+                                        ->where_section_number('X')->get();
+
+    $not_scheduled_1 = Scheduled_Course::where_output_version_id($output_version_id)
+                                        ->where_priority_flag('1')
+                                        ->where_section_number('X')->get();
+
 
     $faculty = Faculty_Member::where_schedule_id(0)
                                 ->where_output_version_id($output_version_id)->get();
@@ -262,7 +275,7 @@ class Admin_Controller extends Base_Controller
     $room_html_0 = Output_Version::create_classes_by_room_tables($output_version_id, 0);
     $faculty_html_0 = Output_Version::create_classes_by_faculty($courses_0);
     $time_html_0 = Output_Version::create_classes_by_time($courses_0);
-    $not_scheduled_html_0 = Output_Version::create_not_scheduled($courses_0);
+    $not_scheduled_html_0 = Output_Version::create_not_scheduled($not_scheduled_0);
     $seniority = $class_name_html_0 . $room_html_0 . $faculty_html_0 . 
                  $time_html_0 . $not_scheduled_html_0;
 
@@ -270,7 +283,7 @@ class Admin_Controller extends Base_Controller
     $room_html_1 = Output_Version::create_classes_by_room_tables($output_version_id, 1);
     $faculty_html_1 = Output_Version::create_classes_by_faculty($courses_1);
     $time_html_1 = Output_Version::create_classes_by_time($courses_1);
-    $not_scheduled_html_1 = Output_Version::create_not_scheduled($courses_1);
+    $not_scheduled_html_1 = Output_Version::create_not_scheduled($not_scheduled_1);
     $submission = $class_name_html_1 . $room_html_1 . $faculty_html_1 .
                   $time_html_1 . $not_scheduled_html_1;
 
@@ -461,7 +474,12 @@ class Admin_Controller extends Base_Controller
     $priority_flag = Input::get("priority_flag");
 
     $courses = Scheduled_Course::where_output_version_id($output_version_id)
-                                        ->where_priority_flag($priority_flag)->get();
+                                        ->where_priority_flag($priority_flag)
+                                        ->where('section_number', '!=', 'X')->get();
+
+    $not_scheduled = Scheduled_Course::where_output_version_id($output_version_id)
+                                        ->where_priority_flag($priority_flag)
+                                        ->where_section_number('X')->get();
 
 
     $class_name_html = Output_Version::create_classes_by_class_name($courses);
@@ -469,7 +487,7 @@ class Admin_Controller extends Base_Controller
                                                                $priority_flag);
     $faculty_html = Output_Version::create_classes_by_faculty($courses);
     $time_html = Output_Version::create_classes_by_time($courses);
-    $not_scheduled_html = Output_Version::create_not_scheduled($courses);
+    $not_scheduled_html = Output_Version::create_not_scheduled($not_scheduled);
     $html = $class_name_html . $room_html . $faculty_html . $time_html .
             $not_scheduled_html;
 
