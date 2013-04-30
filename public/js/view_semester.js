@@ -101,21 +101,16 @@ $(document).ready(function(){
   });
 
   $(document).on('click', '.schedule-btn', function(){
+
+
+
     displayEditContainerForUnscheduled($(this));
   })
 
   $("#edit-close").on("click", closeEditPopup);
 
   $("#edit-submit").on("click", function(){
-
-    if( $("edit-course-type").val() == "X")
-    {
-      ajaxScheduleCourse();
-    }
-    else
-    {
-      ajaxEditCourse();
-    }
+    ajaxEditCourse();
   });
 
   $("#publish-btn").on("click", ajaxPublishSchedule);
@@ -536,6 +531,9 @@ function displayEditContainerForUnscheduled(button){
   $("#schedule-edit-container").show();
 
   $("#edit-course-id").val(button.attr('id'));
+  $("#start-hour-select").val(7);
+  $("#start-minute-select").val(0);
+  $("#duration-select").val(50);
 
   var label = button.parent().siblings(".not-scheduled-course-name").html();
   $("#course-label").text(label);
@@ -615,52 +613,71 @@ function ajaxEditCourse(){
     var s = 0;
   }
 
+  if( $("#edit-course-type").val() == "X")
+  {
+    var action = "schedule";
+  }
+  else
+  {
+    var action = "edit";
+    
+  }
+
   var outputVersionId = $("#edit-output-version-id").val();
   var priority = $("#edit-priority-flag").val();
 
-  $.ajax({
-    url: "edit_course",
-    dataType: "json",
-    type: "POST",
-    data: {
-        schedule_id : $('#schedule_id').val(),
-        output_version_id : outputVersionId,
-        duration : $("#duration-select").val(),
-        priority : priority,
-        course_id : $("#edit-course-id").val(),
-        class_size : $("#edit-class-size").val(),
-        course_type : $("#edit-course-type").val(),
-        start_hour : $("#start-hour-select").val(),
-        start_minute : $("#start-minute-select").val(),
-        monday : m,
-        tuesday : t,
-        wednesday : w,
-        thursday : r,
-        friday : f,
-        saturday : s,
-        user_id : $("#faculty-select").val(),
-        faculty_name : $("#faculty-select").find(":selected").text(),
-        room : $("#room-select").val()
-    },
-    success: function(data) {
 
-    
-      if(data.status == "success")
-      {
-        ajaxUpdateContainer(outputVersionId, priority);
-        alert(data.message);
-        closeEditPopup();
-      }
-      else if(data.status = "error")
-      {
-        alert(data.message);
-      }
+  if( m || t || w || r || f || s )
+  {
+    $.ajax({
+      url: "edit_course",
+      dataType: "json",
+      type: "POST",
+      data: {
+          schedule_id : $('#schedule_id').val(),
+          output_version_id : outputVersionId,
+          duration : $("#duration-select").val(),
+          priority : priority,
+          course_id : $("#edit-course-id").val(),
+          class_size : $("#edit-class-size").val(),
+          course_type : $("#edit-course-type").val(),
+          start_hour : $("#start-hour-select").val(),
+          start_minute : $("#start-minute-select").val(),
+          monday : m,
+          tuesday : t,
+          wednesday : w,
+          thursday : r,
+          friday : f,
+          saturday : s,
+          user_id : $("#faculty-select").val(),
+          faculty_name : $("#faculty-select").find(":selected").text(),
+          room : $("#room-select").val(),
+          action : action
+      },
+      success: function(data) {
+
       
-    }
-
-  }); 
+        if(data.status == "success")
+        {
+          ajaxUpdateContainer(outputVersionId, data.priority);
+          alert(data.message);
+          closeEditPopup();
+        }
+        else if(data.status = "error")
+        {
+          alert(data.message);
+        }
+        
+      }
+    });
+  }
+  else
+  {
+    alert("Must select at least one day!");
+  } 
 
 }
+
 
 
 function ajaxUpdateContainer(outputVersionId, priority){

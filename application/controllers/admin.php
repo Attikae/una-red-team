@@ -318,12 +318,55 @@ class Admin_Controller extends Base_Controller
   public function post_edit_course()
   {
 
-    $schedule_id = Input::get("schedule_id");
+    $to_edit_course_id = Input::get("course_id");
+    $action = Input::get("action");
     $output_version_id = Input::get("output_version_id");
-    $priority = Input::get("priority");
-    $scheduled_course_id = Input::get("course_id");
-    $class_size = Input::get("class_size");
-    $course_type = Input::get("course_type");
+
+    if($action == 'edit')
+    {
+      error_log("action was edit");
+      $priority = Input::get("priority");
+      $class_size = Input::get("class_size");
+      $course_type = Input::get("course_type");
+
+    }
+    else if($action == 'schedule')
+    {
+      $to_schedule_course = Scheduled_Course::find($to_edit_course_id);
+      $priority = $to_schedule_course->priority_flag;
+      $class_size = $to_schedule_course->class_size;
+      $course_type = $to_schedule_course->course_type;
+
+      $section_courses = Scheduled_Course::where_output_version_id($output_version_id)
+                            ->where_priority_flag($priority)
+                            ->where_course($to_schedule_course->course)
+                            ->where('section_number', '!=', 'X')
+                            ->get();
+
+            
+      // Find appropriate section number
+      if(empty($section_courses))
+      {
+        $section_number = "01";
+      }
+      else
+      {
+        $sections = array();
+        $i = 0;
+        foreach ($section_courses as $value) {
+          $sections[$i] = intval($value->section_number);
+          $i++;
+        }
+        $section_number = max($sections) + 1;
+        if($section_number < 10)
+        {
+          $section_number = "0" . $section_number;
+        }
+      }
+
+    }
+
+    $schedule_id = Input::get("schedule_id");
     $start_hour = Input::get("start_hour");
     $start_minute = Input::get("start_minute");
     $duration = Input::get("duration");
@@ -405,7 +448,7 @@ class Admin_Controller extends Base_Controller
       if(! empty($courses))
       {
         foreach ($courses as $course) {
-          if($course->id != $scheduled_course_id)
+          if($course->id != $to_edit_course_id)
           {
             $days = $course->monday . $course->tuesday . $course->wednesday .
                     $course->thursday . $course->friday . $course->saturday;
@@ -443,7 +486,7 @@ class Admin_Controller extends Base_Controller
     if($edit == true)
     {
 
-      $course_to_edit = Scheduled_Course::find($scheduled_course_id);
+      $course_to_edit = Scheduled_Course::find($to_edit_course_id);
 
       $course_to_edit->user_id = $user_id;
       $course_to_edit->faculty_name = $faculty_name;
@@ -457,6 +500,12 @@ class Admin_Controller extends Base_Controller
       $course_to_edit->friday = $f;
       $course_to_edit->saturday = $s;
       $course_to_edit->duration = $duration;
+
+      if($action == "schedule")
+      {
+        $course_to_edit->section_number = $section_number;
+      }
+
       $course_to_edit->save();
 
       $status = "success";
@@ -464,11 +513,15 @@ class Admin_Controller extends Base_Controller
 
     }
 
+
     echo json_encode(array("status" => $status,
-                           "message" => $message));
+                           "message" => $message,
+                           "priority" =>$priority));
 
   }
 
+
+  
 
   public function post_update_container()
   {
