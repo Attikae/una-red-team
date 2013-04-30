@@ -55,7 +55,8 @@ Route::filter('pattern: faculty/*', 'check_user');
 
 Route::get('/', function()
 {
-	return View::make('home.index');
+	$published_schedules = Schedule::where_is_published(1)->get();
+  return View::make('home.index')->with("schedules", $published_schedules);
 });
 
 /*
