@@ -19,8 +19,9 @@
     ?>
   </div>
 
+
   <div id="table-header">
-    <a href="admin_index" id="back-lnk">back</a>
+    <a href="admin_index" class='link-class 'id="back-lnk">back</a>
     <p id="table-title">faculty accounts</p>
   </div>
 
@@ -33,8 +34,8 @@
         foreach ($users as $user) {
           echo  "<tr id='" . $user->id . "'> " .
                   "<td>" . $user->email . "</td>" .
-                  "<td><span class='unlock link'>unlock</span></td>" .
-                  "<td><span class='delete link'>delete</span></td>" .
+                  "<td><span class='unlock link-class'>unlock</span></td>" .
+                  "<td><span class='delete link-class'>delete</span></td>" .
                 "</tr>";
         }
       }
