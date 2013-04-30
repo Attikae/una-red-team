@@ -67,8 +67,6 @@ class Scheduler {
       $conflict_list = Scheduler::get_conflict_list( $schedule_id, $course );
       $prereq_list = Scheduler::get_prereq_list( $schedule_id, $course );
 
-      //error_log( "COURSE = " . $course->course . " --------------------------" );
-
       foreach( $section_list as $section )
       {
         $scheduled = false;
@@ -286,7 +284,15 @@ class Scheduler {
         // If failed to schedule course section
         if( $scheduled == false )
         {
-          //error_log( "FAILED TO SCHEDULE COURSE " . $course->course );
+          Scheduled_Course::Create( array(
+            "output_version_id" => $output_id,
+            "priority_flag"     => $faculty_priority,
+            "course"            => $course->course,
+            "section_number"    => "X", 
+            "class_size"        => $course->class_size,
+            "course_type"       => $course->room_type,
+            "credit_hours"      => $course->credit_hours,
+          ) );
         }
       }
 
@@ -420,7 +426,6 @@ class Scheduler {
 
     foreach( $class_times as $x )
     {
-
       // calculate start_offset, end_offset, and credit_hours
       // get string representing days of week
       $start_offset;
@@ -498,7 +503,6 @@ class Scheduler {
       $course_sections[$i] = 1;
       $i++;
     }
-
     
     for( $j = 0; $j < $internet_sections; $j++ )
     {
@@ -509,13 +513,6 @@ class Scheduler {
     // Shuffle the array so that the sections we
     // try to schedule will be spread out
     shuffle( $course_sections ); // CHANGE TO EQUAL DISTRIBUTION
-/*
-    $str = "";
-    foreach( $course_sections as $x )
-    {
-      $str = $str . $x;
-    }
-    error_log( $str );*/
 
     return $course_sections;
   }
@@ -578,7 +575,6 @@ class Scheduler {
   {
     $prereqs = Prerequisite::where_schedule_id( $schedule_id )
                             ->where_course( $course->course )->get();
-
     $prereq_list = array();
 
     if( !empty($prereqs) )
@@ -672,8 +668,6 @@ class Scheduler {
       }
     }
 
-    //array_values( $time_list );
-
     // REMOVE DUPLICATE TIMES FOR 100 AND 200 LEVEL COURSES
     $tmp_times = array(); // THIS CAN BE EMPTY!!!!!!!!
     $i = 0;
@@ -691,10 +685,6 @@ class Scheduler {
           }
         }
       }
-    }
-    else
-    {
-      //error_log( "EMPTY 1" );
     }
 
     if( !empty( $tmp_times ) )
@@ -743,12 +733,7 @@ class Scheduler {
         }
       }
     }
-    else
-    {
-      //error_log( "EMPTY 3" );
-    }
 
-    //array_values( $time_list );
     // Remove conflict times
 
     if( !empty( $conflict_list ) )
@@ -786,10 +771,6 @@ class Scheduler {
         }
       }
     }
-    else
-    {
-      //error_log( "EMPTY 4" );
-    }
 
     // Remove time blobs that do not have enough room size
 
@@ -803,10 +784,6 @@ class Scheduler {
         }
       }
     }
-    else
-    {
-     // error_log( "EMPTY 5" );
-    }
   
     // Remove time blobs that do not have the correct room type
 
@@ -819,10 +796,6 @@ class Scheduler {
           unset( $time_list[$key] );
         }
       }
-    }
-    else
-    {
-      //error_log( "EMPTY 6" );
     }
 
     array_values( $time_list );
@@ -854,10 +827,6 @@ class Scheduler {
           }
         }
       }
-    }
-    else
-    {
-      //error_log( "EMPTY 2" );
     }
 
     if( !empty( $tmp_times ) )
@@ -951,7 +920,6 @@ class Scheduler {
     }
 
     return $final_time;
- 
   }
 
   ////////////////////////////////////////////////////////////////////////////////
