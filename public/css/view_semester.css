@@ -389,12 +389,11 @@ input[type=checkbox]
 
 .class-name-table th
 {
-  border: 1px solid black;
+  padding: 20px;
 }
 
 .class-name-table td
 {
-  border: 1px solid black;
   text-align: center;
 }
 
@@ -414,6 +413,19 @@ input[type=checkbox]
   /* border: 1px solid black; */
   text-align: center;
 }
+
+.time-table th
+{
+  /* border: 1px solid black; */
+    padding: 20px;
+} 
+
+.time-table td
+{
+  /* border: 1px solid black; */
+  text-align: center;
+}
+
 
 .by-faculty
 {

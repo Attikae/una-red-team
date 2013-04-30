@@ -486,8 +486,15 @@ class Admin_Controller extends Base_Controller
     $schedule_id = Input::get("schedule_id");
     $schedule = Schedule::find($schedule_id);
 
+    $message = "";
+    $status = "";
+    $priority = "";
+    $edit = true;
+
+    error_log("in edit course");
     if($schedule->is_published == 1)
     {
+      error_log("schedule is published");
       $status = "error";
       $message = "Cannot edit version of already published schedule";
       $edit = false;
@@ -689,7 +696,7 @@ class Admin_Controller extends Base_Controller
 
     echo json_encode(array("status" => $status,
                            "message" => $message,
-                           "priority" =>$priority));
+                           "priority" => $priority));
 
   }
 

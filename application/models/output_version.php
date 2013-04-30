@@ -490,7 +490,7 @@ class Output_Version extends Eloquent {
 
     // Add genarated html in $html_array to $html
     for($i = 7; $i < 19; $i++) {
-      $html .= "" . $html_array[$i] . "</tbody></table></br></br>";
+      $html .= "" . $html_array[$i] . "</tbody></table></br></br></br></br>";
     }
 
     $html .= "</div>";
