@@ -409,7 +409,6 @@ class Output_Version extends Eloquent {
   public static function create_not_scheduled($courses)
   {
 
-    error_log("in create not scheduled");
     usort($courses, function($a, $b)
     {
         return strcmp($a->course, $b->course);

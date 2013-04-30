@@ -102,7 +102,9 @@ $(document).ready(function(){
 
   $("#edit-close").on("click", closeEditPopup);
 
-  $("#edit-submit").on('click', ajaxEditCourse);
+  $("#edit-submit").on("click", ajaxEditCourse);
+
+  $("#publish-btn").on("click", ajaxPublishSchedule);
 
 });
 
@@ -595,6 +597,7 @@ function ajaxEditCourse(){
     dataType: "json",
     type: "POST",
     data: {
+        schedule_id : $('#schedule_id').val(),
         output_version_id : outputVersionId,
         duration : $("#edit-course-duration").val(),
         priority : priority,
@@ -660,6 +663,36 @@ function ajaxUpdateContainer(outputVersionId, priority){
             
     }
   });
+
+}
+
+function ajaxPublishSchedule()
+{
+
+  var scheduleId = $('#schedule_id').val();
+  var outputVersionId = $("#edit-output-version-id").val();
+
+  var r = confirm("Are you sure you want to publish this schedule?\n" +
+                   "You will not be able to edit any version of the\n" +
+                   "schedule after it has been published.");
+
+  if(r == true)
+  {
+    $.ajax({
+      url: "publish_schedule",
+      dataType: "json",
+      type: "POST",
+      data: {
+          output_version_id : outputVersionId,
+          schedule_id : scheduleId
+      },
+      success: function(data) {
+
+        alert(data.message);
+      }
+    });
+  }
+
 
 }
 

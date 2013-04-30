@@ -258,7 +258,6 @@ class Admin_Controller extends Base_Controller
     $rooms = Available_Room::where_schedule_id(0)
                                 ->where_output_version_id($output_version_id)->get();
 
-    error_log("In post display output");
     $class_name_html_0 = Output_Version::create_classes_by_class_name($courses_0);
     $room_html_0 = Output_Version::create_classes_by_room_tables($output_version_id, 0);
     $faculty_html_0 = Output_Version::create_classes_by_faculty($courses_0);
@@ -305,6 +304,8 @@ class Admin_Controller extends Base_Controller
 
   public function post_edit_course()
   {
+
+    $schedule_id = Input::get("schedule_id");
     $output_version_id = Input::get("output_version_id");
     $priority = Input::get("priority");
     $scheduled_course_id = Input::get("course_id");
@@ -323,46 +324,62 @@ class Admin_Controller extends Base_Controller
     $faculty_name = Input::get("faculty_name");
     $building_and_room = Input::get("room");
 
-    $start_time = $start_hour . ":" . $start_minute . ":00";
-
-    $space_pos = strpos($building_and_room, " ");
-    $building = substr($building_and_room, 0, $space_pos);
-    $room = substr($building_and_room, $space_pos+1);
-    $edit_course_days = $m . $t . $w . $r . $f . $s;
-    $edit_start_offset = 0;
-    $edit_end_offset = 0;
-
-    Scheduler::get_start_end_offsets($start_time, $duration,
-                                        $edit_start_offset, $edit_end_offset);
-
-
-    $query_room = Available_Room::where_schedule_id(0)
-                            ->where_output_version_id($output_version_id)
-                            ->where_building($building)
-                            ->where_room_number($room)->first();
-
-
     $message = "";
     $status = "";
     $edit = true;
 
+
+    $schedule = Schedule::find($schedule_id);
+
+    if($schedule->is_published == 1)
+    {
+      $status = "error";
+      $message = "Cannot edit version of already published schedule";
+      $edit = false;
+    }
+    else
+    {
+      $start_time = $start_hour . ":" . $start_minute . ":00";
+
+      $space_pos = strpos($building_and_room, " ");
+      $building = substr($building_and_room, 0, $space_pos);
+      $room = substr($building_and_room, $space_pos+1);
+      $edit_course_days = $m . $t . $w . $r . $f . $s;
+      $edit_start_offset = 0;
+      $edit_end_offset = 0;
+
+      Scheduler::get_start_end_offsets($start_time, $duration,
+                                          $edit_start_offset, $edit_end_offset);
+
+
+      $query_room = Available_Room::where_schedule_id(0)
+                              ->where_output_version_id($output_version_id)
+                              ->where_building($building)
+                              ->where_room_number($room)->first();
+    }
+
+
     //Calculate faculty hours and do faculty check.
+    if($edit == true)
+    {           
+          
+      if($query_room->type != "B" && $query_room->type != $course_type)
+      {
+        $edit = false;
+        $status = "error";
+        $message .= "Room type of " . $query_room->type . " does not match" .
+                    " course type of " . $course_type . "!\n";
+      }
 
-    if($query_room->type != "B" && $query_room->type != $course_type)
-    {
-      $edit = false;
-      $status = "error";
-      $message .= "Room type of " . $query_room->type . " does not match" .
-                  " course type of " . $course_type . "!\n";
+      if($class_size > $query_room->size)
+      {
+        $edit = false;
+        $status = "error";
+        $message .= "Room size of " . $query_room->size . " insufficient for" .
+                    " class size of " . $class_size . "!\n";
+      }
     }
 
-    if($class_size > $query_room->size)
-    {
-      $edit = false;
-      $status = "error";
-      $message .= "Room size of " . $query_room->size . " insufficient for" .
-                  " class size of " . $class_size . "!\n";
-    }
 
     if($edit == true)
     {
@@ -371,7 +388,6 @@ class Admin_Controller extends Base_Controller
                                   ->where_priority_flag($priority)
                                   ->where_building($building)
                                   ->where_room_number($room)->get();
-
 
       if(! empty($courses))
       {
@@ -406,6 +422,7 @@ class Admin_Controller extends Base_Controller
         }
       }
     }
+
 
     if($edit == true)
     {
@@ -462,6 +479,33 @@ class Admin_Controller extends Base_Controller
 
     echo json_encode(array("html" => $html,
                            "classBlocks" => $class_blocks));
+
+  }
+
+
+  public function post_publish_schedule()
+  {
+
+    $schedule_id = Input::get('schedule_id');
+    $output_version_id = Input::get('output_version_id');
+
+    $schedule = Schedule::find($schedule_id);
+
+    if($schedule->is_published == 1)
+    {
+      $message = "Schedule has already been published!";
+    }
+    else
+    { 
+      $schedule->is_published = 1;
+      $schedule->published_version_id = $output_version_id;
+      $schedule->save();
+
+      $message = "Schedule successfully published!";
+    }
+
+    echo json_encode(array("message" => $message));
+    
 
   }
 

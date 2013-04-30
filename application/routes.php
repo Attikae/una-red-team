@@ -12,6 +12,7 @@ Route::any('admin/display_output', 'admin@display_output');
 Route::any('admin/delete_version', 'admin@delete_version');
 Route::any('admin/edit_course', 'admin@edit_course');
 Route::any('admin/update_container', 'admin@update_container');
+Route::any("admin/publish_schedule", 'admin@publish_schedule');
 
 Route::any('faculty/submit_prefs', 'faculty@submit_prefs');
 Route::any('faculty/retrieve_prefs', 'faculty@retrieve_prefs');
