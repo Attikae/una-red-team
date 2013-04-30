@@ -14,7 +14,7 @@
 <body>
   <iframe id="file-submit-iframe" name='file-submit-iframe' style='display: none;'></iframe>
   
-  <button id="fill-prefs">Fill Prefs</button>
+  <!-- <button id="fill-prefs">Fill Prefs</button> -->
   <div id="logo-div">
     <?php echo HTML::image( "img/LOGOBIG.jpg",
                             "UNA",
@@ -47,9 +47,6 @@
         <div class="option-txt">input files</div>
       </div>
 
-      <div class="menu-btn" id="pref-btn">
-        <div class="option-txt">preferences</div>
-      </div>
     </div>
 
     <!--////////////////////////////////////////////////////////////-->
@@ -194,111 +191,7 @@
     </div>
 
     <!--////////////////////////////////////////////////////////////-->
-    <div id="pref-div" class="container">
-
-    <h1 id="pref-title">course preferences</h1>
-
-      <!-- <div class="course-div">
-        <div class="course-txt">
-          CS 155
-        </div>
-
-        <div class="checkbox-grp">
-          <div class="checkbox-txt">
-            morning
-            <input type="checkbox"></input>
-          </div>
-
-          <div class="checkbox-txt">
-            afternoon
-            <input type="checkbox"></input>
-          </div>
-
-          <div class="checkbox-txt">
-            evening
-            <input type="checkbox"></input>
-          </div>
-        </div>
-      </div>
-    
-      <div class="course-div">
-        <div class="course-txt">
-          CS 245
-        </div>
-
-        <div class="checkbox-grp">
-          <div class="checkbox-txt">
-            morning
-            <input type="checkbox"></input>
-          </div>
-
-          <div class="checkbox-txt">
-            afternoon
-            <input type="checkbox"></input>
-          </div>
-
-          <div class="checkbox-txt">
-            evening
-            <input type="checkbox"></input>
-          </div>
-        </div>
-      </div>
-
-      <div class="course-div">
-        <div class="course-txt">
-          CS 255
-        </div>
-
-        <div class="checkbox-grp">
-          <div class="checkbox-txt">
-            morning
-            <input type="checkbox"></input>
-          </div>
-
-          <div class="checkbox-txt">
-            afternoon
-            <input type="checkbox"></input>
-          </div>
-
-          <div class="checkbox-txt">
-            evening
-            <input type="checkbox"></input>
-          </div>
-        </div>
-      </div>
-
-      <div class="course-div">
-        <div class="course-txt">
-          CS 355
-        </div>
-
-        <div class="checkbox-grp">
-          <div class="checkbox-txt">
-	    morning
-	    <input type="checkbox"></input>
-          </div>
-
-            
-          <div class="checkbox-txt">
-	    afternoon
-            <input type="checkbox"></input>
-          </div>
-        
-
-          <div class="checkbox-txt">
-	    evening
-            <input type="checkbox"></input>
-          </div>
-            
-        </div>
-      </div> -->
-
-      <div id="pref-btn-div">
-        <button id="pref-submit-btn">submit</button>
-        <button id="pref-reset-btn">reset</button>
-      </div>
-    </div>
-  </div>
+ 
 
   <div id="schedule-output-container">
     <span id="active-container-label">Viewing: By Seniority</span>
