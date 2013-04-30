@@ -15,6 +15,8 @@ Route::any('admin/update_container', 'admin@update_container');
 Route::any("admin/publish_schedule", 'admin@publish_schedule');
 Route::any("admin/unlock_user", 'admin@unlock_user');
 
+Route::any("display_published_output", 'home@display_published_output');
+
 Route::any('faculty/submit_prefs', 'faculty@submit_prefs');
 Route::any('faculty/retrieve_prefs', 'faculty@retrieve_prefs');
 
