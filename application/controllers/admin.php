@@ -405,31 +405,34 @@ class Admin_Controller extends Base_Controller
       if(! empty($courses))
       {
         foreach ($courses as $course) {
-          $days = $course->monday . $course->tuesday . $course->wednesday .
-                  $course->thursday . $course->friday . $course->saturday;
-
-          $start_offset = 0;
-          $end_offset = 0;
-
-          Scheduler::get_start_end_offsets($course->start_time,
-                                           $course->duration,
-                                           $start_offset, 
-                                           $end_offset);
-
-          $is_conflict = Scheduler::is_intersected( $edit_course_days, 
-                                                    $days, 
-                                                    $edit_start_offset,
-                                                    $edit_end_offset, 
-                                                    $start_offset, 
-                                                    $end_offset);
-
-          if($is_conflict == true)
+          if($course->id != $scheduled_course_id)
           {
-            $edit = false;
-            $status = "error";
-            $message .= "Specified start time conflicts with " . $course->course .
-                         "-" . $course->section_number;
-            break;
+            $days = $course->monday . $course->tuesday . $course->wednesday .
+                    $course->thursday . $course->friday . $course->saturday;
+
+            $start_offset = 0;
+            $end_offset = 0;
+
+            Scheduler::get_start_end_offsets($course->start_time,
+                                             $course->duration,
+                                             $start_offset, 
+                                             $end_offset);
+
+            $is_conflict = Scheduler::is_intersected( $edit_course_days, 
+                                                      $days, 
+                                                      $edit_start_offset,
+                                                      $edit_end_offset, 
+                                                      $start_offset, 
+                                                      $end_offset);
+
+            if($is_conflict == true)
+            {
+              $edit = false;
+              $status = "error";
+              $message .= "Specified start time conflicts with " . $course->course .
+                           "-" . $course->section_number;
+              break;
+            }
           }
 
         }
@@ -453,6 +456,7 @@ class Admin_Controller extends Base_Controller
       $course_to_edit->thursday = $r;
       $course_to_edit->friday = $f;
       $course_to_edit->saturday = $s;
+      $course_to_edit->duration = $duration;
       $course_to_edit->save();
 
       $status = "success";

@@ -40,6 +40,11 @@ class Home_Controller extends Base_Controller {
 
     public function get_login()
     {
+        if(Session::has('message'))
+        {
+            error_log("message is: " . $message);
+        }
+        
         return View::make('home.login');
     }
 

@@ -73,7 +73,7 @@ class Output_Version extends Eloquent {
 
       $html_array[$i] .= "<div class='time-label7'>7</div>";
 
-      for($j = 8; $j < 22; $j++)
+      for($j = 8; $j < 24; $j++)
       {
         if($j > 12)
         {
@@ -126,7 +126,7 @@ class Output_Version extends Eloquent {
         Output_Version::formatTimes($course->start_time, $course->duration,
                                     $start_formatted, $end_formatted);
 
-        $width = intval( ($course->duration / 60) * 68);
+        $width = intval( ($course->duration / 60) * 70);
         $left = Output_Version::getLeftOffset($course->start_time, $course->duration);
         
 
@@ -426,7 +426,6 @@ class Output_Version extends Eloquent {
                   <thead>
                     <tr>
                       <th>Course Name</th>
-                      <th>Section #</th>
                       <th>Course Type</th>
                       <th>Credit Hours</th>
                       <th>Schedule</th>
@@ -481,8 +480,7 @@ class Output_Version extends Eloquent {
   public static function generateNotScheduledRow($course)
   {
     $html = "<tr>" .
-              "<td>" . $course->course . "</td>" .
-              "<td>" . $course->section_number . "</td>" .
+              "<td class='not-scheduled-course-name'>" . $course->course . "</td>" .
               "<td>" . $course->course_type . "</td>" .
               "<td>" . $course->credit_hours . "</td>" .
               "<td><button id='" . $course->id . "' class='schedule-btn'>Schedule</button><td>" .

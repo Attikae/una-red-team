@@ -17,6 +17,9 @@ Route::any("admin/publish_schedule", 'admin@publish_schedule');
 Route::any('faculty/submit_prefs', 'faculty@submit_prefs');
 Route::any('faculty/retrieve_prefs', 'faculty@retrieve_prefs');
 
+Route::filter('pattern: admin/*', 'check_user');
+Route::filter('pattern: faculty/*', 'check_user');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -109,7 +112,8 @@ Event::listen('500', function()
 
 Route::filter('before', function()
 {
-	// Do stuff before every request to your application...
+
+
 });
 
 Route::filter('after', function($response)
@@ -126,3 +130,13 @@ Route::filter('auth', function()
 {
 	if (Auth::guest()) return Redirect::to('login');
 });
+
+Route::filter('check_user', function(){
+
+  if(! Session::get('user_id'))
+  {
+    return view::make('home.login');
+  }
+
+});
+

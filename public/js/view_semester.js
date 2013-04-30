@@ -98,11 +98,25 @@ $(document).ready(function(){
 
   $(document).on('click', '.class-block', function(){
     displayEditContainer($(this));
+  });
+
+  $(document).on('click', '.schedule-btn', function(){
+    displayEditContainerForUnscheduled($(this));
   })
 
   $("#edit-close").on("click", closeEditPopup);
 
-  $("#edit-submit").on("click", ajaxEditCourse);
+  $("#edit-submit").on("click", function(){
+
+    if( $("edit-course-type").val() == "X")
+    {
+      ajaxScheduleCourse();
+    }
+    else
+    {
+      ajaxEditCourse();
+    }
+  });
 
   $("#publish-btn").on("click", ajaxPublishSchedule);
 
@@ -420,7 +434,7 @@ function createClassDiv(block){
   div.className = "class-block" + " " + block.id;
   div.style.width = block.width + "px";
   div.style.left = block.left + "px";
-  div.innerHTML = block.course + "</br>" + block.timeFormatted + 
+  div.innerHTML = block.course + "-" + block.sectionNumber + "</br>" + block.timeFormatted + 
                   "</br>" + block.facultyName;
   return div;
 }
@@ -475,7 +489,8 @@ function displayEditContainer(div){
 
   $("#edit-course-id").val(divData.courseId);
   $("#edit-priority-flag").val(divData.priorityFlag);
-  $("#edit-course-duration").val(divData.duration);
+  //$("#edit-course-duration").val(divData.duration);
+  $("#duration-select").val(divData.duration);
   $("#edit-class-size").val(divData.classSize);
   $("#edit-course-type").val(divData.courseType);
   $("#course-label").text(divData.course + "-" + divData.sectionNumber);
@@ -514,6 +529,17 @@ function displayEditContainer(div){
     $("#saturday-checkbox").prop('checked', true);
   }
 
+}
+
+function displayEditContainerForUnscheduled(button){
+  $("#schedule-container-overlay").show()
+  $("#schedule-edit-container").show();
+
+  $("#edit-course-id").val(button.attr('id'));
+
+  var label = button.parent().siblings(".not-scheduled-course-name").html();
+  $("#course-label").text(label);
+  $("#edit-course-type").val('X');
 }
 
 
@@ -599,7 +625,7 @@ function ajaxEditCourse(){
     data: {
         schedule_id : $('#schedule_id').val(),
         output_version_id : outputVersionId,
-        duration : $("#edit-course-duration").val(),
+        duration : $("#duration-select").val(),
         priority : priority,
         course_id : $("#edit-course-id").val(),
         class_size : $("#edit-class-size").val(),

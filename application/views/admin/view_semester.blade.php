@@ -371,12 +371,27 @@
               for ($i=0; $i < 60 ; $i++) {
                 if($i < 10)
                 {
-                  echo "<option val='" . $i . "'>0" . $i . "</option>";
+                  echo "<option value='" . $i . "'>0" . $i . "</option>";
                 }
                 else
                 {
-                  echo "<option val='" . $i . "'>" . $i . "</option>";
+                  echo "<option value='" . $i . "'>" . $i . "</option>";
                 } 
+              }
+            ?>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div id="duration-label">Duration</div>
+        </td>
+        <td>
+          <select id="duration-select">
+            <?php
+              for($i=5; $i < 301; $i+=5)
+              {
+                echo "<option value='" . $i . "'>" . $i . "</option>";
               }
             ?>
           </select>
