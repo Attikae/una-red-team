@@ -333,7 +333,7 @@ input[type=checkbox]
   left: 5px;
   height: 540px;
   width: 1190px;
-  background-color: lightGrey;
+  background-color: white;
   overflow-y: scroll;
 
 }
@@ -462,7 +462,8 @@ input[type=checkbox]
 .day-row
 {
   width: 980px;
-  height: 70px;
+  height: 72px;
+  border: 1px dotted black;
   background-color: white;
 }
 
@@ -476,11 +477,18 @@ input[type=checkbox]
   position: absolute;
   width: 68px;
   height: 70px;
-  background-color: lightBlue;
+  background-color: #eeb311;
+  color: black;
   font-size: 10px;
   text-align: center;
   border-radius: 4px;
   border: 1px solid black;
+}
+
+.class-block:hover
+{
+  background-color: #4f2e7f;
+  color: white;
 }
 
 .time-label
@@ -490,6 +498,7 @@ input[type=checkbox]
   font-size: 14px;
   float: left;
   text-align: left;
+  font-weight: bold;
 }
 
 .time-label7
@@ -499,6 +508,7 @@ input[type=checkbox]
   font-size: 14px;
   float: left;
   text-align: left;
+  font-weight: bold;
 }
 
 
