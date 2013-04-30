@@ -34,7 +34,8 @@ class Home_Controller extends Base_Controller {
 
     public function get_index()
     {
-        return View::make('home.index');
+        $published_schedules = Schedule::where_is_published(1)->get();
+        return View::make('home.index')->with("schedules", $published_schedules);
     }
 
     public function get_login()
@@ -211,6 +212,20 @@ class Home_Controller extends Base_Controller {
         return View::make('home.changepw')->with("message", $message);
     }
 
+    public function post_display_published_output()
+    {
+        $schedule_id = Input::get("schedule_id");
+
+        $schedule = Schedule::find($schedule_id);
+
+        $courses = Scheduled_Course::where_output_version_id($schedule->published_version_id)
+                                ->where_priority_flag($schedule->published_priority)
+                                ->where('section_number', '!=', 'X')->get();
+
+        $html = Output_Version::create_classes_by_class_name($courses);
+
+        echo json_encode(array("html" => $html));
+    }
 
 
 } // End of Class

@@ -672,9 +672,21 @@ function ajaxPublishSchedule()
   var scheduleId = $('#schedule_id').val();
   var outputVersionId = $("#edit-output-version-id").val();
 
+  if( $("#seniority-container").is(":visible") )
+  {
+    priority = 0;
+    var type = "By Seniority.";
+  }
+  else if( $("#submission-container").is(":visible"))
+  {
+    priority = 1;
+    var type = "By Preference Submissions.";
+  }
+
   var r = confirm("Are you sure you want to publish this schedule?\n" +
-                   "You will not be able to edit any version of the\n" +
-                   "schedule after it has been published.");
+                   "You will not be able to edit any versions of the\n" +
+                   "schedule after it has been published.\n" + 
+                   "Publishing type is: " + type);
 
   if(r == true)
   {
@@ -684,7 +696,8 @@ function ajaxPublishSchedule()
       type: "POST",
       data: {
           output_version_id : outputVersionId,
-          schedule_id : scheduleId
+          schedule_id : scheduleId,
+          priority : priority
       },
       success: function(data) {
 

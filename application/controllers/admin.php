@@ -506,6 +506,7 @@ class Admin_Controller extends Base_Controller
 
     $schedule_id = Input::get('schedule_id');
     $output_version_id = Input::get('output_version_id');
+    $priority = Input::get('priority');
 
     $schedule = Schedule::find($schedule_id);
 
@@ -517,6 +518,7 @@ class Admin_Controller extends Base_Controller
     { 
       $schedule->is_published = 1;
       $schedule->published_version_id = $output_version_id;
+      $schedule->published_priority = $priority;
       $schedule->save();
 
       $message = "Schedule successfully published!";
