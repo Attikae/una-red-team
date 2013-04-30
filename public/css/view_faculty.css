@@ -57,12 +57,14 @@ td
   color:   white;
 }
 
-a
+.link
 {
   color: white;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
-a:hover
+.link:hover
 {
   color: #eeb311;
 }

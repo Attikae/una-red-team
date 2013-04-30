@@ -25,7 +25,27 @@
   </div>
 
   <table id="faculty-table">
-    <tr>
+
+    <?php
+
+      if(isset($users))
+      {
+        foreach ($users as $user) {
+          echo  "<tr id='" . $user->id . "'> " .
+                  "<td>" . $user->email . "</td>" .
+                  "<td><span class='unlock link'>unlock</span></td>" .
+                  "<td><span class='delete link'>delete</span></td>" .
+                "</tr>";
+        }
+      }
+      else if(isset($message))
+      {
+        echo "<tr><td>" . $mesage . "</td></tr>";
+      }
+
+    ?>
+
+    <!-- <tr>
       <th>username</th>
       <th>password</th>
       <th colspan="2">actions</th>
@@ -44,7 +64,7 @@
     <tr class="entry">
       <td>rvbrown@una.edu</td>
       <td>buan,AQ39</td>
-    </tr>
+    </tr> -->
 
   </table>
 </body>

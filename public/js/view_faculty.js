@@ -1,24 +1,73 @@
 $(document).ready(function(){
   
-  appendResetDelete();
   setTableHeader();
+
+  $(".unlock").on("click", function(){
+    ajaxUnlockUser($(this));
+  });
+
+  $(".delete").on("click", function(){
+    ajaxDeleteUser($(this));
+  });
 });
 
 
-/**
-@method 
-@param 
-@author
-*/
-function appendResetDelete(){
-  
-  // Append the reset password and delete options to every
-  // row in the user account table
+function ajaxUnlockUser(span)
+{
 
-  reset_password = "<td><a href=''>reset password</a></td>";
-  delete_user = "<td><a href=''>delete</a></td>";
-  $(".entry").append( reset_password + delete_user );
-};
+  var userId = span.parents('tr').attr('id');
+
+  $.ajax({
+    url: "unlock_user",
+    type: "POST",
+    data: {
+        user_id : userId
+    },
+    success: function(data) {
+
+      alert("User account unlocked!");
+      
+    }
+
+  }); 
+
+
+}
+
+
+/**
+@method ajaxDeleteUser
+@param 
+@author Atticus Wright
+@description Sends the user to be deleted to the server and
+             visually removes the user row from the page
+*/
+function ajaxDeleteUser(span){
+
+  var userId = span.parents('tr').attr('id');
+
+  // Display delete confirmation
+  var r = confirm("Are you sure you want to delete this user?")
+
+  if(r == true)
+  {
+    $.ajax({
+      url: "delete_user",
+      type: "POST",
+      data: {
+          user_id : userId
+      },
+      success: function(data) {
+
+        span.parents('tr').remove();
+        
+      }
+
+    }); 
+  }
+
+}
+
 
 
 /**

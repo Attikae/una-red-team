@@ -63,7 +63,19 @@ class Admin_Controller extends Base_Controller
   /*************************************************************************/
   public function get_view_faculty()
   {
-    return View::make('admin.view_faculty');
+
+    $users = User::where_user_type(2)->get();
+
+    if(empty($users))
+    {
+      return View::make('admin.view_faculty')->with("message", "No users.");
+    }
+    else
+    {
+      return View::make('admin.view_faculty')->with("users", $users);
+    }
+
+    
   }
 
 
@@ -773,6 +785,39 @@ class Admin_Controller extends Base_Controller
     echo json_encode(array("message" => $message));
     
 
+  }
+
+  /**************************************************************************
+  /* @function    post_delete_user
+  /* @author      Atticus Wright
+  /* @description This segment of code will unlock a user account
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
+  public function post_unlock_user()
+  {
+
+    $user_id = Input::get("user_id");
+
+    $user = User::find($user_id);
+    $user->is_locked = 0;
+    $user->save();
+
+  }
+
+  /**************************************************************************
+  /* @function    post_delete_user
+  /* @author      Atticus Wright
+  /* @description This segment of code will delete a user account
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
+  public function post_delete_user()
+  {
+
+    $user_id = Input::get("user_id");
+
+    User::find($user_id)->delete();
   }
 
 }
