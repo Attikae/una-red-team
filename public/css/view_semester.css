@@ -489,6 +489,7 @@ input[type=checkbox]
 {
   background-color: #4f2e7f;
   color: white;
+  cursor: pointer;
 }
 
 .time-label

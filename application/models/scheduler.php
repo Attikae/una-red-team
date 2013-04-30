@@ -916,7 +916,6 @@ class Scheduler {
           break;
         }
       }
-      
     }
 
     return $final_time;
