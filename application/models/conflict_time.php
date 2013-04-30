@@ -124,7 +124,7 @@ class Conflict_Time extends Eloquent {
                                    if ( $time[1] >= 7 && $time[1] <= 9)
                                    {
                          
-                                        if (($time[3]!= 0 || $time[3]!=3) &&
+                                        if (($time[3]!= 0 && $time[3]!=3) ||
 												$time[4] !=0 )
                                         {
 											$result["status"] = "error";
@@ -154,8 +154,8 @@ class Conflict_Time extends Eloquent {
                                     if ( $time[1] >= 0 && $time[1] <= 8)
                                     {
                                     
-                                        if (($time[3]!= 0 || $time[3]!=3) 
-	                                        && $time[4] !=0 || ($time[1] == 8 
+                                        if (($time[3]!= 0 && $time[3]!=3) 
+	                                        || $time[4] !=0 || ($time[1] == 8 
 											&& $time[3] == 3))
                                         {
 											    $result["status"] = "error";
