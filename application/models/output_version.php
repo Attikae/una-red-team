@@ -6,7 +6,14 @@ class Output_Version extends Eloquent {
 
   public static $timestamps = true;
 
-
+  /**************************************************************************
+  /* @function    create_classes_by_class_name
+  /* @author      Atticus Wright
+  /* @description This segment of code will generate the html for the classes
+  /*              by class name view
+  /* @input       $
+  /* @output      $html containing the generated html
+  /*************************************************************************/
   public static function create_classes_by_class_name($courses){
 
     usort($courses, function($a, $b)
@@ -34,7 +41,7 @@ class Output_Version extends Eloquent {
                 
 
     foreach ($courses as $course) {
-      $html .= Output_Version::generateRow($course);
+      $html .= Output_Version::generate_row($course);
     } 
 
     $html .= "</tbody></table></div>";
@@ -47,7 +54,14 @@ class Output_Version extends Eloquent {
 
 
 
-
+  /**************************************************************************
+  /* @function    create_classes_by_room_tables
+  /* @author      Atticus Wright
+  /* @description This segment of code will generate html tables for the
+  /*              classes by room view
+  /* @input       $
+  /* @output      $html containing the generated html
+  /*************************************************************************/
   public static function create_classes_by_room_tables($output_version_id, $priority){
     $html = "";
     $html .= "<div class='by-room'>";
@@ -65,7 +79,7 @@ class Output_Version extends Eloquent {
     {
 
       $room_text = $rooms[$i]->building . " " . $rooms[$i]->room_number;
-      $room_vertical_text = Output_Version::createVerticalHtml($room_text);
+      $room_vertical_text = Output_Version::create_vertical_html($room_text);
       $room_id = $rooms[$i]->building . "-" . $rooms[$i]->room_number . "-" . $priority;
 
       $html_array[$i] = "<table id='" . $room_id . "' class='room-table'>" .
@@ -89,15 +103,15 @@ class Output_Version extends Eloquent {
 
       $html_array[$i] .= "<div class='time-label11'>11</div>";
 
-      $html_array[$i].= "</div></td></tr>" .
-                        "<tr><td rowspan='8'>" . $room_vertical_text . "</td></tr>" .
-                        "<tr><td>M</td><td><div class='monday-row day-row'></div></td></tr>" .
-                        "<tr><td>T</td><td><div class='tuesday-row day-row'></div></td></tr>" .
-                        "<tr><td>W</td><td><div class='wednesday-row day-row'></div></td></tr>" .
-                        "<tr><td>R</td><td><div class='thursday-row day-row'></div></td></tr>" .
-                        "<tr><td>F</td><td><div class='friday-row day-row'></div></td></tr>" .
-                        "<tr><td>S</td><td><div class='saturday-row day-row'></div></td></tr>" .
-                        "</table></br></br></br>";
+      $html_array[$i] .= "</div></td></tr>" .
+                          "<tr><td rowspan='8'>" . $room_vertical_text . "</td></tr>" .
+                          "<tr><td>M</td><td><div class='monday-row day-row'></div></td></tr>" .
+                          "<tr><td>T</td><td><div class='tuesday-row day-row'></div></td></tr>" .
+                          "<tr><td>W</td><td><div class='wednesday-row day-row'></div></td></tr>" .
+                          "<tr><td>R</td><td><div class='thursday-row day-row'></div></td></tr>" .
+                          "<tr><td>F</td><td><div class='friday-row day-row'></div></td></tr>" .
+                          "<tr><td>S</td><td><div class='saturday-row day-row'></div></td></tr>" .
+                          "</table></br></br></br>";
     }
 
     for($i = 0; $i < count($html_array); $i++)
@@ -111,6 +125,15 @@ class Output_Version extends Eloquent {
   }
 
 
+  /**************************************************************************
+  /* @function    get_class_blocks_data
+  /* @author      Atticus Wright
+  /* @description This segment of code will generate an multi-dimensional
+  /*              array containing data for courses that have been
+  /*              scheduled
+  /* @input       $
+  /* @output      $data containing the generated array
+  /*************************************************************************/
   public static function get_class_blocks_data($courses){
 
     $data = array();
@@ -125,11 +148,11 @@ class Output_Version extends Eloquent {
         $start_formatted = "";
         $end_formatted = "";
 
-        Output_Version::formatTimes($course->start_time, $course->duration,
+        Output_Version::format_times($course->start_time, $course->duration,
                                     $start_formatted, $end_formatted);
 
         $width = intval( ($course->duration / 60) * 70);
-        $left = Output_Version::getLeftOffset($course->start_time, $course->duration);
+        $left = Output_Version::get_left_offset($course->start_time, $course->duration);
         
 
         $data[$i]['id'] = $course->id;
@@ -166,6 +189,15 @@ class Output_Version extends Eloquent {
   }
 
 
+  /**************************************************************************
+  /* @function    get_faculty_data
+  /* @author      Atticus Wright
+  /* @description This segment of code will generate a multi-dimensional
+  /*              array containing data for the faculty members associated
+  /*              with a schedule output version
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function get_faculty_data($faculty_members){
 
     $data = array();
@@ -182,6 +214,15 @@ class Output_Version extends Eloquent {
   }
 
 
+  /**************************************************************************
+  /* @function    get_rooms_data
+  /* @author      Atticus Wright
+  /* @description This segment of code will generate a multi-dimensional
+  /*              array containing data for the available rooms associated
+  /*              with a schedule output version
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function get_rooms_data($rooms){
 
     $data = array();
@@ -202,7 +243,14 @@ class Output_Version extends Eloquent {
   }
 
 
-
+  /**************************************************************************
+  /* @function    create_classes_by_faculty
+  /* @author      Atticus Wright
+  /* @description This segment of code will generate the html for the classes
+  /*              by faculty view
+  /* @input       $
+  /* @output      $html containing the generated html
+  /*************************************************************************/
   public static function create_classes_by_faculty($courses){
 
 
@@ -252,7 +300,7 @@ class Output_Version extends Eloquent {
                       <tbody>";
         }
 
-        $html .= Output_Version::generateRow($course);
+        $html .= Output_Version::generate_row($course);
       }
     }
     else
@@ -266,6 +314,16 @@ class Output_Version extends Eloquent {
     return $html;
   }
 
+
+
+  /**************************************************************************
+  /* @function    create_classes_by_time
+  /* @author      Atticus Wright
+  /* @description This segment of code will generate the html for the classes
+  /*              by time view
+  /* @input       $
+  /* @output      $html containing the generated html
+  /*************************************************************************/
   public static function create_classes_by_time($courses){
 
     usort($courses, function($a, $b)
@@ -320,84 +378,84 @@ class Output_Version extends Eloquent {
           ($end_offset >= 0 && $end_offset < 60) ||
           (0 > $start_offset && 0 < $end_offset) )
       {
-        $html_array[7] .= "" . Output_Version::generateRow($course);
+        $html_array[7] .= "" . Output_Version::generate_row($course);
       }
 
       if( ($start_offset >= 60 && $start_offset < 120) || 
           ($end_offset >= 60 && $end_offset < 120) ||
           (60 > $start_offset && 60 < $end_offset) )
       {
-        $html_array[8] .= "" . Output_Version::generateRow($course);
+        $html_array[8] .= "" . Output_Version::generate_row($course);
       }
 
       if( ($start_offset >= 120 && $start_offset < 180) || 
           ($end_offset >= 120 && $end_offset < 180) ||
           (120 > $start_offset && 120 < $end_offset) )
       {
-        $html_array[9] .= "" . Output_Version::generateRow($course);
+        $html_array[9] .= "" . Output_Version::generate_row($course);
       }
 
       if( ($start_offset >= 180 && $start_offset < 240) || 
           ($end_offset >= 180 && $end_offset < 240) ||
           (180 > $start_offset && 180 < $end_offset) )
       {
-        $html_array[10] .= "" . Output_Version::generateRow($course);
+        $html_array[10] .= "" . Output_Version::generate_row($course);
       }
 
       if( ($start_offset >= 240 && $start_offset < 300) || 
           ($end_offset >= 240 && $end_offset < 300) ||
           (240 > $start_offset && 240 < $end_offset) )
       {
-        $html_array[11] .= "" . Output_Version::generateRow($course);
+        $html_array[11] .= "" . Output_Version::generate_row($course);
       }
 
       if( ($start_offset >= 300 && $start_offset < 360) || 
           ($end_offset >= 300 && $end_offset < 360) ||
           (300 > $start_offset && 300 < $end_offset) )
       {
-        $html_array[12] .= "" . Output_Version::generateRow($course);
+        $html_array[12] .= "" . Output_Version::generate_row($course);
       }
 
       if( ($start_offset >= 360 && $start_offset < 420) || 
           ($end_offset >= 360 && $end_offset < 420) ||
           (360 > $start_offset && 360 < $end_offset) )
       {
-        $html_array[13] .= "" . Output_Version::generateRow($course);
+        $html_array[13] .= "" . Output_Version::generate_row($course);
       }
 
       if( ($start_offset >= 420 && $start_offset < 480) || 
           ($end_offset >= 420 && $end_offset < 480) ||
           (420 > $start_offset && 420 < $end_offset) )
       {
-        $html_array[14] .= "" . Output_Version::generateRow($course);
+        $html_array[14] .= "" . Output_Version::generate_row($course);
       }
 
       if( ($start_offset >= 480 && $start_offset < 540) || 
           ($end_offset >= 480 && $end_offset < 540) ||
           (480 > $start_offset && 480 < $end_offset) )
       {
-        $html_array[15] .= "" . Output_Version::generateRow($course);
+        $html_array[15] .= "" . Output_Version::generate_row($course);
       }
 
       if( ($start_offset >= 540 && $start_offset < 600) || 
           ($end_offset >= 540 && $end_offset < 600) ||
           (540 > $start_offset && 540 < $end_offset) )
       {
-        $html_array[16] .= "" . Output_Version::generateRow($course);
+        $html_array[16] .= "" . Output_Version::generate_row($course);
       }
 
       if( ($start_offset >= 600 && $start_offset < 660) || 
           ($end_offset >= 600 && $end_offset < 660) ||
           (600 > $start_offset && 600 < $end_offset) )
       {
-        $html_array[17] .= "" . Output_Version::generateRow($course);
+        $html_array[17] .= "" . Output_Version::generate_row($course);
       }
 
       if( ($start_offset >= 660 && $start_offset < 720) || 
           ($end_offset >= 660 && $end_offset < 720) ||
           (660 > $start_offset && 660 < $end_offset) )
       {
-        $html_array[18] .= "" . Output_Version::generateRow($course);
+        $html_array[18] .= "" . Output_Version::generate_row($course);
       }
 
     }
@@ -414,6 +472,15 @@ class Output_Version extends Eloquent {
     return $html;
   }
 
+
+  /**************************************************************************
+  /* @function    create_not_scheduled
+  /* @author      Atticus Wright
+  /* @description This segment of code will generated the html for the
+  /*              courses that could not be scheduled view
+  /* @input       $
+  /* @output      $html containing the generated html
+  /*************************************************************************/
   public static function create_not_scheduled($courses)
   {
 
@@ -439,7 +506,7 @@ class Output_Version extends Eloquent {
     foreach ($courses as $course) {
 
       if($course->section_number == "X")
-        $html .= Output_Version::generateNotScheduledRow($course);
+        $html .= Output_Version::generate_not_scheduled_row($course);
       } 
 
     $html .= "</tbody></table></div>";
@@ -449,13 +516,20 @@ class Output_Version extends Eloquent {
 
   }
 
-
-  public static function generateRow($course)
+  /**************************************************************************
+  /* @function    generate_row
+  /* @author      Atticus Wright
+  /* @description This segment of code will generate the row html for a 
+  /*              course
+  /* @input       $
+  /* @output      $html containing the generated html
+  /*************************************************************************/
+  public static function generate_row($course)
   {
 
     $start_formatted = "";
     $end_formatted = "";
-    Output_Version::formatTimes($course->start_time, $course->duration,
+    Output_Version::format_times($course->start_time, $course->duration,
                                 $start_formatted, $end_formatted);
 
     $room = "";
@@ -478,8 +552,15 @@ class Output_Version extends Eloquent {
     return $html;
   }
 
-
-  public static function generateNotScheduledRow($course)
+  /**************************************************************************
+  /* @function    
+  /* @author      Atticus Wright
+  /* @description This segment of code will generated the row html for 
+  /*              an unscheduled course
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
+  public static function generate_not_scheduled_row($course)
   {
     $html = "<tr>" .
               "<td class='not-scheduled-course-name'>" . $course->course . "</td>" .
@@ -491,8 +572,16 @@ class Output_Version extends Eloquent {
 
   }
 
-
-  public static function formatTimes($start_time, $duration,
+  /**************************************************************************
+  /* @function    
+  /* @author      Atticus Wright
+  /* @description This segment of code will generate formatted start and
+  /*              and end times for a given start time and duration
+  /* @input       $
+  /* @output      $start_formatted and $end_formatted containing the
+  /*              formatted time strings
+  /*************************************************************************/
+  public static function format_times($start_time, $duration,
                                      &$start_formatted, &$end_formatted)
   {
 
@@ -510,7 +599,15 @@ class Output_Version extends Eloquent {
     }
   }
 
-  public static function getLeftOffset($start_time, $duration)
+  /**************************************************************************
+  /* @function    get_left_offset
+  /* @author      Atticus Wright
+  /* @description This segment of code will calculate the left offset for
+  /*              for a class block div
+  /* @input       $
+  /* @output      $offset containing the offset
+  /*************************************************************************/
+  public static function get_left_offset($start_time, $duration)
   {
     $timestamp = strtotime($start_time);
     $offset = ( (date('G', $timestamp) - 7) * 70 ) + 62;
@@ -518,7 +615,16 @@ class Output_Version extends Eloquent {
     return $offset;
   }
 
-  public static function createVerticalHtml($room_text)
+
+  /**************************************************************************
+  /* @function    create_vertical_html
+  /* @author      Atticus Wright
+  /* @description This segment of code will generate the vertical html
+  /*              for displaying the room name in the room grid view 
+  /* @input       $
+  /* @output      $vertical_text containing the vertical html
+  /*************************************************************************/
+  public static function create_vertical_html($room_text)
   {
     $vertical_text = "";
     for($i = 0; $i < strlen($room_text); $i++)

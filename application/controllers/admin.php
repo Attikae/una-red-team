@@ -5,6 +5,14 @@ class Admin_Controller extends Base_Controller
 
   public $restful = true;
 
+
+  /**************************************************************************
+  /* @function    get_admin_index
+  /* @author      Atticus Wright
+  /* @description Handles a get request to the admin index page
+  /* @input       none
+  /* @output      none
+  /*************************************************************************/
 	public function get_admin_index()
 	{
     $query = Schedule::order_by('created_at', 'desc')->get();
@@ -12,6 +20,15 @@ class Admin_Controller extends Base_Controller
 		return View::make('admin.admin_index', array('schedules' => $query));
   }
 
+
+
+  /**************************************************************************
+  /* @function    post_admin_index
+  /* @author      Atticus Wright
+  /* @description Handles a post request from the admin index page
+  /* @input       none
+  /* @output      none
+  /*************************************************************************/
   public function post_admin_index()
   {
 
@@ -34,24 +51,58 @@ class Admin_Controller extends Base_Controller
 
   }
 
+
+
+
+  /**************************************************************************
+  /* @function    get_view_faculty
+  /* @author      Atticus Wright
+  /* @description Hanles a get request to the view faculty page
+  /* @input       none
+  /* @output      none
+  /*************************************************************************/
   public function get_view_faculty()
   {
     return View::make('admin.view_faculty');
   }
 
 
-
+  /**************************************************************************
+  /* @function    
+  /* @author      
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public function get_semester_cp()
   {
     return View::make('admin.semester_cp');
   }
 
-
+  /**************************************************************************
+  /* @function    get_add_semester
+  /* @author      Atticus Wright
+  /* @description Handles a get request to the add semester page
+  /* @input       none
+  /* @output      none
+  /*************************************************************************/
   public function get_add_semester()
   {
     return View::make('admin.add_semester');
   }
 
+
+  /**************************************************************************
+  /* @function    post_add_semester
+  /* @author      Atticus Wright
+  /* @description Handles a post request from the add semester page. Creates
+  /*              a new schedule if the schedule does not already exist. If
+  /*              the schedule already exists, redirects the user to the add
+  /*              semester page with a message notifying them that the
+  /*              schedule already exists.
+  /* @input       none
+  /* @output      none
+  /*************************************************************************/
   public function post_add_semester()
   {
 
@@ -77,6 +128,16 @@ class Admin_Controller extends Base_Controller
     
   }
 
+
+  /**************************************************************************
+  /* @function    get_view_semester
+  /* @author      Atticus Wright
+  /* @description Handles a get request to the admin view semester page. Calls
+  /*              the necessary functions to retrieve the text for the
+  /*              scheduling data input boxes.
+  /* @input       none
+  /* @output      none
+  /*************************************************************************/
   public function get_view_semester()
   {
 
@@ -117,6 +178,15 @@ class Admin_Controller extends Base_Controller
   }
 
 
+
+  /**************************************************************************
+  /* @function    post_file_upload
+  /* @author      Atticus Wright
+  /* @description This function handles the uploading of text files for
+  /*              scanner input
+  /* @input       none
+  /* @output      none
+  /*************************************************************************/
   public function post_file_upload()
   {
       $file = Input::file('fileToUpload');
@@ -144,6 +214,15 @@ class Admin_Controller extends Base_Controller
 
   }
 
+
+  /**************************************************************************
+  /* @function    post_scane
+  /* @author      Atticus Wright
+  /* @description This segment of code handles the calls to the different
+  /*              scanners
+  /* @input       $
+  /* @output      $result containg the status of the scanner call
+  /*************************************************************************/
   public function post_scan()
   {
 
@@ -177,6 +256,17 @@ class Admin_Controller extends Base_Controller
 
   }
 
+
+  /**************************************************************************
+  /* @function    post_scheduler
+  /* @author      Atticus Wright
+  /* @description This segment of code handles a call to the scheduler. It
+  /*              checks for the necessary input files before it will allow
+  /*              the scheduler to be called.
+  /* @input       $
+  /* @output      $status indicating whether the scheduler succeeded or failed
+  /*              $message containing more detailed info about the status
+  /*************************************************************************/
   public function post_scheduler()
   {
     $schedule_id = Input::get('schedule_id');
@@ -229,6 +319,15 @@ class Admin_Controller extends Base_Controller
     echo json_encode($result);
   }
 
+
+
+  /**************************************************************************
+  /* @function    fill prefs
+  /* @author      Atticus Wright
+  /* @description This segment of handles a call to the fill_prefs function.             
+  /* @input       $
+  /* @output      $result containing the status of the call
+  /*************************************************************************/
   public function post_fill_prefs()
   {
 
@@ -240,6 +339,29 @@ class Admin_Controller extends Base_Controller
 
   }
 
+
+
+  /**************************************************************************
+  /* @function    post_display output
+  /* @author      Atticus Wright
+  /* @description This segment of code calls the necessary functions for 
+  /*              generating the html and needed data for viewing a 
+  /*              schedule and passes that html and data back to an
+  /*              ajax call
+  /* @input       $
+  /* @output      $seniority containing the html for the seniority container
+  /*              $submission containing the html for the by preference
+  /*              submission container
+  /*              $classBlocks0 containing the class block divs for the
+  /*              seniority container
+  /*              $classBlocks1 containing the class block divs for the
+  /*              by preference submission container
+  /*              $faculty containing the faculty available for the schedule
+  /*              version
+  /*              $rooms containing the rooms avialable for the schedule 
+  /*              version
+  /*              $outputVersionId containing the output version id
+  /*************************************************************************/
   public function post_display_output()
   {
 
@@ -304,6 +426,15 @@ class Admin_Controller extends Base_Controller
   }
 
 
+
+  /**************************************************************************
+  /* @function    post_delete_version
+  /* @author      Atticus Wright
+  /* @description This segment of code will delete an output version and
+  /*              the scheduled courses associated wiht it
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public function post_delete_version()
   {
 
@@ -315,6 +446,19 @@ class Admin_Controller extends Base_Controller
 
   }
 
+
+
+  /**************************************************************************
+  /* @function    post_edit_course
+  /* @author      Atticus Wright
+  /* @description This segment of code ensures that an editing or scheduling
+  /*              action on a course is valid. If valid, it edits the course.
+  /*              If not, it returns an error message.
+  /* @output      $status detailing whether edting failed or succeeded
+  /*              $message giving more detail about the status
+  /*              $priority detailing whether a course for the seniority or
+  /*              preference sumbission containers was edited
+  /*************************************************************************/
   public function post_edit_course()
   {
 
@@ -523,6 +667,16 @@ class Admin_Controller extends Base_Controller
 
   
 
+
+  /**************************************************************************
+  /* @function    post_update_container
+  /* @author      Atticus Wright
+  /* @description This segment of code will update the scheduling container
+  /*              for which a course has been editing or scheduled.
+  /* @input       $
+  /* @output      $html containing the updated html
+  /*              $classBlocks containing the updated class Blocks
+  /*************************************************************************/
   public function post_update_container()
   {
 
@@ -558,6 +712,17 @@ class Admin_Controller extends Base_Controller
   }
 
 
+
+  /**************************************************************************
+  /* @function    post_published_schedule
+  /* @author      Atticus Wright
+  /* @description This segment of code will handles the publishing of a
+  /*              schedule and ensure that the schedule has not already
+  /*              been published
+  /* @input       $
+  /* @output      $message detailing whether the schedule was published
+  /*              or has already been published
+  /*************************************************************************/
   public function post_publish_schedule()
   {
 

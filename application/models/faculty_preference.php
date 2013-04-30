@@ -6,7 +6,14 @@ class Faculty_Preference extends Eloquent {
 
     public static $timestamps = true;
 
-
+    /**************************************************************************
+    /* @function    fill_prefs
+    /* @author      Jordan Shook and Atticus Wright
+    /* @description This segment of code will automatically fill the faculty
+    /*              preferences for a schedule for testing purposes
+    /* @input       $
+    /* @output      $message containing the status of the function call
+    /*************************************************************************/
     public static function fill_prefs($schedule_id)
     {
         Faculty_Preference::where_schedule_id($schedule_id)->delete();

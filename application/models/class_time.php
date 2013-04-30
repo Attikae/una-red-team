@@ -456,7 +456,7 @@ class Class_Time extends Eloquent {
 
         foreach ($entries as $entry)
         {
-            $cur_days_string = Class_Time::get_days_string($entry);
+            $cur_days_string = General::get_days_string($entry);
             if($cur_days_string == $prev_days_string)
             {
                 $text .= " " . substr($entry->starting_time, 0, 5);
@@ -483,52 +483,4 @@ class Class_Time extends Eloquent {
     //* End of get_text function
     //*************************************************************************
   
-    /**************************************************************************
-    /* @function    get_days_string
-    /* @author      Atticus Wright
-    /* @description This segment of code will
-    /* @input       $entry ->
-    /* @output      $result ->
-    /*************************************************************************/
-    public static function get_days_string($entry)
-    {
-
-        $result = "";
-
-        if($entry->monday)
-        {
-            $result .= "M";
-        }
-
-        if($entry->tuesday)
-        {
-            $result .= "T";
-        }
-
-        if($entry->wednesday)
-        {
-            $result .= "W";
-        }
-
-        if($entry->thursday)
-        {
-            $result .= "R";
-        }
-
-        if($entry->friday)
-        {
-            $result .= "F";
-        }
-
-        if($entry->saturday)
-        {
-            $result .= "S";
-        }
-
-        return $result;
-
-    }
-    //*************************************************************************
-    //* End of get_days_string function
-    //*************************************************************************	
 }

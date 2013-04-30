@@ -4,6 +4,14 @@ class Faculty_Controller extends Base_Controller
 {
   public $restful = true;
 
+
+  /**************************************************************************
+  /* @function    get_faculty_index
+  /* @author      Atticus Wright
+  /* @description Handles a get request to the faculty index page
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public function get_faculty_index()
   {
     $query = Schedule::order_by('created_at', 'desc')->get();
@@ -11,6 +19,15 @@ class Faculty_Controller extends Base_Controller
     return View::make('faculty.faculty_index', array('schedules' => $query));
   }
 
+
+  /**************************************************************************
+  /* @function    post_faculty_index
+  /* @author      Atticus Wright
+  /* @description Handles a post call from the faculty index page. Redirects
+  /*              to a specified schedule to view.
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public function post_faculty_index()
   {
     $schedule_id = Input::get('semester-select');
@@ -27,6 +44,14 @@ class Faculty_Controller extends Base_Controller
     }
   }
 
+
+  /**************************************************************************
+  /* @function    get_faculty_view_semester
+  /* @author      Atticus Wright
+  /* @description Handles a get request to the faculty view semester page
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public function get_faculty_view_semester()
   {
     if (Session::has('faculty_schedule_id')){
@@ -49,6 +74,15 @@ class Faculty_Controller extends Base_Controller
     return View::make('faculty.faculty_view_semester')->with('courses', $courses);
   }
 
+
+  /**************************************************************************
+  /* @function    post_sumbit_prefs
+  /* @author      Atticus Wright
+  /* @description This segment of code will submit the preferences for a
+  /*              faculty user
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public function post_submit_prefs()
   {
 
@@ -59,7 +93,6 @@ class Faculty_Controller extends Base_Controller
     Faculty_Preference::where_schedule_id_and_user_id($schedule_id, $user_id)->delete();
     $prefs_data = $_REQUEST['prefs_array'];
 
-    error_log("Before for loop");
     for($i = 0; $i < count($prefs_data); $i++)
     {
 
@@ -78,6 +111,16 @@ class Faculty_Controller extends Base_Controller
   
   }
 
+
+  /**************************************************************************
+  /* @function    post_retrieve_prefs
+  /* @author      Atticus Wright
+  /* @description This segment of code will retrieve preferences from the
+  /*              the database for a faculty user
+  /* @input       $
+  /* @output      $prefsData containing the prefernce data to be passed
+  /*              back to an ajax call
+  /*************************************************************************/
   public function post_retrieve_prefs()
   {
 

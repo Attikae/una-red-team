@@ -6,6 +6,14 @@ class User extends Eloquent
 	public static $timestamps = true;
 
 
+
+  /**************************************************************************
+  /* @function    
+  /* @author      Ash Karki
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
 	public static function random_pw($user_id)
 	{
 
@@ -22,6 +30,14 @@ class User extends Eloquent
 
 	}
 
+
+  /**************************************************************************
+  /* @function    
+  /* @author      Ash Karki
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
 	private static function generatePassword($length = 10)
 	{
 		$chars =  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.

@@ -423,7 +423,7 @@ class Conflict_Time extends Eloquent {
         foreach ($entries as $entry)
         {
             $cur_course = $entry->course;
-            $days_string = Conflict_Time::get_days_string($entry);
+            $days_string = General::get_days_string($entry);
             if($cur_course == $prev_course)
             {
                 $text .= " " . $days_string . "/" . 
@@ -448,49 +448,6 @@ class Conflict_Time extends Eloquent {
     //*************************************************************************
     //* End of get_text function
     //*************************************************************************
-  
-    /**************************************************************************
-    /* @function    get_days_string
-    /* @author      Atticus Wright
-    /* @description This segment of code will
-    /* @input       $entry ->
-    /* @output      $result ->
-    /*************************************************************************/
-    public static function get_days_string($entry){
 
-        $result = "";
-
-        if($entry->monday)
-        {
-          $result .= "M";
-        }
-
-        if($entry->tuesday)
-        {
-          $result .= "T";
-        }
-
-        if($entry->wednesday)
-        {
-          $result .= "W";
-        }
-
-        if($entry->thursday)
-        {
-          $result .= "R";
-        }
-
-        if($entry->friday)
-        {
-          $result .= "F";
-        }
-
-        if($entry->saturday)
-        {
-          $result .= "S";
-        }
-
-        return $result;
-    }
   
 }

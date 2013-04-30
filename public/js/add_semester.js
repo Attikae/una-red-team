@@ -3,6 +3,10 @@ $(document).ready(function(){
   addYearOptions();
 });
 
+/**
+@method 
+@param 
+*/
 function addYearOptions()
 {
   // Generate year options for the next 50 years

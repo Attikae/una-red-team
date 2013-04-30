@@ -30,6 +30,12 @@ $(document).ready(function(){
 
 });
 
+
+/**
+@method 
+@param 
+@author
+*/
 function showVersions(){
 
   // Display the versions div
@@ -39,6 +45,12 @@ function showVersions(){
 
 }
 
+
+/**
+@method 
+@param 
+@author
+*/
 function showInput(){
 
   // Display the input div
@@ -47,6 +59,12 @@ function showInput(){
   $("#input-div").show();
 }
 
+
+/**
+@method 
+@param 
+@author
+*/
 function showPref(){
 
   // Display the preferences div
@@ -55,6 +73,13 @@ function showPref(){
   $("#pref-div").show();
 }
 
+/**
+@method ajaxSumbitPrefs
+@param 
+@author Atticus
+@description Grabs the preferences submitted by a faculty user and
+             passes the data to the server via ajax
+*/
 function ajaxSubmitPrefs(){
 
   var scheduleId = $('#faculty_schedule_id').val();
@@ -124,6 +149,14 @@ function ajaxSubmitPrefs(){
 
 }
 
+
+/**
+@method ajaxRetrivePrefs
+@param 
+@author Atticus
+@description Retrieves a faculty user's submitted preferences from the server
+             and displays them visually
+*/
 function ajaxRetrievePrefs(){
 
   var scheduleId = $('#faculty_schedule_id').val();
@@ -171,6 +204,14 @@ function ajaxRetrievePrefs(){
 
 }
 
+
+
+/**
+@method resetPrefs
+@param 
+@author Atticus Wright
+@description Visually resets a faculty user's preferences
+*/
 function resetPrefs(){
 
   $(".morning").prop("checked", false);

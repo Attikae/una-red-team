@@ -16,32 +16,36 @@ $(document).ready(function(){
   // Toggle file divs
   $(".file-btn").on("click",toggleFileDiv);
 
-
+  // Handles user clicking the delete line for a version
   $(document).on("click", ".delete-version-lnk", function(){
     var deleteId = $(this).parents('tr').find('.version-lnk').attr('id');
     ajaxDeleteVersion(deleteId);
   });
 
+  // Detects when a file has been uploaded
   $("#file-submit-iframe").load( ajaxFileUpload );
 
+  // Hanles clicking the use button for scanner input data
   $(".save-btn").on("click", function(e){
     e.preventDefault();
-
     ajaxSaveInput($(this));
   });
 
+  // Handles clicking the new version button
   $("#new-version-btn").on("click", ajaxCallScheduler);
 
+  // Handles clicking the fill prefs button
   $("#fill-prefs").on("click", function(e){
     e.preventDefault();
     ajaxFillPrefs();
   });
 
-
+  // Handles clicking on a schedule version to view it
   $(document).on('click', '.version-lnk', function(){
     ajaxDisplayOutput($(this));
   });
 
+  // Handles clicking the by seniority button
   $("#show-seniority").on('click', function(){
     var className = $(".output-container:visible").children(":visible").attr('class');
     $("#submission-container").hide();
@@ -52,6 +56,7 @@ $(document).ready(function(){
 
   })
 
+  // Handles clicking the by order of submission button
   $("#show-sumbission").on('click', function(){
     var className = $(".output-container:visible").children(":visible").attr('class');
     $("#seniority-container").hide();
@@ -61,10 +66,13 @@ $(document).ready(function(){
     $("#submission-container").children("." + className).show();
   })
 
+  // Handles clicking the close button when viewing a schedule
   $("#hide-schedule-output").on('click', function(){
     $("#schedule-output-container").hide();
   })
 
+  // Hanles clicking one of the buttons for viewing the 4 different schedule
+  // views
   $("#bottom-buttons-container button").on('click', function(){
     var id = $(this).attr('id');
 
@@ -96,29 +104,37 @@ $(document).ready(function(){
 
   })
 
+  // Handles clicking on a class block
   $(document).on('click', '.class-block', function(){
     displayEditContainer($(this));
   });
 
+
+  // Handles clicking the schedule button for unscheduled courses
   $(document).on('click', '.schedule-btn', function(){
-
-
-
     displayEditContainerForUnscheduled($(this));
   })
 
+  // Hanldes clicking the cancel button on the edit div
   $("#edit-close").on("click", closeEditPopup);
 
+  // Handles clicking the submit button on the edit div
   $("#edit-submit").on("click", function(){
     ajaxEditCourse();
   });
 
+  // Handles clicking the publish button when viewing a schedule version
   $("#publish-btn").on("click", ajaxPublishSchedule);
 
 });
 
 
-
+/**
+@method 
+@param 
+@author Atticus Wright
+@description Handles the closing of the edit course div
+*/
 function closeEditPopup(){
 
   $("#schedule-edit-container").hide();
@@ -128,6 +144,11 @@ function closeEditPopup(){
 }
 
 
+/**
+@method 
+@param 
+@author
+*/
 function showVersions(){
 
   // Display the versions div
@@ -137,6 +158,12 @@ function showVersions(){
 
 }
 
+
+/**
+@method 
+@param 
+@author
+*/
 function showInput(){
 
   // Display the input div
@@ -145,6 +172,12 @@ function showInput(){
   $("#input-div").show();
 }
 
+
+/**
+@method 
+@param 
+@author
+*/
 function showPref(){
 
   // Display the preferences div
@@ -153,6 +186,12 @@ function showPref(){
   $("#pref-div").show();
 }
 
+
+/**
+@method 
+@param 
+@author
+*/
 function toggleFileDiv(){
   
   // Toggles the visibility of the
@@ -177,7 +216,13 @@ function toggleFileDiv(){
   }
 }
 
-
+/**
+@method 
+@param 
+@author Atticus Wright
+@description Inserts the text of an uploaded file into the appropriate input
+             box
+*/
 function ajaxFileUpload(){
 
   var contents = $("#file-submit-iframe").contents().find('#file-contents').html();
@@ -219,6 +264,14 @@ function ajaxFileUpload(){
 }
 
 
+/**
+@method ajaxSaveInput
+@param 
+@author Atticus Wright
+@description Grabs the text data from a schedule data input box and
+             sends it to the server for processing. Displays the
+             message returned from the server
+*/
 function ajaxSaveInput(saveButton) {
 
   var fileString = saveButton.parents().siblings('textarea').val();
@@ -274,6 +327,14 @@ function ajaxSaveInput(saveButton) {
 }
 
 
+/**
+@method ajaxCallScheduler
+@param 
+@author Atticus Wright
+@description Sends the schedule id to the server for generating a new
+             schedule version and displays the result of the scheduler
+             call
+*/
 function ajaxCallScheduler(element){
 
   var scheduleId = $('#schedule_id').val();
@@ -304,6 +365,14 @@ function ajaxCallScheduler(element){
 }
 
 
+/**
+@method ajaxFillPrefs
+@param 
+@author Atticus Wright
+@description Sends the schedule id to the server for automatically
+             filling the faculty preferences and displays whether
+             the call was successful
+*/
 function ajaxFillPrefs(){
 
   var scheduleId = $('#schedule_id').val();
@@ -325,6 +394,15 @@ function ajaxFillPrefs(){
 }
 
 
+/**
+@method ajaxDisplayOuput
+@param 
+@author Atticus Wright
+@description Sends the schedule id and output version id to the
+             server to generate html for the schedule version
+             to be viewed and visually updates the page with
+             the html
+*/
 function ajaxDisplayOutput(span){
 
   var scheduleId = $('#schedule_id').val();
@@ -363,6 +441,14 @@ function ajaxDisplayOutput(span){
 
 }
 
+
+/**
+@method appendDivs
+@param blocks, priority
+@author Atticus Wright
+@description appends course block divs to the appropriate
+             container based on priority
+*/
 function appendDivs(blocks, priority){
 
   var container;
@@ -419,9 +505,16 @@ function appendDivs(blocks, priority){
 
   };
 
-
 }
 
+
+/**
+@method createClassDiv
+@param 
+@author Atticus Wright
+@description dynamically creates a new course block div to be inserted
+             into the room grid view
+*/
 function createClassDiv(block){
 
   var div = document.createElement('div');
@@ -434,6 +527,14 @@ function createClassDiv(block){
   return div;
 }
 
+
+/**
+@method setClassBlockData
+@param block
+@author Atticus Wright
+@description sets data atrributes on the passed in block for use
+             when editing a course
+*/
 function setClassBlockData(block){
 
   var domDiv = $("." + block.id);
@@ -458,6 +559,14 @@ function setClassBlockData(block){
 
 }
 
+
+/**
+@method ajaxDeleteVersion
+@param 
+@author Atticus Wright
+@description Sends the version to be deleted to the server and
+             visually removes the version option from the page
+*/
 function ajaxDeleteVersion(deleteId){
 
   $.ajax({
@@ -476,6 +585,14 @@ function ajaxDeleteVersion(deleteId){
 
 }
 
+
+/**
+@method displayEditContainer
+@param div
+@author Atticus Wright
+@description displays the course edit container and pre-selects
+             the data for its inputs based on the passed in div
+*/
 function displayEditContainer(div){
 
   var divData = div.data();
@@ -484,7 +601,6 @@ function displayEditContainer(div){
 
   $("#edit-course-id").val(divData.courseId);
   $("#edit-priority-flag").val(divData.priorityFlag);
-  //$("#edit-course-duration").val(divData.duration);
   $("#duration-select").val(divData.duration);
   $("#edit-class-size").val(divData.classSize);
   $("#edit-course-type").val(divData.courseType);
@@ -526,6 +642,15 @@ function displayEditContainer(div){
 
 }
 
+
+/**
+@method displayEditContainerForUnscheduled
+@param 
+@author Atticus Wright
+@description displays the course edit container for an
+             unscheduled course and uses button to
+             display information about the course
+*/
 function displayEditContainerForUnscheduled(button){
   $("#schedule-container-overlay").show()
   $("#schedule-edit-container").show();
@@ -541,6 +666,14 @@ function displayEditContainerForUnscheduled(button){
 }
 
 
+/**
+@method createFacultyOptions
+@param 
+@author Atticus Wright
+@description appends options values to the faculty select
+             in the edit course div for the faculty array
+             passed in
+*/
 function createFacultyOptions(faculty){
   var select = $("#faculty-select");
   select.empty();
@@ -552,6 +685,15 @@ function createFacultyOptions(faculty){
 
 }
 
+
+/**
+@method createRoomOptions
+@param 
+@author Atticus Wright
+@description appends options values to the room select
+             in the edit course div for the rooms array
+             passed in
+*/
 function createRoomOptions(rooms){
   var select = $("#room-select");
   select.empty();
@@ -563,6 +705,14 @@ function createRoomOptions(rooms){
 
 }
 
+
+/**
+@method ajaxEditCourse
+@param 
+@author Atticus Wright
+@description Sends the necessary data to the server for editing
+             a course and displays the result of the call
+*/
 function ajaxEditCourse(){
 
   if( $("#monday-checkbox").is(":checked") ){
@@ -679,7 +829,15 @@ function ajaxEditCourse(){
 }
 
 
-
+/**
+@method ajaxUpdateContainer
+@param 
+@author Atticus Wright
+@description retrieves the html corresponding to the
+             passed in outputVersionId and priority and
+             and visually updates the page with the new
+             html
+*/
 function ajaxUpdateContainer(outputVersionId, priority){
 
 
@@ -709,6 +867,16 @@ function ajaxUpdateContainer(outputVersionId, priority){
 
 }
 
+
+/**
+@method ajaxPublishSchedule
+@param 
+@author Atticus Wright
+@description Makes sure a user wants to published a schedule
+             and sends the necessary data to the server for
+             doing so. Displays a message of the status of
+             the call
+*/
 function ajaxPublishSchedule()
 {
 

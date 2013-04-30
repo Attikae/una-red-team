@@ -14,6 +14,14 @@ $(document).ready(function(){
 });
 
 
+
+/**
+@method ajaxDisplayPublishedSchedule
+@param 
+@author Atticus Wright
+@description retrieves the html for a published schedule
+             from the server and visually updates the page
+*/
 function ajaxDisplayPublishedSchedule()
 {
 

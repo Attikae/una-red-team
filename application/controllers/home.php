@@ -32,22 +32,43 @@ class Home_Controller extends Base_Controller {
 
     public $restful = true;
 
+
+  /**************************************************************************
+  /* @function    get_index
+  /* @author      Atticus Wright
+  /* @description Handles a get request to the index page
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
     public function get_index()
     {
         $published_schedules = Schedule::where_is_published(1)->get();
         return View::make('home.index')->with("schedules", $published_schedules);
     }
 
+
+    /**************************************************************************
+    /* @function    get_login
+    /* @author      Atticus Wright
+    /* @description Hanles a get request to the login page
+    /* @input       $
+    /* @output      $
+    /*************************************************************************/
     public function get_login()
     {
-        if(Session::has('message'))
-        {
-            error_log("message is: " . $message);
-        }
         
         return View::make('home.login');
     }
 
+
+    /**************************************************************************
+    /* @function    get_cancel_change_password
+    /* @author      Atticus Wright
+    /* @description This segment of code will handle the redirect from the
+    /*              change password page depending on the user type 
+    /* @input       $
+    /* @output      $
+    /*************************************************************************/
     public function get_cancel_change_password()
     {
 
@@ -66,6 +87,15 @@ class Home_Controller extends Base_Controller {
 
     }
 
+
+
+    /**************************************************************************
+    /* @function    post_login
+    /* @author      Ash Karki and Atticus Wright
+    /* @description This segment of code will 
+    /* @input       $
+    /* @output      $
+    /*************************************************************************/
     public function post_login()
     {
         $username = $_POST['username'];
@@ -135,7 +165,6 @@ class Home_Controller extends Base_Controller {
 							$user->is_locked = 1;
                             $user->save();
 							$message["error"] = "Admin account locked!</br> New password sent to your email! ";
-							//return Redirect::to('random_pw.php');
                             User::random_pw($user->id);
 						}
 						else
@@ -156,11 +185,27 @@ class Home_Controller extends Base_Controller {
         return View::make('home.login')->with("message", $message);
     }
 
+
+    /**************************************************************************
+    /* @function    get_changepw
+    /* @author      Ash Karki
+    /* @description Handles a get request to the change password page
+    /* @input       $
+    /* @output      $
+    /*************************************************************************/
     public function get_changepw()
     {
       return View::make('home.changepw');
     }
 
+
+    /**************************************************************************
+    /* @function    
+    /* @author      Ash Karki
+    /* @description This segment of code will 
+    /* @input       $
+    /* @output      $
+    /*************************************************************************/
     public function post_changepw()
     {
         
@@ -235,6 +280,16 @@ class Home_Controller extends Base_Controller {
         return View::make('home.changepw')->with("message", $message);
     }
 
+
+    /**************************************************************************
+    /* @function    post_display_published_output
+    /* @author      Atticus Wright
+    /* @description This segment of code will call the necessary functions to
+    /*              generate the html for the viewing of a published schedule
+    /* @input       $
+    /* @output      $html containing the generated html to be passed back to
+    /*              an ajax call
+    /*************************************************************************/
     public function post_display_published_output()
     {
         $schedule_id = Input::get("schedule_id");

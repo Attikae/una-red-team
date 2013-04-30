@@ -7,6 +7,16 @@
 
 class Scheduler {
 
+
+  /**************************************************************************
+  /* @function    schedule_driver
+  /* @author      Phillip Clark and Atticus Wright
+  /* @description This segment of code will call the needed functions for
+  /*              generating a schedule
+  /* @input       $
+  /* @output      $output_version->id containing the newly created output
+  /*              version id
+  /*************************************************************************/
   public static function schedule_driver($schedule_id )
   {
 
@@ -39,7 +49,7 @@ class Scheduler {
                                          1,
                                          $time_list );
 
-    Scheduler::copyUsedInput($schedule_id, $output_version->id);
+    Scheduler::copy_used_input($schedule_id, $output_version->id);
 
     return $output_version->id;
   }
@@ -47,6 +57,15 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+
+
+  /**************************************************************************
+  /* @function    
+  /* @author      Phillip Clark
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function create_scheduled_courses( $schedule_id,
                                                    $output_id,
                                                    $course_list,
@@ -304,6 +323,16 @@ class Scheduler {
 
   //////////////////////////////////////////////////////////////////////////////// 
   //////////////////////////////////////////////////////////////////////////////// 
+
+
+
+  /**************************************************************************
+  /* @function    
+  /* @author      Phillip Clark
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function get_faculty_list( $schedule_id, $course_list, $priority_bool )
   {
     // If priority_bool is 0, use seniority
@@ -379,6 +408,14 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+
+  /**************************************************************************
+  /* @function    
+  /* @author      Phillip Clark
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function get_course_list( $schedule_id )
   {
     $courses = Course_To_Schedule::where_schedule_id($schedule_id)->get();
@@ -417,6 +454,14 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+
+  /**************************************************************************
+  /* @function    
+  /* @author      Phillip Clark
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function get_time_list( $schedule_id )
   {
     $class_times = Class_Time::where_schedule_id($schedule_id)->get();
@@ -486,6 +531,14 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+
+  /**************************************************************************
+  /* @function    
+  /* @author      Phillip Clark
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function get_section_list( $day_sections,
                                            $night_sections,
                                            $internet_sections )
@@ -522,6 +575,14 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+
+  /**************************************************************************
+  /* @function    
+  /* @author      Phillip Clark
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function get_conflict_list( $schedule_id, $course )
   {
     $conflict_times = Conflict_Time::where_schedule_id( $schedule_id )
@@ -573,6 +634,13 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+  /**************************************************************************
+  /* @function    
+  /* @author      Phillip Clark
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function get_prereq_list( $schedule_id, $course )
   {
     $prereqs = Prerequisite::where_schedule_id( $schedule_id )
@@ -596,6 +664,13 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+  /**************************************************************************
+  /* @function    
+  /* @author      Phillip Clark
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function get_start_end_offsets( $start_time, 
                                                 $duration, 
                                                 &$start_offset, 
@@ -613,6 +688,14 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+
+  /**************************************************************************
+  /* @function    
+  /* @author      Phillip Clark
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function get_valid_time_list( $time_list,
                                               $conflict_list,
                                               $prereq_list,
@@ -808,6 +891,14 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+
+  /**************************************************************************
+  /* @function    
+  /* @author      Phillip Clark
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function filter_faculty_times( $orig_list,
                                                $valid_list,
                                                $faculty )
@@ -859,6 +950,13 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
   
+  /**************************************************************************
+  /* @function    
+  /* @author      Phillip Clark
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function choose_final_time( $course, 
                                             $time_list )
   {
@@ -927,6 +1025,14 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+
+  /**************************************************************************
+  /* @function    
+  /* @author      Phillip Clark
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function update_time_list( &$time_list, 
                                            $course, 
                                            $faculty, 
@@ -964,6 +1070,14 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+
+  /**************************************************************************
+  /* @function    
+  /* @author      Phillip Clark
+  /* @description This segment of code will 
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
   public static function is_intersected( $days1, 
                                          $days2, 
                                          $start1,
@@ -998,7 +1112,17 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  public static function copyUsedInput($schedule_id, $output_version_id)
+
+  /**************************************************************************
+  /* @function    copy_used_input
+  /* @author      Atticus Wright
+  /* @description This segment of code will copy the faculty_members and
+  /*              available rooms used to create a schedule version for
+  /*              use in editing a schedule
+  /* @input       $
+  /* @output      $
+  /*************************************************************************/
+  public static function copy_used_input($schedule_id, $output_version_id)
   {
     $rooms = Available_Room::where_schedule_id($schedule_id)->get();
     $faculty_members = Faculty_Member::where_schedule_id($schedule_id)->get();

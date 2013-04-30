@@ -4,6 +4,12 @@ $(document).ready(function(){
   setTableHeader();
 });
 
+
+/**
+@method 
+@param 
+@author
+*/
 function appendResetDelete(){
   
   // Append the reset password and delete options to every
@@ -14,6 +20,12 @@ function appendResetDelete(){
   $(".entry").append( reset_password + delete_user );
 };
 
+
+/**
+@method 
+@param 
+@author
+*/
 function setTableHeader(){
   
   // Dynamically sets the table header size
