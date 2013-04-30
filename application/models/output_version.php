@@ -16,11 +16,13 @@ class Output_Version extends Eloquent {
   /*************************************************************************/
   public static function create_classes_by_class_name($courses){
 
+    // Sort courses by course name
     usort($courses, function($a, $b)
     {
         return strcmp($a->course, $b->course);
     });
 
+    // Generate table header
     $html = "";
     $html .= "<div class='by-class-name'>
                 <table class='class-name-table'>
@@ -70,11 +72,13 @@ class Output_Version extends Eloquent {
 
     $rooms = Available_Room::where_output_version_id($output_version_id)->get();
 
+    // Sort rooms by building and room number combination
     usort($rooms, function($a, $b)
     {
         return strcmp(($a->building . $a->room_number), ($b->building . $b->room_number));
     });
 
+    // Generate a classes by room table for each room
     for($i = 0; $i < count($rooms); $i++)
     {
 
@@ -87,6 +91,7 @@ class Output_Version extends Eloquent {
 
       $html_array[$i] .= "<div class='time-label7'>7</div>";
 
+      // Generate the time numbers for the table
       for($j = 8; $j < 23; $j++)
       {
         if($j > 12)
@@ -143,6 +148,8 @@ class Output_Version extends Eloquent {
 
       $course_type = substr($course->section_number, 0);
 
+      // Make sure the course is not an internet course or
+      // unscheduled course
       if($course_type != 'I' && $course_type != "X")
       {
         $start_formatted = "";
@@ -154,7 +161,7 @@ class Output_Version extends Eloquent {
         $width = intval( ($course->duration / 60) * 70);
         $left = Output_Version::get_left_offset($course->start_time, $course->duration);
         
-
+        // Store data for the course
         $data[$i]['id'] = $course->id;
         $data[$i]['priorityFlag'] = $course->priority_flag;
         $data[$i]['userId'] = $course->user_id;
@@ -203,6 +210,7 @@ class Output_Version extends Eloquent {
     $data = array();
     $i = 0;
 
+    // Store data associated with each faculty member
     foreach ($faculty_members as $faculty) {
       $data[$i]['id'] = $faculty->id;
       $data[$i]['userId'] = $faculty->user_id;
@@ -228,6 +236,7 @@ class Output_Version extends Eloquent {
     $data = array();
     $i = 0;
 
+    // Store data associated with each room
     foreach ($rooms as $room) {
       $data[$i]['id'] = $room->id;
       $data[$i]['type'] = $room->type;
@@ -253,7 +262,7 @@ class Output_Version extends Eloquent {
   /*************************************************************************/
   public static function create_classes_by_faculty($courses){
 
-
+    // Sort courses by faculty user id
     usort($courses, function($a, $b)
     {
         return strcmp($a->user_id, $b->user_id);
@@ -264,8 +273,11 @@ class Output_Version extends Eloquent {
 
     $prev_id = 0;
 
+    // Make sure there are courses
     if(! empty($courses))
     {
+
+      // Generate a course listing table for each faculty member
       foreach ($courses as $course) {
 
         if(isset($curr_id))
@@ -305,6 +317,7 @@ class Output_Version extends Eloquent {
     }
     else
     {
+      // Display this message message if no courses were scheduled
       $html .= "No courses scheduled";
     }
 
@@ -326,6 +339,7 @@ class Output_Version extends Eloquent {
   /*************************************************************************/
   public static function create_classes_by_time($courses){
 
+    // Sort courses by user id
     usort($courses, function($a, $b)
     {
         return strcmp($a->user_id, $b->user_id);
@@ -335,6 +349,7 @@ class Output_Version extends Eloquent {
     $html = "";
     $html .= "<div class='by-time'>";
 
+    // Generate a table for each hour between 7 am and 6 pm
     $html_array = array();
     for($i = 7; $i < 19; $i++){
 
@@ -365,6 +380,7 @@ class Output_Version extends Eloquent {
                     <tbody>";
     }
 
+    // Display courses in a table if they fall anywhere within the time range
     $prev_id = 0;
     foreach ($courses as $course) {
 
@@ -374,6 +390,7 @@ class Output_Version extends Eloquent {
       Scheduler::get_start_end_offsets($course->start_time, $course->duration,
                                         $start_offset, $end_offset);
 
+      // 7 to 8 am
       if( ($start_offset >= 0 && $start_offset < 60) || 
           ($end_offset >= 0 && $end_offset < 60) ||
           (0 > $start_offset && 0 < $end_offset) )
@@ -381,6 +398,7 @@ class Output_Version extends Eloquent {
         $html_array[7] .= "" . Output_Version::generate_row($course);
       }
 
+      // 8 to 9 am
       if( ($start_offset >= 60 && $start_offset < 120) || 
           ($end_offset >= 60 && $end_offset < 120) ||
           (60 > $start_offset && 60 < $end_offset) )
@@ -388,6 +406,7 @@ class Output_Version extends Eloquent {
         $html_array[8] .= "" . Output_Version::generate_row($course);
       }
 
+      // 9 to 10 am
       if( ($start_offset >= 120 && $start_offset < 180) || 
           ($end_offset >= 120 && $end_offset < 180) ||
           (120 > $start_offset && 120 < $end_offset) )
@@ -395,6 +414,7 @@ class Output_Version extends Eloquent {
         $html_array[9] .= "" . Output_Version::generate_row($course);
       }
 
+      // 10 to 11 am
       if( ($start_offset >= 180 && $start_offset < 240) || 
           ($end_offset >= 180 && $end_offset < 240) ||
           (180 > $start_offset && 180 < $end_offset) )
@@ -402,6 +422,7 @@ class Output_Version extends Eloquent {
         $html_array[10] .= "" . Output_Version::generate_row($course);
       }
 
+      // 11 to 12 pm
       if( ($start_offset >= 240 && $start_offset < 300) || 
           ($end_offset >= 240 && $end_offset < 300) ||
           (240 > $start_offset && 240 < $end_offset) )
@@ -409,6 +430,7 @@ class Output_Version extends Eloquent {
         $html_array[11] .= "" . Output_Version::generate_row($course);
       }
 
+      // 12 to 1 pm
       if( ($start_offset >= 300 && $start_offset < 360) || 
           ($end_offset >= 300 && $end_offset < 360) ||
           (300 > $start_offset && 300 < $end_offset) )
@@ -416,6 +438,7 @@ class Output_Version extends Eloquent {
         $html_array[12] .= "" . Output_Version::generate_row($course);
       }
 
+      // 1 to 2 pm
       if( ($start_offset >= 360 && $start_offset < 420) || 
           ($end_offset >= 360 && $end_offset < 420) ||
           (360 > $start_offset && 360 < $end_offset) )
@@ -423,6 +446,7 @@ class Output_Version extends Eloquent {
         $html_array[13] .= "" . Output_Version::generate_row($course);
       }
 
+      // 2 to 3 pm
       if( ($start_offset >= 420 && $start_offset < 480) || 
           ($end_offset >= 420 && $end_offset < 480) ||
           (420 > $start_offset && 420 < $end_offset) )
@@ -430,6 +454,7 @@ class Output_Version extends Eloquent {
         $html_array[14] .= "" . Output_Version::generate_row($course);
       }
 
+      // 3 to 4 pm
       if( ($start_offset >= 480 && $start_offset < 540) || 
           ($end_offset >= 480 && $end_offset < 540) ||
           (480 > $start_offset && 480 < $end_offset) )
@@ -437,6 +462,7 @@ class Output_Version extends Eloquent {
         $html_array[15] .= "" . Output_Version::generate_row($course);
       }
 
+      // 4 to 5 pm
       if( ($start_offset >= 540 && $start_offset < 600) || 
           ($end_offset >= 540 && $end_offset < 600) ||
           (540 > $start_offset && 540 < $end_offset) )
@@ -444,6 +470,7 @@ class Output_Version extends Eloquent {
         $html_array[16] .= "" . Output_Version::generate_row($course);
       }
 
+      // 5 to 6 pm
       if( ($start_offset >= 600 && $start_offset < 660) || 
           ($end_offset >= 600 && $end_offset < 660) ||
           (600 > $start_offset && 600 < $end_offset) )
@@ -451,6 +478,7 @@ class Output_Version extends Eloquent {
         $html_array[17] .= "" . Output_Version::generate_row($course);
       }
 
+      // 6 to 7 pm
       if( ($start_offset >= 660 && $start_offset < 720) || 
           ($end_offset >= 660 && $end_offset < 720) ||
           (660 > $start_offset && 660 < $end_offset) )
@@ -460,10 +488,8 @@ class Output_Version extends Eloquent {
 
     }
 
+    // Add genarated html in $html_array to $html
     for($i = 7; $i < 19; $i++) {
-      //$html_array[$i] .= "</tbdoy></table></br></br>";
-
-
       $html .= "" . $html_array[$i] . "</tbody></table></br></br>";
     }
 
@@ -484,11 +510,13 @@ class Output_Version extends Eloquent {
   public static function create_not_scheduled($courses)
   {
 
+    // Sort courses by name
     usort($courses, function($a, $b)
     {
         return strcmp($a->course, $b->course);
     });
 
+    // Display table header
     $html = "";
     $html .= "<div class='not-scheduled'>
                 <table class='not-scheduled-table'>
@@ -501,8 +529,9 @@ class Output_Version extends Eloquent {
                     </tr>
                   </thead>
                   <tbody>";
-                
+           
 
+    // Generate a table row for each course
     foreach ($courses as $course) {
 
       if($course->section_number == "X")
@@ -532,6 +561,7 @@ class Output_Version extends Eloquent {
     Output_Version::format_times($course->start_time, $course->duration,
                                 $start_formatted, $end_formatted);
 
+    // Generate building and room combination string
     $room = "";
     if ($course->building != "")
     {
@@ -585,6 +615,8 @@ class Output_Version extends Eloquent {
                                      &$start_formatted, &$end_formatted)
   {
 
+    // Format times to display hour, followed by colon,
+    // followed by minutes, followed by am or pm
     if($start_time == "00:00:00")
     {
       $start_formatted = "";
@@ -609,6 +641,8 @@ class Output_Version extends Eloquent {
   /*************************************************************************/
   public static function get_left_offset($start_time, $duration)
   {
+    // Figure out the left offset css value for a given start time
+    // and duration of a course
     $timestamp = strtotime($start_time);
     $offset = ( (date('G', $timestamp) - 7) * 70 ) + 62;
     $offset = $offset + ( ( date('i', $timestamp) / 60 ) * 68 );

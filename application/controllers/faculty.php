@@ -93,6 +93,7 @@ class Faculty_Controller extends Base_Controller
     Faculty_Preference::where_schedule_id_and_user_id($schedule_id, $user_id)->delete();
     $prefs_data = $_REQUEST['prefs_array'];
 
+    // Submit prefs to the database for each course associated with a schedule
     for($i = 0; $i < count($prefs_data); $i++)
     {
 
@@ -135,6 +136,7 @@ class Faculty_Controller extends Base_Controller
 
     error_log("before for each prefs_data");
 
+    // Store prefs data for each course associated with a schedule
     $i = 0;
     foreach ($faculty_prefs as $pref)
     {

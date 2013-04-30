@@ -192,7 +192,7 @@ class Admin_Controller extends Base_Controller
       $file = Input::file('fileToUpload');
       $inputType = Input::get('input-type');
 
-
+      // Check to make sure the file is the appropriate type
       if ( $file['type'] == "text/plain" )
       {
         if ($file['error'] > 0)
@@ -230,6 +230,8 @@ class Admin_Controller extends Base_Controller
     $file_string = Input::get('file_string');
     $schedule_id = Input::get('schedule_id');
 
+    // Call the appropriate scanner based on the file type
+    // designator (not indicative of an actual file type)
     switch($file_type)
     {
       case "class_times" :
@@ -273,6 +275,7 @@ class Admin_Controller extends Base_Controller
 
     $schedule = Schedule::find($schedule_id)->first();
 
+    // Make sure the necessary input has been filled
     if( $schedule->has_available_rooms && $schedule->has_class_times &&
         $schedule->has_courses_to_schedule && $schedule->has_faculty_members)
     {
@@ -290,6 +293,7 @@ class Admin_Controller extends Base_Controller
     }
     else
     {
+      // Generate an error message depending on what has not been filled
       $message = "Error!\n";
 
       if (! $schedule->has_available_rooms)
@@ -369,6 +373,7 @@ class Admin_Controller extends Base_Controller
     $schedule_id = Input::get('schedule_id');
     $output_version_id = Input::get('output_version_id');
 
+    // Get the scheduled courses for each priority type
     $courses_0 = Scheduled_Course::where_output_version_id($output_version_id)
                                         ->where_priority_flag('0')
                                         ->where('section_number', '!=', 'X')->get();
@@ -377,7 +382,7 @@ class Admin_Controller extends Base_Controller
                                         ->where_priority_flag('1')
                                         ->where('section_number', '!=', 'X')->get();
 
-
+    // Get the unscheduled courses for each priority type                                  
     $not_scheduled_0 = Scheduled_Course::where_output_version_id($output_version_id)
                                         ->where_priority_flag('0')
                                         ->where_section_number('X')->get();
@@ -386,13 +391,14 @@ class Admin_Controller extends Base_Controller
                                         ->where_priority_flag('1')
                                         ->where_section_number('X')->get();
 
-
+    // Get the faculty and rooms used to create the schedule version
     $faculty = Faculty_Member::where_schedule_id(0)
                                 ->where_output_version_id($output_version_id)->get();
 
     $rooms = Available_Room::where_schedule_id(0)
                                 ->where_output_version_id($output_version_id)->get();
 
+    // Get the html for the by seniority priority type                        
     $class_name_html_0 = Output_Version::create_classes_by_class_name($courses_0);
     $room_html_0 = Output_Version::create_classes_by_room_tables($output_version_id, 0);
     $faculty_html_0 = Output_Version::create_classes_by_faculty($courses_0);
@@ -401,6 +407,7 @@ class Admin_Controller extends Base_Controller
     $seniority = $class_name_html_0 . $room_html_0 . $faculty_html_0 . 
                  $time_html_0 . $not_scheduled_html_0;
 
+    // Get the html for the by preference submission priority type
     $class_name_html_1 = Output_Version::create_classes_by_class_name($courses_1);
     $room_html_1 = Output_Version::create_classes_by_room_tables($output_version_id, 1);
     $faculty_html_1 = Output_Version::create_classes_by_faculty($courses_1);
@@ -409,9 +416,11 @@ class Admin_Controller extends Base_Controller
     $submission = $class_name_html_1 . $room_html_1 . $faculty_html_1 .
                   $time_html_1 . $not_scheduled_html_1;
 
+    // Get the data for creating the class blocks divs
     $seniority_class_blocks = Output_Version::get_class_blocks_data($courses_0);
     $submission_class_blocks = Output_Version::get_class_blocks_data($courses_1);
 
+    // Get the data for creating the faculty and room select options
     $faculty_data = Output_Version::get_faculty_data($faculty);
     $rooms_data = Output_Version::get_rooms_data($rooms);
 
@@ -462,73 +471,7 @@ class Admin_Controller extends Base_Controller
   public function post_edit_course()
   {
 
-    $to_edit_course_id = Input::get("course_id");
-    $action = Input::get("action");
-    $output_version_id = Input::get("output_version_id");
-
-    if($action == 'edit')
-    {
-      error_log("action was edit");
-      $priority = Input::get("priority");
-      $class_size = Input::get("class_size");
-      $course_type = Input::get("course_type");
-
-    }
-    else if($action == 'schedule')
-    {
-      $to_schedule_course = Scheduled_Course::find($to_edit_course_id);
-      $priority = $to_schedule_course->priority_flag;
-      $class_size = $to_schedule_course->class_size;
-      $course_type = $to_schedule_course->course_type;
-
-      $section_courses = Scheduled_Course::where_output_version_id($output_version_id)
-                            ->where_priority_flag($priority)
-                            ->where_course($to_schedule_course->course)
-                            ->where('section_number', '!=', 'X')
-                            ->get();
-
-            
-      // Find appropriate section number
-      if(empty($section_courses))
-      {
-        $section_number = "01";
-      }
-      else
-      {
-        $sections = array();
-        $i = 0;
-        foreach ($section_courses as $value) {
-          $sections[$i] = intval($value->section_number);
-          $i++;
-        }
-        $section_number = max($sections) + 1;
-        if($section_number < 10)
-        {
-          $section_number = "0" . $section_number;
-        }
-      }
-
-    }
-
     $schedule_id = Input::get("schedule_id");
-    $start_hour = Input::get("start_hour");
-    $start_minute = Input::get("start_minute");
-    $duration = Input::get("duration");
-    $m = Input::get("monday");
-    $t = Input::get("tuesday");
-    $w = Input::get("wednesday");
-    $r = Input::get("thursday");
-    $f = Input::get("friday");
-    $s = Input::get("saturday");
-    $user_id = Input::get("user_id");
-    $faculty_name = Input::get("faculty_name");
-    $building_and_room = Input::get("room");
-
-    $message = "";
-    $status = "";
-    $edit = true;
-
-
     $schedule = Schedule::find($schedule_id);
 
     if($schedule->is_published == 1)
@@ -539,8 +482,78 @@ class Admin_Controller extends Base_Controller
     }
     else
     {
-      $start_time = $start_hour . ":" . $start_minute . ":00";
+      $to_edit_course_id = Input::get("course_id");
+      $action = Input::get("action");
+      $output_version_id = Input::get("output_version_id");
 
+      // Check whether we are editing a course or scheduling an
+      // unscheduled course
+      if($action == 'edit')
+      {
+        error_log("action was edit");
+        $priority = Input::get("priority");
+        $class_size = Input::get("class_size");
+        $course_type = Input::get("course_type");
+
+      }
+      else if($action == 'schedule')
+      {
+        $to_schedule_course = Scheduled_Course::find($to_edit_course_id);
+        $priority = $to_schedule_course->priority_flag;
+        $class_size = $to_schedule_course->class_size;
+        $course_type = $to_schedule_course->course_type;
+
+        // Get courses with the same name
+        $section_courses = Scheduled_Course::where_output_version_id($output_version_id)
+                              ->where_priority_flag($priority)
+                              ->where_course($to_schedule_course->course)
+                              ->where('section_number', '!=', 'X')
+                              ->get();
+
+              
+        // Generate the appropriate section number for the new course
+        if(empty($section_courses))
+        {
+          $section_number = "01";
+        }
+        else
+        {
+          $sections = array();
+          $i = 0;
+          foreach ($section_courses as $value) {
+            $sections[$i] = intval($value->section_number);
+            $i++;
+          }
+          $section_number = max($sections) + 1;
+          if($section_number < 10)
+          {
+            $section_number = "0" . $section_number;
+          }
+        }
+
+      }
+
+      // Grab needed data for editing the course
+      $start_hour = Input::get("start_hour");
+      $start_minute = Input::get("start_minute");
+      $duration = Input::get("duration");
+      $m = Input::get("monday");
+      $t = Input::get("tuesday");
+      $w = Input::get("wednesday");
+      $r = Input::get("thursday");
+      $f = Input::get("friday");
+      $s = Input::get("saturday");
+      $user_id = Input::get("user_id");
+      $faculty_name = Input::get("faculty_name");
+      $building_and_room = Input::get("room");
+
+      $message = "";
+      $status = "";
+      $edit = true;
+
+
+      // Calculate needed values for checking for a conflict
+      $start_time = $start_hour . ":" . $start_minute . ":00";
       $space_pos = strpos($building_and_room, " ");
       $building = substr($building_and_room, 0, $space_pos);
       $room = substr($building_and_room, $space_pos+1);
@@ -556,13 +569,14 @@ class Admin_Controller extends Base_Controller
                               ->where_output_version_id($output_version_id)
                               ->where_building($building)
                               ->where_room_number($room)->first();
+  
     }
-
 
     //Calculate faculty hours and do faculty check.
     if($edit == true)
     {           
-          
+      
+      // Make sure the selected room is valid
       if($query_room->type != "B" && $query_room->type != $course_type)
       {
         $edit = false;
@@ -571,6 +585,7 @@ class Admin_Controller extends Base_Controller
                     " course type of " . $course_type . "!\n";
       }
 
+      // Make sure the selected room size is valid
       if($class_size > $query_room->size)
       {
         $edit = false;
@@ -591,6 +606,7 @@ class Admin_Controller extends Base_Controller
 
       if(! empty($courses))
       {
+        // Check for conflicts with already scheduled courses
         foreach ($courses as $course) {
           if($course->id != $to_edit_course_id)
           {
@@ -630,6 +646,7 @@ class Admin_Controller extends Base_Controller
     if($edit == true)
     {
 
+      //Edit the course if no conflicts existed
       $course_to_edit = Scheduled_Course::find($to_edit_course_id);
 
       $course_to_edit->user_id = $user_id;
@@ -679,6 +696,9 @@ class Admin_Controller extends Base_Controller
   /*************************************************************************/
   public function post_update_container()
   {
+
+    // See comments on post_display_output for insight into how this
+    // function works
 
 
     $output_version_id = Input::get("output_version_id");
@@ -732,12 +752,16 @@ class Admin_Controller extends Base_Controller
 
     $schedule = Schedule::find($schedule_id);
 
+    // make sure the schedule is not already published
     if($schedule->is_published == 1)
     {
       $message = "Schedule has already been published!";
     }
     else
     { 
+      // If not, set it to published in the database
+      // and store the version id and priority type
+      // of the schedule version being published
       $schedule->is_published = 1;
       $schedule->published_version_id = $output_version_id;
       $schedule->published_priority = $priority;

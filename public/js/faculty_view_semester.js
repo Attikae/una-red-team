@@ -95,6 +95,7 @@ function ajaxSubmitPrefs(){
 
     prefsData[i][0] = row.attr('id');
 
+    // Get values for morning, midday, and evening checkboxes
     if( row.find('.morning').is(':checked') )
     {
       prefsData[i][1] = 1;
@@ -122,6 +123,7 @@ function ajaxSubmitPrefs(){
       prefsData[i][3] = 0;
     }
 
+    // Get values for day, night, and internet section selects
     prefsData[i][4] = row.find('.day-sections :selected').text();
     prefsData[i][5] = row.find('.night-sections :selected').text();
     prefsData[i][6] = row.find('.internet-sections :selected').text();
@@ -130,8 +132,7 @@ function ajaxSubmitPrefs(){
 
   });
 
-  console.log("Before ajax call!");
-
+  // Ajax call to submit prefs
   $.ajax({
     url: "submit_prefs",
     type: "POST",
@@ -177,6 +178,7 @@ function ajaxRetrievePrefs(){
 
         var row = $("#" + prefs[i].courseId);
 
+        // Set morning, midday, and evening checkboxes
         if(prefs[i].earlyMorning == "1")
         {
           row.find(".morning").prop("checked", true);
@@ -192,6 +194,7 @@ function ajaxRetrievePrefs(){
           row.find(".late-aft").prop("checked", true);
         }
 
+        // set day, night, and internet section selects
         row.find(".day-sections").val(prefs[i].daySections);
         row.find(".night-sections").val(prefs[i].eveningSections);
         row.find(".internet-sections").val(prefs[i].internetSections);

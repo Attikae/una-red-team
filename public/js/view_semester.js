@@ -78,6 +78,7 @@ $(document).ready(function(){
 
     var container = $(".output-container:visible");
 
+    // Hide currently show view type and display one corresponding to button
     switch(id)
     {
       case "show-by-room":
@@ -239,6 +240,7 @@ function ajaxFileUpload(){
   else
   {
   
+    // Load text into appropriate input box
     switch(inputType)
     {
       case "class-times" :
@@ -278,6 +280,7 @@ function ajaxSaveInput(saveButton) {
   var fileId = saveButton.parents('.file-div').attr('id');
   var scheduleId = $('#schedule_id').val();
   
+  // Get filetype for input box
   var fileType;
   switch(fileId)
   {
@@ -418,6 +421,7 @@ function ajaxDisplayOutput(span){
     },
     success: function(data) {
 
+      // Update containers with retrieved html
       $("#seniority-container").html(data.seniority);
       $("#submission-container").html(data.submission);
       $("#edit-output-version-id").val(data.outputVersionId);
@@ -425,12 +429,15 @@ function ajaxDisplayOutput(span){
       var blocks0 = data.classBlocks0;
       var blocks1 = data.classBlocks1;
 
+      // Appends course divs to by-room view
       appendDivs(blocks1, 1);
       appendDivs(blocks0, 0);
 
+      // create faculty and room select options in edit menu
       createFacultyOptions(data.faculty);
       createRoomOptions(data.rooms);
-            
+          
+      // Always show the by-seniorty view first  
       $("#schedule-output-container").show();
       $("#submission-container").hide();
       $("#seniority-container").show();
@@ -465,6 +472,7 @@ function appendDivs(blocks, priority){
 
     var table = container.find(blocks[i].tableId)
 
+    // Figure out which rows the course needs to be inserted into
     if(blocks[i].monday == "1")
     {
       var div = createClassDiv(blocks[i]);
@@ -500,6 +508,9 @@ function appendDivs(blocks, priority){
       var div = createClassDiv(blocks[i]);
       table.find('.saturday-row').append(div);
     }
+
+    // Set the data for the inserted div
+    // (divs that span multiple days still have the same id)
     setClassBlockData(blocks[i]);
 
 
@@ -569,19 +580,25 @@ function setClassBlockData(block){
 */
 function ajaxDeleteVersion(deleteId){
 
-  $.ajax({
-    url: "delete_version",
-    type: "POST",
-    data: {
-        version_id : deleteId
-    },
-    success: function(data) {
+  // Display delete confirmation
+  var r = confirm("Are you sure you want to delete this version?")
 
-      $("#" + deleteId).parents('tr').remove();
-      
-    }
+  if(r == true)
+  {
+    $.ajax({
+      url: "delete_version",
+      type: "POST",
+      data: {
+          version_id : deleteId
+      },
+      success: function(data) {
 
-  }); 
+        $("#" + deleteId).parents('tr').remove();
+        
+      }
+
+    }); 
+  }
 
 }
 
@@ -595,10 +612,12 @@ function ajaxDeleteVersion(deleteId){
 */
 function displayEditContainer(div){
 
+  // Display the edit menu and overlay to prevent further clicks
   var divData = div.data();
   $("#schedule-container-overlay").show()
   $("#schedule-edit-container").show();
 
+  // Update edit menu with data corresponding to course clicked
   $("#edit-course-id").val(divData.courseId);
   $("#edit-priority-flag").val(divData.priorityFlag);
   $("#duration-select").val(divData.duration);
@@ -610,6 +629,7 @@ function displayEditContainer(div){
   $("#faculty-select").val(divData.userId);
   $("#room-select").val(divData.room);
 
+  // Set day checkboxes
   if(divData.monday == 1)
   {
     $("#monday-checkbox").prop('checked', true);
@@ -652,9 +672,12 @@ function displayEditContainer(div){
              display information about the course
 */
 function displayEditContainerForUnscheduled(button){
+
+  // Show edit menu and overlay
   $("#schedule-container-overlay").show()
   $("#schedule-edit-container").show();
 
+  // Set course data for edit menu
   $("#edit-course-id").val(button.attr('id'));
   $("#start-hour-select").val(7);
   $("#start-minute-select").val(0);
@@ -715,6 +738,7 @@ function createRoomOptions(rooms){
 */
 function ajaxEditCourse(){
 
+  // Detect which days were selected
   if( $("#monday-checkbox").is(":checked") ){
     var m = 1;
   }
@@ -776,7 +800,7 @@ function ajaxEditCourse(){
   var outputVersionId = $("#edit-output-version-id").val();
   var priority = $("#edit-priority-flag").val();
 
-
+  // Make sure at least one day was selected before proceeding
   if( m || t || w || r || f || s )
   {
     $.ajax({
@@ -809,6 +833,8 @@ function ajaxEditCourse(){
       
         if(data.status == "success")
         {
+          // Update the appropriate priority container's html
+          // with the newly editied course
           ajaxUpdateContainer(outputVersionId, data.priority);
           alert(data.message);
           closeEditPopup();
@@ -883,6 +909,7 @@ function ajaxPublishSchedule()
   var scheduleId = $('#schedule_id').val();
   var outputVersionId = $("#edit-output-version-id").val();
 
+  // Detect which priority container we're in
   if( $("#seniority-container").is(":visible") )
   {
     priority = 0;
@@ -894,6 +921,7 @@ function ajaxPublishSchedule()
     var type = "By Preference Submissions.";
   }
 
+  // Display confirm message
   var r = confirm("Are you sure you want to publish this schedule?\n" +
                    "You will not be able to edit any versions of the\n" +
                    "schedule after it has been published.\n" + 

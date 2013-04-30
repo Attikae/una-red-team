@@ -1127,6 +1127,7 @@ class Scheduler {
     $rooms = Available_Room::where_schedule_id($schedule_id)->get();
     $faculty_members = Faculty_Member::where_schedule_id($schedule_id)->get();
 
+    // Copy room input
     foreach($rooms as $room)
     {
       $new_room = new Available_Room;
@@ -1138,6 +1139,7 @@ class Scheduler {
       $new_room->save();
     }
 
+    // Copty faculty input
     foreach($faculty_members as $faculty) {
       $new_faculty = new Faculty_Member;
       $new_faculty->user_id = $faculty->user_id;

@@ -296,10 +296,12 @@ class Home_Controller extends Base_Controller {
 
         $schedule = Schedule::find($schedule_id);
 
+        // Retrieve courses associated with selected published schedule from database
         $courses = Scheduled_Course::where_output_version_id($schedule->published_version_id)
                                 ->where_priority_flag($schedule->published_priority)
                                 ->where('section_number', '!=', 'X')->get();
 
+        // Generate html for those courses                        
         $html = Output_Version::create_classes_by_class_name($courses);
 
         echo json_encode(array("html" => $html));
