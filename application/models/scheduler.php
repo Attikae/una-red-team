@@ -96,7 +96,8 @@ class Scheduler {
                 $tmp_valid_list[$x] = clone $time;
               }
 
-              $final_time_list = Scheduler::filter_faculty_times( $tmp_valid_list,
+              $final_time_list = Scheduler::filter_faculty_times( $tmp_times,
+                                                                  $tmp_valid_list,
                                                                   $faculty );
 
               if( !empty( $final_time_list ) )
@@ -172,7 +173,8 @@ class Scheduler {
                 $tmp_valid_list[$x] = clone $time;
               }
 
-              $final_time_list = Scheduler::filter_faculty_times( $tmp_valid_list,
+              $final_time_list = Scheduler::filter_faculty_times( $tmp_times,
+                                                                  $tmp_valid_list,
                                                                   $faculty );
               if( !empty( $final_time_list ) )
               {
@@ -806,7 +808,8 @@ class Scheduler {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
-  public static function filter_faculty_times( $time_list,
+  public static function filter_faculty_times( $orig_list,
+                                               $valid_list,
                                                $faculty )
   {
     // Remove any place where the faculty could teach the same time/day
@@ -814,9 +817,9 @@ class Scheduler {
     $tmp_times = array();
     $i = 0;
 
-    if( !empty( $time_list ) )
+    if( !empty( $valid_list ) )
     {
-      foreach( $time_list as $time )
+      foreach( $orig_list as $time )
       {
         if( $time->is_taken == 1 )
         {
@@ -833,7 +836,7 @@ class Scheduler {
     {
       foreach( $tmp_times as $tmp )
       {
-        foreach( $time_list as $key => $time )
+        foreach( $valid_list as $key => $time )
         {
           if( Scheduler::is_intersected( $tmp->days,
                                          $time->days,
@@ -842,15 +845,15 @@ class Scheduler {
                                          $time->start_offset,
                                          $time->end_offset ) )
           {
-            unset( $time_list[$key] );
+            unset( $valid_list[$key] );
           }
         }
       }
     }
 
-    array_values( $time_list );
+    array_values( $valid_list );
 
-    return $time_list;
+    return $valid_list;
   }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -970,6 +973,7 @@ class Scheduler {
   {
     $intersect = false;
     $day_str = ( $days1 & $days2 );
+
     if( strpos( $day_str, '1' ) !== false )
     {
       if( ( $start1 >= $start2 &&
