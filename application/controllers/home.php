@@ -48,6 +48,24 @@ class Home_Controller extends Base_Controller {
         return View::make('home.login');
     }
 
+    public function get_cancel_change_password()
+    {
+
+        $user_id = Session::get("user_id");
+
+        $user = User::find($user_id);
+
+        if($user->user_type == 2)
+        {
+            return Redirect::to('faculty/faculty_index');
+        }
+        else
+        {
+            return Redirect::to('admin/admin_index');
+        }
+
+    }
+
     public function post_login()
     {
         $username = $_POST['username'];

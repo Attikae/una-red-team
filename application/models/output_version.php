@@ -73,7 +73,7 @@ class Output_Version extends Eloquent {
 
       $html_array[$i] .= "<div class='time-label7'>7</div>";
 
-      for($j = 8; $j < 24; $j++)
+      for($j = 8; $j < 23; $j++)
       {
         if($j > 12)
         {
@@ -86,6 +86,8 @@ class Output_Version extends Eloquent {
 
         $html_array[$i] .= "<div class='time-label'>" . $num . "</div>";
       }
+
+      $html_array[$i] .= "<div class='time-label11'>11</div>";
 
       $html_array[$i].= "</div></td></tr>" .
                         "<tr><td rowspan='8'>" . $room_vertical_text . "</td></tr>" .

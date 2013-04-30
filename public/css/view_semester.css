@@ -469,7 +469,7 @@ input[type=checkbox]
 
 .time-row
 {
-  width: 1190px;
+  width: 1140px;
 }
 
 .class-block
@@ -511,6 +511,17 @@ input[type=checkbox]
   text-align: left;
   font-weight: bold;
 }
+
+.time-label11
+{
+  position: relative;
+  width: 20px;
+  font-size: 14px;
+  float: left;
+  text-align: left;
+  font-weight: bold;
+}
+
 
 
 

@@ -31,7 +31,9 @@
       repeat new password: <input id="rpt-new-pw" name="rpt-new-pw" type="password">
       <button id="submit" type="submit">submit</button>
     </form>
-    <button id="cancel">cancel</button>
+    <form method="link" action="{{ URL::to("home/cancel_change_password") }}">
+      <button id="cancel" type="submit">Cancel</button>
+    </FORM>
   </div>
 </body>
 </html>
